@@ -3,12 +3,12 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Write from './Components/Write'
+import Write from './services/Write'
 function App() {
 
   return (
     <>
-      <div className="text-3xl font-bold underline">
+      <div className="flex">
         <Router>
           <Routes>
             <Route path="/" element={ <Write/>}/>
