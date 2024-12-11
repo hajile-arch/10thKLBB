@@ -1,4 +1,4 @@
-# Badge Tracker Website
+# President Badge Tracker Website
 
 ## Overview
 
@@ -75,7 +75,7 @@ For questions or support, please contact:
 
 - **Name**: Elijah Wong
 - **Email**: harvestzone1@gmail.com
-- **GitHub**: [https://github.com/your-username](https://github.com/your-username)
+- **GitHub**: https://github.com/hajile-arch
 
 ---
 
