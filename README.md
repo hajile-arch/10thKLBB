@@ -39,46 +39,12 @@ The main purpose of this website is to provide members of **The Boys' Brigade** 
 4. **Track Progress**: Identify which badges or criteria are still required for the President's Badge.
 5. **Access Updates**: If you are a 10th KL member, view the latest news and events specific to your company.
 
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo-name.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd badge-tracker
-   ```
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
-4. Start the development server:
-   ```bash
-   npm start
-   ```
-5. Open your browser and go to `http://localhost:3000` to view the application.
 
 ## Deployment
 
-This project can be deployed using platforms like [Vercel](https://vercel.com/) or [Netlify](https://www.netlify.com/). Follow these steps for Firebase hosting:
+This project is being using platform, Firebase hosting:
 
-1. Install Firebase CLI:
-   ```bash
-   npm install -g firebase-tools
-   ```
-2. Initialize Firebase in the project directory:
-   ```bash
-   firebase init
-   ```
-3. Build the project:
-   ```bash
-   npm run build
-   ```
-4. Deploy the project:
-   ```bash
-   firebase deploy
-   ```
+https://thklbb-74984.web.app/read
 
 ## Contributing
 
@@ -107,8 +73,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 For questions or support, please contact:
 
-- **Name**: [Your Name]
-- **Email**: [[your-email@example.com](mailto:your-email@example.com)]
+- **Name**: Elijah Wong
+- **Email**: harvestzone1@gmail.com
 - **GitHub**: [https://github.com/your-username](https://github.com/your-username)
 
 ---
