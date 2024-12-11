@@ -3,7 +3,8 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import Write from './services/Write'
+import Write from './pages/Write'
+import BadgeList from './pages/Read'
 function App() {
 
   return (
@@ -11,7 +12,7 @@ function App() {
       <div className="flex">
         <Router>
           <Routes>
-            <Route path="/" element={ <Write/>}/>
+            <Route path="/read" element={ <BadgeList/>}/>
             <Route path="/write" element={ <Write/>}/>
 
           </Routes>
