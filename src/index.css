@@ -1,9 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lunasima:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  justify-content: center;
-  min-width: 320px;
-  min-height: 100vh;
+.geom-graphic-bold{
+  font-family: geom-graphic, sans-serif !important;
+  font-weight: 700;
+  font-style: normal;
 }
+
+.dm-serif-display-regular {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.dm-serif-display-regular-italic {
+  font-family: "DM Serif Display", serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+
+.montserrat-normal {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.montserrat-bold {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+
+.lunasima-bold {
+  font-family: "Lunasima", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.bebas-neue-regular {
+  font-family: 'Bebas Neue', sans-serif;
+}
+.rotate-text {
+  transform: rotate(-90deg); /* Rotate the text by -90 degrees */
+  white-space: nowrap; /* Prevent text from wrapping */
+  display: inline-block;
+}
+
+.rotate-text {
+  transform: rotate(-90deg); /* Rotate text by -90 degrees */
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.scroll-text {
+  animation: scroll 35s linear infinite; /* Adjust speed for smooth scrolling */
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(-50%); /* Start from the beginning */
+  }
+  100% {
+    transform: translateX(0); /* End at the halfway point of the doubled text */
+}
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid-cols-1 {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.grid-cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.bg-black.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+

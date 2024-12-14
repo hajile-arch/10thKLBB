@@ -76,7 +76,7 @@ const BadgeForm = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 500, mx: "auto", mt: 4, p: 2, boxShadow: 2, borderRadius: 2 }}>
+    <Box sx={{ maxWidth: 500, mx: "auto", mt: 2, p: 2, boxShadow: 2, borderRadius: 2 }}>
       <Typography variant="h5" mb={2} align="center">
         Add Badge
       </Typography>

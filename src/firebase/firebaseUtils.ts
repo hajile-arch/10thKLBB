@@ -42,3 +42,4 @@ export const deleteDataFromFirebase = async (path: string) => {
     return { success: false, message: error.message }; // Handle errors
   }
 };
+
