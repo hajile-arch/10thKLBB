@@ -43,7 +43,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
           left: 0,
           width: "100%",
           height: "100%",
-          backgroundImage: `url(/public/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,          backgroundSize: "cover",
+          backgroundImage: `url(../images/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,          backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "brightness(0.75)",
         }}

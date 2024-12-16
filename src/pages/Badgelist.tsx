@@ -70,55 +70,83 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     addBadgeToSelection(category, subCategory, badgeKey, badge);
   };
 
-  const addBadgeToSelection = (
-    category: string,
-    subCategory: string,
-    badgeKey: string,
-    badge: Badge,
-    level?: "Basic" | "Advanced"
-  ) => {
-    const isAlreadySelected = selectedBadges.some(
-      (selected) =>
-        selected.category === category &&
-        selected.subCategory === subCategory &&
-        selected.badgeKey === badgeKey &&
-        selected.level === level
-    );
-  
-    if (isAlreadySelected) {
-      // Remove badge if already selected
-      setSelectedBadges(
-        selectedBadges.filter(
-          (selected) =>
-            !(
-              selected.category === category &&
-              selected.subCategory === subCategory &&
-              selected.badgeKey === badgeKey &&
-              selected.level === level
-            )
-        )
-      );
-    } else {
-      // Prepare the new badge object
-      const newBadge: SelectedBadge = {
-        category,
-        subCategory,
-        badgeKey,
-        ...badge,
-        ...(level ? { level } : {}), // Only include level if it is defined
-      };
-  
-      // Add badge to selection
-      setSelectedBadges([...selectedBadges, newBadge]);
-    }
-  
-    // Close level selection dialog if open
-    if (levelSelectionOpen) {
-      setLevelSelectionOpen(null);
-    }
-  };
-  
+const addBadgeToSelection = (
+  category: string,
+  subCategory: string,
+  badgeKey: string,
+  badge: Badge,
+  level?: "Basic" | "Advanced"
+) => {
+  // Skip adding President or Founder badges
+  if (badge.name === "President" || badge.name === "Founder") {
+    return;
+  }
 
+  const isAlreadySelected = selectedBadges.some(
+    (selected) =>
+      selected.category === category &&
+      selected.subCategory === subCategory &&
+      selected.badgeKey === badgeKey &&
+      selected.level === level
+  );
+
+  if (isAlreadySelected) {
+    // Remove badge if already selected
+    setSelectedBadges(
+      selectedBadges.filter(
+        (selected) =>
+          !(
+            selected.category === category &&
+            selected.subCategory === subCategory &&
+            selected.badgeKey === badgeKey &&
+            selected.level === level
+          )
+      )
+    );
+  } else {
+    // Prepare the new badge object
+    const newBadge: SelectedBadge = {
+      category,
+      subCategory,
+      badgeKey,
+      ...badge,
+      ...(level ? { level } : {}), // Only include level if it is defined
+    };
+
+    // Add badge to selection
+    setSelectedBadges([...selectedBadges, newBadge]);
+
+    // If "Advanced" badge is selected, automatically select the "Basic" version as well
+    if (level === "Advanced") {
+      // Check if Basic version exists and is not already selected
+      const basicBadge = badges[category]?.[subCategory]?.[badgeKey];
+      if (basicBadge && !selectedBadges.some(
+          (selected) =>
+            selected.category === category &&
+            selected.subCategory === subCategory &&
+            selected.badgeKey === badgeKey &&
+            selected.level === "Basic"
+        )) {
+        // Add Basic badge to selection
+        setSelectedBadges((prevSelectedBadges) => [
+          ...prevSelectedBadges,
+          {
+            category,
+            subCategory,
+            badgeKey,
+            ...basicBadge,
+            level: "Basic",
+          },
+        ]);
+      }
+    }
+  }
+
+  // Close level selection dialog if open
+  if (levelSelectionOpen) {
+    setLevelSelectionOpen(null);
+  }
+};
   // const calculateTotalPoints = () => {
   //   return selectedBadges.reduce((sum, badge) => {
   //     // Check if points exist for the specific level
