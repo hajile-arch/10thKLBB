@@ -9,6 +9,8 @@ interface UserFormInputProps {
   required?: boolean;
   className?: string;
   options?: string[];
+  min?: string; // Add this line
+  max?: string; // Add this line
 }
 
 export const UserFormInput: React.FC<UserFormInputProps> = ({
@@ -18,10 +20,13 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
   onChange,
   required = false,
   className = '',
+  min,
+  max,
   options = []
 }) => {
-  const baseClasses = "w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
-  
+  const baseClasses =
+    "w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
+
   if (type === 'select') {
     return (
       <div className="space-y-2">
@@ -51,6 +56,8 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
+        min={min} // Add min here
+        max={max} // Add max here
       />
     </div>
   );
