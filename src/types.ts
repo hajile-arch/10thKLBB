@@ -26,3 +26,17 @@ export interface BadgeDescription {
     badgeKey: string;
     level?: 'Basic' | 'Advanced'; // level is optional here
   }
+
+
+  
+  export interface  User  {
+    yearJoined: string;
+    name: string;
+    rank: string;
+    dob: string;
+    profileImageUrl?: string;
+    badges?: Badge[];
+    squad: string;
+    platoon: string;
+  };
+  

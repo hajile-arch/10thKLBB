@@ -3,6 +3,7 @@ import { Box, Typography, Grid } from "@mui/material";
 import UserCard from "./UserCard"; // Adjust the path based on your folder structure
 
 type User = {
+  badges: never[];
   id: string;
   rank: string;
   name: string;
