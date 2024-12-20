@@ -80,43 +80,39 @@ const categorizeProficiencyBadges = (badges: Badge[]): { [key: string]: Badge[] 
     others: [],
   };
 
-  console.log("Proficiency Badges to Categorize:", badges);
-
   badges.forEach((badge) => {
-    const group = badge.subCategory; // Remove toLowerCase() here
-    console.log(`Processing Badge: ${badge.name}, SubCategory: ${group}`);
+    const group = badge.subCategory;
     if (categories[group]) {
       categories[group].push(badge);
-      console.log(`Added to category: ${group}`);
     } else {
-      categories.others.push(badge); // For badges that don't fall into predefined groups
-      console.log(`Subcategory ${group} not found in predefined categories.`);
+      categories.others.push(badge);
     }
   });
-
-  console.log("Categorized Proficiency Badges:", categories);
 
   return categories;
 };
 
-
+const countBadges = (badges: Badge[]): { [name: string]: number } => {
+  return badges.reduce((acc, badge) => {
+    acc[badge.name] = (acc[badge.name] || 0) + 1;
+    return acc;
+  }, {} as { [name: string]: number });
+};
 
 const UserDialog: React.FC<UserDialogProps> = ({ user, onClose }) => {
   if (!user) return null;
 
   const filteredBadges = filterBadges(user.badges);
-  console.log("Filtered Badges:", filteredBadges);
   const proficiency = filteredBadges.filter(
     (badge) => badge.category === "proficiencyAwards"
   );
-  console.log("Proficiency Badges:", proficiency);
   const specialService = filteredBadges.filter(
     (badge) =>
       badge.category === "specialAwards" || badge.category === "serviceAwards"
   );
 
   const proficiencyByCategory = categorizeProficiencyBadges(proficiency);
-  console.log("Proficiency By Category:", proficiencyByCategory);
+  const badgeCounts = countBadges(user.badges || []);
 
   const age = calculateAge(user.dob);
 
@@ -173,26 +169,33 @@ const UserDialog: React.FC<UserDialogProps> = ({ user, onClose }) => {
 
           {/* Proficiency Awards by Category */}
           <Box sx={{ mt: 1 }}>
-  <Typography variant="h6">Proficiency Awards</Typography>
-  {Object.entries(proficiencyByCategory).map(([category, badges]) => {
-    console.log(`Rendering Category: ${category}, Badges:`, badges);
-    return badges.length > 0 ? (
-      <Box key={category} sx={{ mt: 2 }}>
-        <Typography variant="subtitle1" color="textSecondary">
-          {capitalizeCategory(category)} {/* Apply the capitalize function here */}
-        </Typography>
-        <BadgesList badges={badges} />
-      </Box>
-    ) : null;
-  })}
-</Box>
+            <Typography variant="h6">Proficiency Awards</Typography>
+            {Object.entries(proficiencyByCategory).map(([category, badges]) => {
+              return badges.length > 0 ? (
+                <Box key={category} sx={{ mt: 2 }}>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {capitalizeCategory(category)}
+                  </Typography>
+                  <BadgesList badges={badges} />
+                </Box>
+              ) : null;
+            })}
+          </Box>
+
           <Divider sx={{ my: 2 }} />
 
           {/* Special & Service Awards */}
           <Box sx={{ mt: 2 }}>
             <Typography variant="h6">Special & Service Awards</Typography>
             {specialService.length > 0 ? (
-              <BadgesList badges={specialService} />
+              <BadgesList
+                badges={specialService.map((badge) => ({
+                  ...badge,
+                  name: badgeCounts[badge.name] > 1
+                    ? `${badge.name} (x${badgeCounts[badge.name]})`
+                    : badge.name,
+                }))}
+              />
             ) : (
               <Typography variant="body2" color="textSecondary">
                 No special or service awards available.

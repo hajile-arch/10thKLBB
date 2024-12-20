@@ -4,7 +4,12 @@ import {
   Typography, 
   Container, 
   Button,
-  CircularProgress
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField
 } from '@mui/material';
 import { getDataFromFirebase } from '../firebase/firebaseUtils';
 import { 
@@ -34,6 +39,9 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     badgeKey?: string;
     badge?: Badge;
   } | null>(null);
+  const [numberDialogOpen, setNumberDialogOpen] = useState(false);
+  const [badgeToAdd, setBadgeToAdd] = useState<{ category: string; subCategory: string; badge: Badge } | null>(null);
+  const [desiredCount, setDesiredCount] = useState<number>(1);
 
   useEffect(() => {
     const fetchBadges = async () => {
@@ -65,97 +73,106 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
       setLevelSelectionOpen({ category, subCategory, badgeKey, badge });
       return;
     }
+    
+    // For "One Year Service" badges, open number dialog
+    if (badge.name === 'One Year Service') {
+      setBadgeToAdd({ category, subCategory, badge });
+      setNumberDialogOpen(true);
+      return;
+    }
 
     // For other categories, directly add badge
     addBadgeToSelection(category, subCategory, badgeKey, badge);
   };
 
-const addBadgeToSelection = (
-  category: string,
-  subCategory: string,
-  badgeKey: string,
-  badge: Badge,
-  level?: "Basic" | "Advanced"
-) => {
-  // Skip adding President or Founder badges
-  if (badge.name === "President" || badge.name === "Founder") {
-    return;
-  }
+  const addBadgeToSelection = (
+    category: string,
+    subCategory: string,
+    badgeKey: string,
+    badge: Badge,
+    level?: "Basic" | "Advanced",
+    count: number = 1
+  ) => {
+    // Skip adding President or Founder badges
+    if (badge.name === "President" || badge.name === "Founder") {
+      return;
+    }
 
-  const isAlreadySelected = selectedBadges.some(
-    (selected) =>
-      selected.category === category &&
-      selected.subCategory === subCategory &&
-      selected.badgeKey === badgeKey &&
-      selected.level === level
-  );
-
-  if (isAlreadySelected) {
-    // Remove badge if already selected
-    setSelectedBadges(
-      selectedBadges.filter(
-        (selected) =>
-          !(
-            selected.category === category &&
-            selected.subCategory === subCategory &&
-            selected.badgeKey === badgeKey &&
-            selected.level === level
-          )
-      )
+    const isAlreadySelected = selectedBadges.some(
+      (selected) =>
+        selected.category === category &&
+        selected.subCategory === subCategory &&
+        selected.badgeKey === badgeKey &&
+        selected.level === level
     );
-  } else {
-    // Prepare the new badge object
-    const newBadge: SelectedBadge = {
-      category,
-      subCategory,
-      badgeKey,
-      ...badge,
-      ...(level ? { level } : {}), // Only include level if it is defined
-    };
 
-    // Add badge to selection
-    setSelectedBadges([...selectedBadges, newBadge]);
-
-    // If "Advanced" badge is selected, automatically select the "Basic" version as well
-    if (level === "Advanced") {
-      // Check if Basic version exists and is not already selected
-      const basicBadge = badges[category]?.[subCategory]?.[badgeKey];
-      if (basicBadge && !selectedBadges.some(
+    if (isAlreadySelected) {
+      // Remove badge if already selected
+      setSelectedBadges(
+        selectedBadges.filter(
           (selected) =>
-            selected.category === category &&
-            selected.subCategory === subCategory &&
-            selected.badgeKey === badgeKey &&
-            selected.level === "Basic"
-        )) {
-        // Add Basic badge to selection
-        setSelectedBadges((prevSelectedBadges) => [
-          ...prevSelectedBadges,
-          {
-            category,
-            subCategory,
-            badgeKey,
-            ...basicBadge,
-            level: "Basic",
-          },
-        ]);
+            !(
+              selected.category === category &&
+              selected.subCategory === subCategory &&
+              selected.badgeKey === badgeKey &&
+              selected.level === level
+            )
+        )
+      );
+    } else {
+      // Prepare the new badge objects
+      const newBadges = Array.from({ length: count }, () => ({
+        category,
+        subCategory,
+        badgeKey,
+        ...badge,
+        ...(level ? { level } : {}), // Only include level if it is defined
+      }));
+
+      // Add badges to selection
+      setSelectedBadges([...selectedBadges, ...newBadges]);
+
+      // If "Advanced" badge is selected, automatically select the "Basic" version as well
+      if (level === "Advanced") {
+        // Check if Basic version exists and is not already selected
+        const basicBadge = badges[category]?.[subCategory]?.[badgeKey];
+        if (basicBadge && !selectedBadges.some(
+            (selected) =>
+              selected.category === category &&
+              selected.subCategory === subCategory &&
+              selected.badgeKey === badgeKey &&
+              selected.level === "Basic"
+          )) {
+          // Add Basic badge to selection
+          setSelectedBadges((prevSelectedBadges) => [
+            ...prevSelectedBadges,
+            {
+              category,
+              subCategory,
+              badgeKey,
+              ...basicBadge,
+              level: "Basic",
+            },
+          ]);
+        }
       }
     }
-  }
 
-  // Close level selection dialog if open
-  if (levelSelectionOpen) {
-    setLevelSelectionOpen(null);
-  }
-};
-  // const calculateTotalPoints = () => {
-  //   return selectedBadges.reduce((sum, badge) => {
-  //     // Check if points exist for the specific level
-  //     if (badge.points && badge.level) {
-  //       return sum + (badge.points[badge.level] || 0);
-  //     }
-  //     return sum;
-  //   }, 0);
-  // };
+    // Close level selection dialog if open
+    if (levelSelectionOpen) {
+      setLevelSelectionOpen(null);
+    }
+  };
+
+  const handleNumberDialogSubmit = () => {
+    if (badgeToAdd) {
+      const { category, subCategory, badge } = badgeToAdd;
+      addBadgeToSelection(category, subCategory, badge.name, badge, undefined, desiredCount);
+    }
+    setNumberDialogOpen(false);
+    setBadgeToAdd(null);
+    setDesiredCount(1);
+  };
 
   if (loading) {
     return (
@@ -188,15 +205,32 @@ const addBadgeToSelection = (
         addBadgeToSelection={addBadgeToSelection}
       />
 
+      <Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
+        <DialogTitle>Select Number of Badges</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Number of badges (1-10)"
+            type="number"
+            value={desiredCount}
+            onChange={(e) => setDesiredCount(Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), 10))}
+            fullWidth
+            InputProps={{ inputProps: { min: 1, max: 10 } }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
+            Add
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h4">Badge Selection</Typography>
         <Box>
           <Typography variant="subtitle1">
             Total Selected: {selectedBadges.length} badges
           </Typography>
-          {/* <Typography variant="subtitle2" color="textSecondary">
-            Total Points: {calculateTotalPoints()}
-          </Typography> */}
         </Box>
       </Box>
 
