@@ -67,7 +67,9 @@ const BadgeItem: React.FC<{ badge: Badge }> = ({ badge }) => (
           }}
         ></div>
       )}
+      
       <img
+      
         src={
           badge.iconUrl ||
           `/images/badges/${badge.name.trim().replace(/\s+/g, "-").toLowerCase()}.png`

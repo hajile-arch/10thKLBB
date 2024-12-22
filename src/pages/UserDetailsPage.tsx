@@ -28,8 +28,8 @@ const getRankColor = (rank: RankType) => {
     Sergeant: '#8b0000',
     Corporal: '#00008b',
     'Lance Corporal': '#006400',
-    Private: '#4a4a4a',
-    Recruit: '#2f4f4f',
+    Private: '#2f4f4f',
+    Recruit: '#4a4a4a',
   };
   return colors[rank];
 };
@@ -45,7 +45,6 @@ export const UserDetailsPage: React.FC = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setLoading(true);
         const result = await getDataFromFirebase("users");
 
         if (result.success) {
@@ -56,13 +55,17 @@ export const UserDetailsPage: React.FC = () => {
         }
       } catch (err) {
         setError("An error occurred while fetching user data.");
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchUsers();
   }, []);
+
+  // Simulate a loading screen for at least 5 seconds
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // Keep loading for at least 5 seconds
+    return () => clearTimeout(timer); // Cleanup the timer
+  }, [users]); // This will only reset after the users have been set
 
   if (loading) {
     return (
