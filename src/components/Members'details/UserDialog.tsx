@@ -10,7 +10,7 @@ import {
   Avatar,
 } from "@mui/material";
 import EligibilityChecker from "../PresidentBadge/EligibilityChecker.tsx";
-import BadgesList from "./BagdesList.tsx"; // Import BadgesList component
+import BadgesList from "./BagdesList.tsx";
 
 type Badge = {
   iconUrl?: string;
