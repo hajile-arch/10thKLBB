@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
-import UserCard from "../components/Members'details/UserCard";
 import UserDialog from "../components/Members'details/UserDialog";
 import UserGroup from "../components/Members'details/UserGroup";
 import {
   Box,
-  Container,
   Typography,
   Paper,
-  Grid,
   CircularProgress,
   Button,
 } from "@mui/material";

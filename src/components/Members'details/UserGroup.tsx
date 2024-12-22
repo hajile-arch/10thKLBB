@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import UserCard from "./UserCard"; // Adjust the path based on your folder structure
 
 type User = {
@@ -16,13 +16,13 @@ type UserGroupProps = {
   onSelect: (user: User) => void;
 };
 
-const rankAbbreviations: Record<string, string> = {
-  Recruit: "RCT",
-  Private: "PVT",
-  "Lance Corporal": "LCPL",
-  Corporal: "CPL",
-  Sergeant: "SGT",
-};
+// const rankAbbreviations: Record<string, string> = {
+//   Recruit: "RCT",
+//   Private: "PVT",
+//   "Lance Corporal": "LCPL",
+//   Corporal: "CPL",
+//   Sergeant: "SGT",
+// };
 
 const UserGroup: React.FC<UserGroupProps> = ({ rank, users, onSelect }) => (
   <Box key={rank} sx={{ mb: 4 }}>

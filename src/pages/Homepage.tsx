@@ -1,6 +1,5 @@
-import React from "react";
-import { Box, Typography, Button, Grid, Card, CardContent, CircularProgress } from "@mui/material";
-import { DateRange, Feedback } from "@mui/icons-material";
+import { Box, Typography, Button, Grid, Card, CardContent } from "@mui/material";
+import { Feedback } from "@mui/icons-material";
 import { motion } from "framer-motion";
 
 const Home = () => {
@@ -37,7 +36,7 @@ const Home = () => {
             justifyContent: "center",
           }}
         >
-          {eventImages.map((img, index) => (
+          {eventImages.map((index) => (
             <motion.img
               key={index}
               src='/images/tenz.jpg'

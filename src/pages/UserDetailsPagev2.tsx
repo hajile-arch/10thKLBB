@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
-import UserCard from "../components/Members'details/UserCard";
 import UserDialog from "../components/Members'details/UserDialog";
 import UserGroup from "../components/Members'details/UserGroup";
 import {
@@ -183,7 +182,7 @@ export const UserDetailsPage: React.FC = () => {
         </Box>
 
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {groupedUsers.map(({ rank, users }) => (
+          {groupedUsers.map(({ rank }) => (
             <Box
               key={rank}
               sx={{

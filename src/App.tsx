@@ -9,7 +9,7 @@ import UserDetailsPage from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
 
 const App: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [, setIsLoading] = useState(false);
   const [hasLoaded, setHasLoaded] = useState(false);
   const [showPreloader, setShowPreloader] = useState(false);
 
