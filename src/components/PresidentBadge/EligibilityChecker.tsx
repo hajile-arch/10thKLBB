@@ -97,6 +97,7 @@ const countAdvancedBadges = (user: User): number => {
     (badge) =>
       badge.category === "proficiencyAwards" &&
       badge.level?.toLowerCase() === "advanced" &&
+      badge.subCategory?.toLowerCase() !== "compulsory" && // Exclude compulsory subcategory
       !requiredBadges.includes(
         `${badge.name.trim()} ${badge.level?.trim() || ""}`
       )
@@ -107,6 +108,7 @@ const countAdvancedBadges = (user: User): number => {
   );
   return uniqueAdvancedBadges.size;
 };
+
 
 const checkEligibilityForProficiency = (user: User): string[] => {
   const proficiencyBadgesByGroup = getUniqueProficiencyBadges(user);
@@ -126,18 +128,20 @@ const checkEligibilityForProficiency = (user: User): string[] => {
     missingCriteria.push("You need at least 4 advanced proficiency badges.");
   }
 
-  const groups = ["groupA", "groupB", "groupC", "groupD"];
-  groups.forEach((group) => {
-    if (
-      !proficiencyBadgesByGroup[group] ||
-      proficiencyBadgesByGroup[group].size === 0
-    ) {
-      missingCriteria.push(`You need at least one badge from ${group}.`);
+  const expectedGroups = ["groupA", "groupB", "groupC", "groupD"];
+  expectedGroups.forEach((group) => {
+    console.log("Proficiency Badges By Group:", proficiencyBadgesByGroup);
+console.log("Missing Criteria:", missingCriteria);
+
+    if (!proficiencyBadgesByGroup[group] || proficiencyBadgesByGroup[group].size === 0) {
+      const groupName = group.charAt(group.length - 1).toUpperCase(); // Extracts "A", "B", etc.
+      missingCriteria.push(`You need at least one badge from Group ${groupName}.`);
     }
   });
 
   return missingCriteria;
 };
+
 
 const checkIfPresidentBadgeExists = (user: User): boolean => {
   return (
@@ -164,31 +168,33 @@ const EligibilityChecker: React.FC<{ user: User }> = ({ user }) => {
   const isPresidentBadge = checkIfPresidentBadgeExists(user);
 
   // Define criteria with statuses
-  const criteria = [
-    {
-      text: "At least 3 years of membership.",
-      fulfilled: isMembershipSufficient,
-    },
-    ...requiredBadges.map((badge) => ({
-      text: `Possess the badge: ${badge}.`,
-      fulfilled: !missingRequiredBadges.includes(badge),
-    })),
-    {
-      text: "At least 6 unique proficiency badges.",
-      fulfilled: totalProficiencyBadges >= 6,
-    },
-    {
-      text: "At least 4 advanced proficiency badges.",
-      fulfilled: totalAdvancedBadges >= 4,
-    },
-    {
-      text: "At least one badge from each group (A, B, C, D).",
-      fulfilled: !proficiencyCriteria.some((c) =>
-        c.startsWith("You need at least one badge from")
-      ),
-    },
-  ];
-
+  const criteria = React.useMemo(() => {
+    return [
+      {
+        text: "At least 3 years of membership.",
+        fulfilled: isMembershipSufficient,
+      },
+      ...requiredBadges.map((badge) => ({
+        text: `Possess the badge: ${badge}.`,
+        fulfilled: !missingRequiredBadges.includes(badge),
+      })),
+      {
+        text: "At least 6 unique proficiency badges.",
+        fulfilled: totalProficiencyBadges >= 6,
+      },
+      {
+        text: "At least 4 advanced proficiency badges.",
+        fulfilled: totalAdvancedBadges >= 4,
+      },
+      ...proficiencyCriteria
+        .filter((criterion) => criterion.startsWith("You need at least one badge from"))
+        .map((criterion) => ({
+          text: criterion,
+          fulfilled: false,
+        })),
+    ];
+  }, [user]);
+  
   // Split fulfilled and unfulfilled criteria for better grouping
   const fulfilledCriteria = criteria.filter((criterion) => criterion.fulfilled);
   const unfulfilledCriteria = criteria.filter(

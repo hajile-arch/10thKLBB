@@ -31,7 +31,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
         height: 300,
         cursor: "pointer",
         overflow: "hidden",
-        "&:hover": { boxShadow: 6 },
+        transition: "transform 0.3s ease-in-out", // Smooth zoom transition
       }}
       onClick={onSelect}
     >
@@ -42,10 +42,19 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
           top: 0,
           left: 0,
           width: "100%",
-          height: "100%",
-          backgroundImage: `url(../images/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,          backgroundSize: "cover",
-          backgroundPosition: "center",
           filter: "brightness(0.75)",
+          height: "100%",
+          backgroundImage: `url(../images/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          transition: "transform 0.3s ease-in-out", // Smooth zoom transition
+          transform: "scale(1)", // Default scale
+          "&:hover": {
+            transform: "scale(1.1)", // Zoom in when hovering
+            filter: "brightness(1)",
+
+            
+          },
         }}
       />
       {/* Text Overlay */}
@@ -60,6 +69,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
           py: 2,
           px: 2,
           background: "rgba(0, 0, 0, 0.5)",
+          
         }}
       >
         <Typography

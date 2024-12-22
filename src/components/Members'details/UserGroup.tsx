@@ -29,7 +29,7 @@ const UserGroup: React.FC<UserGroupProps> = ({ rank, users, onSelect }) => (
     {users.length > 0 && (
       <>
         <Typography variant="h5" sx={{ mb: 2 }}>
-          {rankAbbreviations[rank]} - {rank}
+          Status: Active
         </Typography>
         <Grid container spacing={4}>
           {users.map((user) => (
