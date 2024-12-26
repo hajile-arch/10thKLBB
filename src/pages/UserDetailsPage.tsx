@@ -60,7 +60,7 @@ export const UserDetailsPage: React.FC = () => {
 
   // Simulate a loading screen for at least 5 seconds
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000); // Keep loading for at least 5 seconds
+    const timer = setTimeout(() => setLoading(false), 1500); // Keep loading for at least 5 seconds
     return () => clearTimeout(timer); // Cleanup the timer
   }, [users]); // This will only reset after the users have been set
 

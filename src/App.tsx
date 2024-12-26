@@ -7,6 +7,7 @@ import AddUser from "./pages/AddMembers";
 import BadgeSelection from "./pages/Badgelist";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
+import UserDetailsPageEdit from "./pages/UserDetailsPageEdit.tsx";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -37,9 +38,10 @@ const App: React.FC = () => {
     return showPreloader ? (
       <Preloader onFinish={() => setIsLoading(false)} />
     ) : (
-      <div className="flex">
+      <div>
         <Routes>
           <Route path="/user" element={<UserDetailsPage />} />
+          <Route path="/edituser" element={<UserDetailsPageEdit />} />
           <Route path="/add" element={<AddUser />} />
           <Route path="/read" element={<BadgeList />} />
           <Route path="/write" element={<Write />} />

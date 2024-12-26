@@ -42,63 +42,68 @@ const getBadgeDetails = (badge: Badge): string => {
 
 
 /** BadgeItem Component - Renders individual badge details */
-const BadgeItem: React.FC<{ badge: Badge }> = ({ badge }) => (
-  <ListItem sx={{ py: 1, paddingLeft: "5px" }}>
-    <div
-      style={{
-        position: "relative",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        width: 60,
-        height: 60,
-        marginRight: 16,
-      }}
-    >
-      {badge.level?.toLowerCase() === "advanced" && (
-        <div
-          style={{
-            position: "absolute",
-            width: "120%",
-            height: "120%",
-            backgroundColor: "red",
-            borderRadius: "50%",
-            zIndex: 0,
-          }}
-        ></div>
-      )}
-      
-      <img
-      
-        src={
-          badge.iconUrl ||
-          `/images/badges/${badge.name.trim().replace(/\s+/g, "-").toLowerCase()}.png`
-        }
-        alt={badge.name}
+const BadgeItem: React.FC<{ badge: Badge }> = ({ badge }) => {
+  // Clean badge name by removing any "(xN)" pattern
+  const cleanBadgeName = badge.name.replace(/\s*\(x\d+\)$/, "").trim();
+
+  return (
+    <ListItem sx={{ py: 1, paddingLeft: "5px" }}>
+      <div
         style={{
-          width: "90%",
-          height: "90%",
-          objectFit: "contain",
-          objectPosition: "center",
-          zIndex: 1,
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          width: 60,
+          height: 60,
+          marginRight: 16,
         }}
+      >
+        {badge.level?.toLowerCase() === "advanced" && (
+          <div
+            style={{
+              position: "absolute",
+              width: "70px", // Fixed width for the circle
+              height: "70px", // Fixed height for the circle
+              backgroundColor: "red",
+              borderRadius: "50%",
+              zIndex: 0,
+            }}
+          ></div>
+        )}
+
+        <img
+          src={
+            badge.iconUrl ||
+            `/images/badges/${cleanBadgeName.replace(/\s+/g, "-").toLowerCase()}.png?v=${Date.now()}`
+          }
+          alt={badge.name}
+          style={{
+            width: "90%",
+            height: "90%",
+            objectFit: "contain",
+            objectPosition: "center",
+            zIndex: 1,
+          }}
+        />
+      </div>
+      <ListItemText
+        primary={badge.name}
+        secondary={
+          <>
+            <Typography variant="body2" color="textSecondary">
+              <strong>Category:</strong> {formatCategory(badge.category)}
+            </Typography>
+            <Typography variant="body2" color="textSecondary">
+              <strong>Details:</strong> {getBadgeDetails(badge)}
+            </Typography>
+          </>
+        }
       />
-    </div>
-    <ListItemText
-      primary={badge.name.replace("(Basic)", "")}
-      secondary={
-        <>
-          <Typography variant="body2" color="textSecondary">
-            <strong>Category:</strong> {formatCategory(badge.category)}
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            <strong>Details:</strong> {getBadgeDetails(badge)}
-          </Typography>
-        </>
-      }
-    />
-  </ListItem>
-);
+    </ListItem>
+  );
+};
+
 
 
 /** Main BadgesList Component */
