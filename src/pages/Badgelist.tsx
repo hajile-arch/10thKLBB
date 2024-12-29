@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  MenuItem
 } from '@mui/material';
 import { getDataFromFirebase } from '../firebase/firebaseUtils';
 import { 
@@ -205,25 +206,57 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
         addBadgeToSelection={addBadgeToSelection}
       />
 
-      <Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
-        <DialogTitle>Select Number of Badges</DialogTitle>
-        <DialogContent>
-          <TextField
-            label="Number of badges (1-10)"
-            type="number"
-            value={desiredCount}
-            onChange={(e) => setDesiredCount(Math.min(Math.max(parseInt(e.target.value, 10) || 1, 1), 10))}
-            fullWidth
-            InputProps={{ inputProps: { min: 1, max: 10 } }}
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
-            Add
-          </Button>
-        </DialogActions>
-      </Dialog>
+<Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
+  <DialogTitle>Select Number of Badges</DialogTitle>
+  <DialogContent>
+    <TextField
+      select
+      label="Number of badges"
+      value={desiredCount}
+      onChange={(e) => setDesiredCount(Number(e.target.value))}
+      fullWidth
+      variant="outlined"
+    >
+      {[...Array(10)].map((_, index) => (
+        <MenuItem key={index + 1} value={index + 1}>
+          {index + 1}
+        </MenuItem>
+      ))}
+    </TextField>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
+    <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
+      Add
+    </Button>
+  </DialogActions>
+</Dialog>
+<Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
+  <DialogTitle>Select Number of Badges</DialogTitle>
+  <DialogContent>
+    <TextField
+      select
+      label="Number of badges"
+      value={desiredCount}
+      onChange={(e) => setDesiredCount(Number(e.target.value))}
+      fullWidth
+      variant="outlined"
+    >
+      {[...Array(10)].map((_, index) => (
+        <MenuItem key={index + 1} value={index + 1}>
+          {index + 1}
+        </MenuItem>
+      ))}
+    </TextField>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
+    <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
+      Add
+    </Button>
+  </DialogActions>
+</Dialog>
+
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
         <Typography variant="h4">Badge Selection</Typography>
