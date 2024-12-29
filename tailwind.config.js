@@ -6,6 +6,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        montserrat: ['Montserrat', 'sans-serif'],
+        bebas: ['Bebas Neue', 'sans-serif'],
+        lunasima: ['Lunasima', 'serif'],
+        dmSerif: ['DM Serif Display', 'serif'],
+      },
       keyframes: {
         'fade-in': {
           '0%': { opacity: 0 },

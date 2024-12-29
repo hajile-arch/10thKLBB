@@ -8,6 +8,7 @@ import BadgeSelection from "./pages/Badgelist";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
 import UserDetailsPageEdit from "./pages/UserDetailsPageEdit.tsx";
+import UpcomingEventsPage from "./pages/UpcomingEventsPage.tsx";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -47,6 +48,7 @@ const App: React.FC = () => {
           <Route path="/write" element={<Write />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
+          <Route path="/event" element={<UpcomingEventsPage/>}/>
           <Route
             path="/badgelist"
             element={

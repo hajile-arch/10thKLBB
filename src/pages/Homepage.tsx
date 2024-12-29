@@ -1,164 +1,158 @@
-import { Box, Typography, Button, Grid, Card, CardContent } from "@mui/material";
-import { Feedback } from "@mui/icons-material";
-import { motion } from "framer-motion";
+import CountdownTimer from "../components/Homepage/CountdownTimer";
+import { Link } from "react-router-dom"; // Import Link if you're using React Router
 
-const Home = () => {
-  // Example static data
-  const nextParadeDate = "Saturday, January 6, 2024";
-  const eventImages = [
-    "tenz.jpg",
-    "tenz.jpg",
-    "tenz.jpg", // Replace with actual image paths
-  ];
-  const officersAndNCOs = [
-    { name: "John Doe", rank: "Captain", profileImage: "john.jpg" },
-    { name: "Jane Smith", rank: "Sergeant", profileImage: "jane.jpg" },
-    // Add more officers and NCOs
-  ];
+export default function Homepage() {
+  const targetDate = new Date("2025-01-18T07:30:00");
 
   return (
-    <Box>
-      {/* Top Section: Next Parade & Slides */}
-      <Box sx={{ textAlign: "center", py: 4, backgroundColor: "#f5f5f5" }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 2 }}>
-          Next Parade
-        </Typography>
-        <Typography variant="h6" sx={{ color: "#555" }}>
-          {nextParadeDate}
-        </Typography>
-        {/* Slideshow */}
-        <Box
-          sx={{
-            mt: 4,
-            display: "flex",
-            overflow: "auto",
-            gap: 2,
-            justifyContent: "center",
-          }}
-        >
-          {eventImages.map((index) => (
-            <motion.img
-              key={index}
-              src='/images/tenz.jpg'
-              alt={`Event ${index + 1}`}
-              style={{ width: "300px", height: "200px", borderRadius: "8px" }}
-              whileHover={{ scale: 1.05 }}
-            />
-          ))}
-        </Box>
-      </Box>
+    <div className="font-sans">
+      {/* Header Section */}
+      <div className="absolute bg-transparent text-white py-4 w-full z-50">
+        <div className="container mx-auto">
+          <div className="flex justify-center space-x-10 py-2">
+            <a
+              href="#about"
+              className="text-xl hover:text-gray-400 transition duration-300"
+            >
+              About Us
+            </a>
+            <Link
+              to="/user"
+              className="text-xl hover:text-gray-400 transition duration-300"
+            >
+              Members
+            </Link>
+            <a
+              href="#officers"
+              className="text-xl hover:text-gray-400 transition duration-300"
+            >
+              Officers
+            </a>
+          </div>
+        </div>
+      </div>
 
-      {/* Calendar & Battalion Order Section */}
-      <Box sx={{ textAlign: "center", py: 4 }}>
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Calendar & Battalion Order
-        </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          sx={{ mx: 2 }}
-          href="/path/to/calendar.pdf"
-          download
-        >
-          Download Calendar
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          sx={{ mx: 2 }}
-          href="/path/to/battalion-order.pdf"
-          download
-        >
-          Download Battalion Order
-        </Button>
-      </Box>
-
-      {/* Forms Section */}
-      <Box sx={{ textAlign: "center", py: 4, backgroundColor: "#eef2f3" }}>
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Forms
-        </Typography>
-        <Grid container spacing={3} justifyContent="center">
-          {[
-            { name: "Pre-Junior Form", link: "/forms/pre-junior.pdf" },
-            { name: "Junior Form", link: "/forms/junior.pdf" },
-            { name: "Senior Form", link: "/forms/senior.pdf" },
-            { name: "Senior/Junior Form", link: "/forms/senior-junior.pdf" },
-            { name: "Leave Application", link: "/forms/leave.pdf" },
-            { name: "Subscription Fees (Senior)", link: "/forms/subscription-senior.pdf" },
-            { name: "Subscription Fees (Junior)", link: "/forms/subscription-junior.pdf" },
-            { name: "Founder's Badge", link: "/forms/founders-badge.pdf" },
-            { name: "President's Badge", link: "/forms/presidents-badge.pdf" },
-          ].map((form, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">{form.name}</Typography>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    href={form.link}
-                    download
-                    sx={{ mt: 2 }}
-                  >
-                    Download
-                  </Button>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Officers & NCOs Section */}
-      <Box sx={{ textAlign: "center", py: 4 }}>
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Our Officers & NCOs
-        </Typography>
-        <Grid container spacing={3} justifyContent="center">
-          {officersAndNCOs.map((officer, index) => (
-            <Grid item xs={12} sm={6} md={4} key={index}>
-              <Card>
-                <CardContent sx={{ textAlign: "center" }}>
-                  <img
-                    src='/images/caleb-loo.jpg'
-                    alt={officer.name}
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      borderRadius: "50%",
-                      marginBottom: "10px",
-                    }}
-                  />
-                  <Typography variant="h6">{officer.name}</Typography>
-                  <Typography variant="body1">{officer.rank}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-
-      {/* Feedback Button */}
-      <Box
-        sx={{
-          position: "fixed",
-          bottom: "20px",
-          right: "20px",
-          zIndex: 10,
-        }}
+      {/* Welcome Section */}
+      <div
+        className="h-screen w-screen bg-cover bg-center text-white font-bebas flex flex-col md:flex-row items-center justify-center space-y-8 md:space-y-0 md:space-x-16 px-8 relative"
+        style={{ backgroundImage: 'url("/images/bg_landing_1.png")' }}
       >
-        <Button
-          variant="contained"
-          color="secondary"
-          startIcon={<Feedback />}
-          onClick={() => alert("Feedback form coming soon!")}
-        >
-          Feedback
-        </Button>
-      </Box>
-    </Box>
-  );
-};
+        <div className="text-center md:text-left mr-[80px]">
+          {/* Welcome Text */}
+          <h1 className="text-9xl md:text-8xl font-extrabold tracking-wider leading-tight ">
+            Welcome
+          </h1>
+          <h2 className="text-9xl md:text-8xl font-extrabold tracking-wider leading-tight ">
+            To
+          </h2>
+          <h3 className="text-9xl md:text-8xl font-extrabold tracking-wider leading-tight ">
+            10th KL
+          </h3>
+          <h3 className="text-9xl md:text-8xl font-extrabold tracking-wider leading-tight ">
+            Boys' Brigade
+          </h3>
+        </div>
+        {/* Countdown Timer */}
+        <div className="mt-8">
+          <CountdownTimer targetDate={targetDate} />
+        </div>
 
-export default Home;
+        {/* Rotated Phrase */}
+        <div className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 -rotate-90 text-2xl text-white">
+          <p className="">
+            SURE & STEADFAST
+          </p>
+        </div>
+      </div>
+
+      {/* Video Section */}
+      <div className="relative h-screen bg-white flex items-center justify-center">
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div
+            style={{
+              fontSize: "200px",
+              fontWeight: "bold",
+              color: "transparent",
+              WebkitTextStroke: "2px #000", // Black stroke color
+              textAlign: "center",
+              letterSpacing: "2px",
+              lineHeight: "1.2",
+            }}
+            className="tracking-wider leading-none"
+          >
+            2024 RECAP
+          </div>
+          <div
+            style={{
+              fontSize: "200px",
+              fontWeight: "bold",
+              color: "black",
+              textAlign: "center",
+              letterSpacing: "2px",
+              lineHeight: "1.2",
+            }}
+            className="tracking-wider leading-none mt-4"
+          >
+            2024 RECAP
+          </div>
+          <div
+            style={{
+              fontSize: "200px",
+              fontWeight: "bold",
+              color: "transparent",
+              WebkitTextStroke: "2px #000", // Black stroke color
+              textAlign: "center",
+              letterSpacing: "2px",
+              lineHeight: "1.2",
+              marginBottom: "50px",
+            }}
+            className="tracking-wider leading-none mt-4"
+          >
+            2024 RECAP
+          </div>
+        </div>
+        {/* YouTube Video */}
+        <div className="z-10 max-w-2xl w-full mx-8">
+          <iframe
+            src="https://www.youtube.com/embed/EcRuA0XtmQo"
+            title="2024 Annual Recap"
+            className="w-full aspect-video"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+      </div>
+
+      {/* Who Are We Section */}
+      <div className="bg-gray-900 text-white py-20 px-8" id="about">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center md:space-x-10">
+          <div className="md:w-1/2">
+            <h2 className="text-4xl font-bold mb-4 ">
+              Who Are We?
+            </h2>
+            <p className="text-lg mt-5 ">
+              "The Boys' Brigade is the world's first uniformed organization for
+              young people. We are dedicated to building character, leadership,
+              and service among youth. Our mission is to empower young
+              individuals to lead with integrity, serve with passion, and make a
+              difference in their communities."
+            </p>
+          </div>
+          <div className="md:w-1/2 mt-8 md:mt-0 ml-5">
+            <img
+              src="/images/group-photo.jpg"
+              alt="Group Photo"
+              className="rounded-lg shadow-lg w-full object-cover transform hover:scale-105 transition duration-300"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Footer Section */}
+      <footer className="bg-black text-gray-400 py-6 text-center">
+        <p>© 2024 10th KL Boys' Brigade. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
