@@ -151,6 +151,14 @@ const checkIfPresidentBadgeExists = (user: User): boolean => {
   );
 };
 
+const checkIfFounderBadgeExists = (user: User): boolean => {
+  return (
+    user.badges?.some(
+      (badge) => badge.name.toLowerCase() === "founder's badge"
+    ) || false
+  );
+};
+
 const EligibilityChecker: React.FC<{ user: User }> = ({ user }) => {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
   
@@ -166,7 +174,7 @@ const EligibilityChecker: React.FC<{ user: User }> = ({ user }) => {
   const totalAdvancedBadges = countAdvancedBadges(user);
 
   const isPresidentBadge = checkIfPresidentBadgeExists(user);
-
+  const isFounderBadge = checkIfFounderBadgeExists(user);
   // Define criteria with statuses
   const criteria = React.useMemo(() => {
     return [
@@ -211,13 +219,24 @@ const EligibilityChecker: React.FC<{ user: User }> = ({ user }) => {
   if (isSummaryVisible) {
     return (
       <Box sx={{ padding: 2 }}>
-        <Typography variant="h5" gutterBottom>
-          Eligibility Summary
-        </Typography>
-        <EligibilitySummary isPresidentBadge={isPresidentBadge} />
+        <EligibilitySummary
+          isFounderBadge={isFounderBadge}
+          isPresidentBadge={isPresidentBadge}
+        />
       </Box>
     );
   }
+  if (isSummaryVisible) {
+    return (
+      <Box sx={{ padding: 2 }}>
+        <EligibilitySummary
+          isFounderBadge={isFounderBadge}
+          isPresidentBadge={isPresidentBadge}
+        />
+      </Box>
+    );
+  }
+    
 
   return (
     <Box sx={{ padding: 2 }}>
