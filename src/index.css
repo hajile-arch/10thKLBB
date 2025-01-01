@@ -4,6 +4,12 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lunasima:wght@700&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+@font-face {
+  font-family: "RebondGrotesque";
+  src: url("fonts/ESRebondGrotesqueTRIAL-Bold-BF66189040400df.otf") format("opentype");
+}
+
+
 /* Hide arrows in number input for all browsers */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -113,3 +119,17 @@ html::-webkit-scrollbar {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation-name: fadeOut;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}

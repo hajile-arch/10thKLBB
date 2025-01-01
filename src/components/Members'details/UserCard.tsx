@@ -44,7 +44,7 @@ const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
           width: "100%",
           filter: "brightness(0.75)",
           height: "100%",
-          backgroundImage: `url(../images/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,
+          backgroundImage: `url(../images/pfp/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           transition: "transform 0.3s ease-in-out", // Smooth zoom transition

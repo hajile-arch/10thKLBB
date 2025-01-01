@@ -16,14 +16,6 @@ type UserGroupProps = {
   onSelect: (user: User) => void;
 };
 
-// const rankAbbreviations: Record<string, string> = {
-//   Recruit: "RCT",
-//   Private: "PVT",
-//   "Lance Corporal": "LCPL",
-//   Corporal: "CPL",
-//   Sergeant: "SGT",
-// };
-
 const UserGroup: React.FC<UserGroupProps> = ({ rank, users, onSelect }) => (
   <Box key={rank} sx={{ mb: 4 }}>
     {users.length > 0 && (

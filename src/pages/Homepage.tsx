@@ -1,36 +1,50 @@
+import  { useState, useEffect } from "react";
 import CountdownTimer from "../components/Homepage/CountdownTimer";
-import { Link } from "react-router-dom"; // Import Link if you're using React Router
+import { getDataFromFirebase } from "../firebase/firebaseUtils";
+import Header from "../components/Homepage/Header";
 
 export default function Homepage() {
-  const targetDate = new Date("2025-01-18T07:30:00");
+  const [nextParadeDate, setNextParadeDate] = useState<Date | null>(null);
 
+  useEffect(() => {
+
+    const fetchParades = async () => {
+      const result = await getDataFromFirebase("parades");
+
+      if (result.success) {
+        const parades = result.data;
+
+        // Flatten the parade dates into a single array
+        const allParadeDates: Date[] = [];
+        Object.values(parades).forEach((month: any) => {
+          Object.values(month).forEach((parade: any) => {
+            allParadeDates.push(new Date(parade.date));
+          });
+        });
+
+        // Find the next parade date (the one that's in the future)
+        const now = new Date();
+        const futureParades = allParadeDates.filter((date) => date > now);
+        const nextParade = futureParades.sort((a, b) => a.getTime() - b.getTime())[0];
+
+        if (nextParade) {
+          setNextParadeDate(nextParade);
+        }
+      } else {
+        console.error(result.message);
+      }
+    };
+
+    fetchParades();
+
+  }, []);
+
+  
   return (
     <div className="font-sans">
+
       {/* Header Section */}
-      <div className="absolute bg-transparent text-white py-4 w-full z-50">
-        <div className="container mx-auto">
-          <div className="flex justify-center space-x-10 py-2">
-            <a
-              href="#about"
-              className="text-xl hover:text-gray-400 transition duration-300"
-            >
-              About Us
-            </a>
-            <Link
-              to="/user"
-              className="text-xl hover:text-gray-400 transition duration-300"
-            >
-              Members
-            </Link>
-            <a
-              href="#officers"
-              className="text-xl hover:text-gray-400 transition duration-300"
-            >
-              Officers
-            </a>
-          </div>
-        </div>
-      </div>
+      <Header></Header>
 
       {/* Welcome Section */}
       <div
@@ -38,7 +52,6 @@ export default function Homepage() {
         style={{ backgroundImage: 'url("/images/bg_landing_1.png")' }}
       >
         <div className="text-center md:text-left mr-[80px]">
-          {/* Welcome Text */}
           <h1 className="text-9xl md:text-8xl font-extrabold tracking-wider leading-tight ">
             Welcome
           </h1>
@@ -52,16 +65,19 @@ export default function Homepage() {
             Boys' Brigade
           </h3>
         </div>
+
         {/* Countdown Timer */}
-        <div className="mt-8">
-          <CountdownTimer targetDate={targetDate} />
-        </div>
+        {nextParadeDate ? (
+          <div className="mt-8">
+            <CountdownTimer targetDate={nextParadeDate} />
+          </div>
+        ) : (
+          <div className="mt-8 text-center text-xl">Loading next parade...</div>
+        )}
 
         {/* Rotated Phrase */}
         <div className="absolute top-1/2 right-[-40px] transform -translate-y-1/2 -rotate-90 text-2xl text-white">
-          <p className="">
-            SURE & STEADFAST
-          </p>
+          <p className="">SURE & STEDFAST</p>
         </div>
       </div>
 
@@ -77,6 +93,7 @@ export default function Homepage() {
               textAlign: "center",
               letterSpacing: "2px",
               lineHeight: "1.2",
+              marginTop: "20px",
             }}
             className="tracking-wider leading-none"
           >
@@ -124,7 +141,6 @@ export default function Homepage() {
         </div>
       </div>
 
-      {/* Who Are We Section */}
       <div className="bg-gray-900 text-white py-20 px-8" id="about">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center md:space-x-10">
           <div className="md:w-1/2">

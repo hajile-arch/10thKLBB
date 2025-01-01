@@ -11,19 +11,35 @@ import {
   CardContent,
   Button,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
 } from "@mui/material";
 import {
   getDataFromFirebase,
   deleteDataFromFirebase,
+  uploadToFirebase,
 } from "../firebase/firebaseUtils";
-import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const BadgeList = () => {
   const [badges, setBadges] = useState<any>({});
   const [category, setCategory] = useState<string>("proficiencyAwards");
   const [subFilter, setSubFilter] = useState<string>("all");
+  const [passwordDialogOpen, setPasswordDialogOpen] = useState<boolean>(false);
+  const [passwordInput, setPasswordInput] = useState<string>("");
+  const [generatedPassword, setGeneratedPassword] = useState<string>("");
   const navigate = useNavigate();
+  const [deleteInfo, setDeleteInfo] = useState<{
+    badgePath: string;
+    subCategory: string;
+    badgeKey: string;
+  } | null>(null);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,16 +56,49 @@ const BadgeList = () => {
     fetchData();
   }, [category]);
 
-  const handleDelete = async (
-    badgePath: string,
-    subCategory: string,
-    badgeKey: string
-  ) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this badge?"
-    );
-    if (!confirmDelete) return;
+  const generateRandomPassword = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // 6-digit number
+  };
 
+  const handleDeleteIconClick = async (badgePath: string, subCategory: string, badgeKey: string) => {
+  const randomPassword = generateRandomPassword();
+  setGeneratedPassword(randomPassword);
+  
+  // Overwrite the password in Firebase
+  const passwordPath = "admin/passwords/currentPassword"; // Ensure this is a unique path
+  const result = await uploadToFirebase(passwordPath, { password: randomPassword });
+
+  if (result.success) {
+    console.log("Password updated in Firebase.");
+  } else {
+    alert("Failed to update password in Firebase.");
+    return;
+  }
+
+  // Set delete information for reference
+  setDeleteInfo({ badgePath, subCategory, badgeKey });
+  
+  // Open the password dialog
+  setPasswordDialogOpen(true);
+};
+
+  
+  const handlePasswordSubmit = async () => {
+    if (!deleteInfo) return;
+  
+    const { badgePath, subCategory, badgeKey } = deleteInfo;
+  
+    if (passwordInput === generatedPassword) {
+      await handleDelete(badgePath, subCategory, badgeKey);
+      setPasswordDialogOpen(false);
+      setPasswordInput("");
+      setDeleteInfo(null); // Reset delete info after successful deletion
+    } else {
+      alert("Nice try la, you think you Mr Em meh. 🤡");
+      setPasswordInput("");
+    }
+  };
+  const handleDelete = async (badgePath: string, subCategory: string, badgeKey: string) => {
     const result = await deleteDataFromFirebase(badgePath);
     if (result.success) {
       alert(result.message);
@@ -107,7 +156,7 @@ const BadgeList = () => {
                         fontSize: "small",
                       }}
                       onClick={() =>
-                        handleDelete(badgePath, subCategory, badgeKey)
+                        handleDeleteIconClick(badgePath, subCategory, badgeKey)
                       }
                     >
                       <DeleteIcon fontSize="small" />
@@ -149,6 +198,35 @@ const BadgeList = () => {
 
   return (
     <Box sx={{ maxWidth: 1000, mx: "auto", mt: 4 }}>
+      {/* Password Dialog */}
+      <Dialog open={passwordDialogOpen} onClose={() => setPasswordDialogOpen(false)}>
+        <DialogTitle>Enter Password</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please enter the password to proceed with deleting the badge.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Password"
+            type="text"
+            fullWidth
+            value={passwordInput}
+            onChange={(e) => setPasswordInput(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setPasswordDialogOpen(false)} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handlePasswordSubmit} color="secondary">
+  Submit
+</Button>
+
+        </DialogActions>
+      </Dialog>
+
+      {/* Main Content */}
       <Box
         sx={{
           display: "flex",

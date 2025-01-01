@@ -9,6 +9,9 @@ import UserDetailsPage from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
 import UserDetailsPageEdit from "./pages/UserDetailsPageEdit.tsx";
 import UpcomingEventsPage from "./pages/UpcomingEventsPage.tsx";
+import Aboutus from "./pages/Aboutus.tsx";
+import ParadeList from "./components/ParadeDates/ParadeDates.tsx";
+import ParadeForm from "./components/ParadeDates/ParadeForm.tsx";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -48,6 +51,9 @@ const App: React.FC = () => {
           <Route path="/write" element={<Write />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
+          <Route path="/us" element={<Aboutus/>}/>
+          <Route path="/paradelist" element={<ParadeList/>}/>
+          <Route path="/paradeform" element={<ParadeForm/>}/>
           <Route path="/event" element={<UpcomingEventsPage/>}/>
           <Route
             path="/badgelist"

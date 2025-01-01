@@ -7,6 +7,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        rebond: ['RebondGrotesque', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
         bebas: ['Bebas Neue', 'sans-serif'],
         lunasima: ['Lunasima', 'serif'],
