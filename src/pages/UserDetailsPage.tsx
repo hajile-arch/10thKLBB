@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
-import UserDialog from "../components/Members'details/UserDialog";
-import UserGroup from "../components/Members'details/UserGroup";
+import UserDialog from "../components/NCOs'details/UserDialog";
+import UserGroup from "../components/NCOs'details/UserGroup";
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -107,7 +107,7 @@ export const UserDetailsPage: React.FC = () => {
               letterSpacing: "0.1em",
             }}
           >
-            Accessing Personnel Records
+            Accessing NCO's Records
           </Typography>
         </Box>
       </Box>

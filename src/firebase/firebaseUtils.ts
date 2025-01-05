@@ -62,3 +62,21 @@ export const deleteDataFromFirebase = async (path: string) => {
     return { success: false, message: error.message }; // Handle errors
   }
 };
+
+export const updateFirebaseData = async (path: string, data: { [key: string]: any }) => {
+  try {
+    const db = getDatabase(app);
+    const dataRef = ref(db, path);
+    console.log(`Updating Firebase at: ${path}`); // Log the path for debugging
+
+    await update(dataRef, {
+      ...data,
+      updatedAt: new Date().toISOString()
+    });
+
+    return { success: true, message: "Data updated successfully!" };
+  } catch (error: any) {
+    console.error('Firebase update error:', error);  // Log the error for debugging
+    return { success: false, message: error.message };
+  }
+};

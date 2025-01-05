@@ -21,18 +21,19 @@ const Aboutus = () => {
 
         {/* Left: The 5Ws and 1H */}
         <div className="lg:w-1/2 lg:mb-0 flex flex-col h-full items-end justify-center pr-[120px] relative z-10">
-          <div>
-            <h2 className="font-rebond text-8xl font-bold mb-4 text-gray-200">
-              5W's 1H
-            </h2>
-            <h2 className="font-rebond text-8xl font-bold">
-              <span className="text-gray-200">Of</span>{" "}
-              <span className="bg-gradient-to-r from-yellow-500 to-red-600 text-transparent bg-clip-text">
-                10th KL
-              </span>
-            </h2>
-          </div>
-        </div>
+  <div>
+    <h2 className="font-rebond text-8xl font-bold mb-4 text-gray-200">
+      5W's 1H
+    </h2>
+    <h2 className="font-rebond text-8xl font-bold">
+      <span className="text-gray-200">Of</span>{" "}
+      <span className="animated-gradient-text">
+        10th KL
+      </span>
+    </h2>
+  </div>
+</div>
+
 
         {/* Right: Group Picture */}
         <div className="lg:w-1/2 relative z-10">

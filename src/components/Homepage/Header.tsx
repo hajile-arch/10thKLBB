@@ -22,13 +22,13 @@ const Header = () => {
               About Us
             </Link>
             <Link
-              to="/"
+              to="/2025"
               className="text-xl hover:text-gray-400 transition duration-300"
             >
               2025
             </Link>
             <Link
-              to="/users"
+              to="/member"
               className="text-xl hover:text-gray-400 transition duration-300"
             >
               Members

@@ -119,17 +119,22 @@ html::-webkit-scrollbar {
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-@keyframes fadeOut {
-  from {
-    opacity: 1;
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
   }
-  to {
-    opacity: 0;
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
-.animate-fade-out {
-  animation-name: fadeOut;
-  animation-timing-function: ease-out;
-  animation-fill-mode: forwards;
+.animated-gradient-text {
+  background: linear-gradient(90deg, #ff0000, #ff9900, #ff0000, #ff9900, #ff0000);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-move 3s ease-in-out infinite;
 }

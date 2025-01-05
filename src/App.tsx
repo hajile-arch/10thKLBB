@@ -8,10 +8,19 @@ import BadgeSelection from "./pages/Badgelist";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
 import UserDetailsPageEdit from "./pages/UserDetailsPageEdit.tsx";
-import UpcomingEventsPage from "./pages/UpcomingEventsPage.tsx";
+import UpcomingEventsPage from "./pages/EventFormPage.tsx";
 import Aboutus from "./pages/Aboutus.tsx";
 import ParadeList from "./components/ParadeDates/ParadeDates.tsx";
 import ParadeForm from "./components/ParadeDates/ParadeForm.tsx";
+import EventsListPage from "./pages/EventsListPage.tsx";
+import EventFormPage from "./pages/EventFormPage.tsx";
+import EventCalendar from "./pages/Calendar.tsx";
+import MembersDashboard from "./pages/Members.tsx";
+import SecretPage from "./pages/secret.tsx";
+import LeaveForm from "./pages/LeaveForm.tsx";
+import SquadManagement from "./components/Squad Listing/SquadManagement.tsx";
+import TestToast from "./pages/test.tsx";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -43,8 +52,14 @@ const App: React.FC = () => {
       <Preloader onFinish={() => setIsLoading(false)} />
     ) : (
       <div>
+        <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
-          <Route path="/user" element={<UserDetailsPage />} />
+          <Route path="/ncos" element={<UserDetailsPage />} />
+          
+          <Route path="/squadmanagement" element={<SquadManagement />} />
+          <Route path="/test" element={<TestToast />} />
+          <Route path="/secret" element={<SecretPage />} />
+          <Route path="/member" element={<MembersDashboard />} />
           <Route path="/edituser" element={<UserDetailsPageEdit />} />
           <Route path="/add" element={<AddUser />} />
           <Route path="/read" element={<BadgeList />} />
@@ -54,7 +69,11 @@ const App: React.FC = () => {
           <Route path="/us" element={<Aboutus/>}/>
           <Route path="/paradelist" element={<ParadeList/>}/>
           <Route path="/paradeform" element={<ParadeForm/>}/>
-          <Route path="/event" element={<UpcomingEventsPage/>}/>
+          <Route path="/event" element={<EventsListPage />} />
+          <Route path="/calendar" element={<EventCalendar  />} />
+          <Route path="/leaveform" element={<LeaveForm  />} />
+  <Route path="/event/new" element={<EventFormPage />} />
+  <Route path="/event/edit/:id" element={<EventFormPage />} />
           <Route
             path="/badgelist"
             element={

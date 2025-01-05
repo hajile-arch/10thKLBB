@@ -41,4 +41,19 @@ export interface User {
   squad: string;
   platoon: string;
 }
+export interface Squad {
+  id: string;
+  squadNumber: string;
+  squadName: string;
+  squadLeader: string;
+  squadLeaderRank: string; // Add this
+  assistantSquadLeader: string;
+  assistantSquadLeaderRank: string; // Add this
+  officerOne: string;
+  officerTwo: string;
+  assistantSquadLeaderBirthday: string;
+  squadLeaderBirthday: string;
+  
+  members: { name: string; rank: string; birthday:string; }[];
+}
 
