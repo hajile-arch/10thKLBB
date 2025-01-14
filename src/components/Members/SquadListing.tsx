@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import {
   MoreVertical,
   Users,
@@ -60,7 +60,7 @@ const SquadListing = () => {
   };
 
   const validatePassword = () => {
-    const correctPassword = "gay"; // Replace with your desired password
+    const correctPassword = "10thkl"; // Replace with your desired password
     if (password === correctPassword) {
       setShowPasswordModal(false);
       navigate("/squadmanagement");

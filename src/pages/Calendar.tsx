@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
   ChevronRight,
-  Calendar,
+  ArrowLeft,
   MapPin,
   Users,
   Clock,
@@ -10,6 +10,7 @@ import {
   FileText,
 } from "lucide-react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
+import { useNavigate } from "react-router-dom";
 
 interface Event {
   id: string;
@@ -42,6 +43,12 @@ const EventCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const navigate=useNavigate();
+
+  const handleBack=()=>{
+    navigate(-1);
+  }
+
 
   // Fetch events from Firebase
   useEffect(() => {
@@ -144,6 +151,13 @@ const EventCalendar: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: `url("/images/calendar.png")`, }}>
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-4xl">
+      <button
+        onClick={handleBack}
+        className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors"
+      >
+        <ArrowLeft className="w-5 h-5 mr-1" />
+        Back
+      </button>
         <div className="flex justify-between items-center mb-6">
           <button
             onClick={() =>
