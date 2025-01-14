@@ -22,7 +22,7 @@ const Header = () => {
               About Us
             </Link>
             <Link
-              to="/2025"
+              to="/404"
               className="text-xl hover:text-gray-400 transition duration-300"
             >
               2025

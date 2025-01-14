@@ -8,12 +8,14 @@ import {
   BarChart3,
   Paperclip,
   Key,
+  Cake,
+  Search,
 } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
     { icon: <House className="h-5 w-5" />, label: 'Home', path: '/' },
-    { icon: <Users className="h-5 w-5" />, label: 'NCOs', path: '/user' },
+    { icon: <Users className="h-5 w-5" />, label: 'NCOs', path: '/ncos' },
     { icon: <BarChart3 className="h-5 w-5" />, label: 'Attendance', path: '/attendance' },
     {
       icon: <Paperclip className="h-5 w-5" />,
@@ -22,6 +24,8 @@ const Sidebar = () => {
       external: true,
     },
     { icon: <Calendar className="h-5 w-5" />, label: 'Event Calendar', path: '/calendar' },
+    { icon: <Cake className="h-5 w-5" />, label: 'Birthday List', path: '/BirthdayList' },
+    { icon: <Search className="h-5 w-5" />, label: 'Attendance Checker', path: '/AttendanceChecker' },
   ];
 
   return (
@@ -41,7 +45,7 @@ const Sidebar = () => {
 
       <nav className="space-y-2">
         <Link
-          to="/dashboard"
+          to="/member"
           className="w-full flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-700 text-white"
         >
           <LayoutDashboard className="h-5 w-5" />
