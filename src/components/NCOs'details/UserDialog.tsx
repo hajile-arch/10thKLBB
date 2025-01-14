@@ -37,19 +37,12 @@ interface UserDialogProps {
 }
 
 const calculateAge = (dob: string): number => {
-  const birthDate = new Date(dob);
-  const currentDate = new Date();
-  let age = currentDate.getFullYear() - birthDate.getFullYear();
-  const month = currentDate.getMonth();
-  if (
-    month < birthDate.getMonth() ||
-    (month === birthDate.getMonth() &&
-      currentDate.getDate() < birthDate.getDate())
-  ) {
-    age--;
-  }
-  return age;
+  const birthYear = new Date(dob).getFullYear();
+  const currentYear = new Date().getFullYear();
+  const age = currentYear - birthYear; // Calculate age
+  return age; // Return the calculated age
 };
+
 
 const filterBadges = (badges: Badge[] | undefined): Badge[] => {
   if (!badges) return [];
