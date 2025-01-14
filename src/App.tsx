@@ -21,6 +21,11 @@ import LeaveForm from "./pages/LeaveForm.tsx";
 import SquadManagement from "./components/Squad Listing/SquadManagement.tsx";
 import TestToast from "./pages/test.tsx";
 import { ToastContainer } from "react-toastify";
+import AttendancePage from "./components/Members/Attendance.tsx";
+import TotalParadesPage from "./pages/AttendanceChecker.tsx";
+import BirthdayList from "./pages/BirthdayList.tsx";
+import UnderConstruction from "./pages/UnderConstruction.tsx";
+import ParadeAnnouncementsPage from "./pages/Announcement.tsx";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -54,8 +59,10 @@ const App: React.FC = () => {
       <div>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
+          <Route path="/announcement" element={<ParadeAnnouncementsPage />}/>
           <Route path="/ncos" element={<UserDetailsPage />} />
-          
+          <Route path="/404" element={<UnderConstruction/>}/>
+          <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/squadmanagement" element={<SquadManagement />} />
           <Route path="/test" element={<TestToast />} />
           <Route path="/secret" element={<SecretPage />} />
@@ -72,6 +79,8 @@ const App: React.FC = () => {
           <Route path="/event" element={<EventsListPage />} />
           <Route path="/calendar" element={<EventCalendar  />} />
           <Route path="/leaveform" element={<LeaveForm  />} />
+          <Route path="/AttendanceChecker" element={<TotalParadesPage  />} />
+          <Route path="/BirthdayList" element={<BirthdayList  />} />
   <Route path="/event/new" element={<EventFormPage />} />
   <Route path="/event/edit/:id" element={<EventFormPage />} />
           <Route
