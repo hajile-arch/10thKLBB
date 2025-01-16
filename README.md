@@ -28,8 +28,9 @@ The main purpose of this website is to provide members of **The Boys' Brigade** 
 ## Technologies Used
 
 - **Frontend**: React with Material-UI for a modern and responsive user interface.
-- **Backend**: Firebase for data storage and management.
+- **Backend**: Firebase (RealTime Database) for data storage and management.
 - **Routing**: React Router for seamless navigation.
+- **Hosting**: Firebase Hosting
 
 ## How to Use
 
@@ -74,10 +75,10 @@ This project is licensed under the [MIT License](LICENSE).
 For questions or support, please contact:
 
 - **Name**: Elijah Wong
-- **Email**: harvestzone1@gmail.com
+- **Email**: elijahwongwork@gmail.com
 - **GitHub**: https://github.com/hajile-arch
 
 ---
-
+Here's the link to the website: https://thklbb-74984.web.app
 Thank you for using the Badge Tracker Website! We hope it helps you achieve your goals within **The Boys' Brigade**.
 
