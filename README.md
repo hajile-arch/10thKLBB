@@ -79,6 +79,5 @@ For questions or support, please contact:
 - **GitHub**: https://github.com/hajile-arch
 
 ---
-Here's the link to the website: https://thklbb-74984.web.app
 Thank you for using the Badge Tracker Website! We hope it helps you achieve your goals within **The Boys' Brigade**.
 
