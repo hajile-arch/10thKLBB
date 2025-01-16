@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import Write from "./pages/Write";
 import BadgeList from "./pages/Read";
 import Home from "./pages/Homepage";
@@ -26,6 +31,7 @@ import TotalParadesPage from "./pages/AttendanceChecker.tsx";
 import BirthdayList from "./pages/BirthdayList.tsx";
 import UnderConstruction from "./pages/UnderConstruction.tsx";
 import ParadeAnnouncementsPage from "./pages/Announcement.tsx";
+import MobileRedirect from "./components/MobileRedirect.tsx";
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -37,13 +43,16 @@ const App: React.FC = () => {
     const location = useLocation();
 
     useEffect(() => {
-      if (!hasLoaded && (location.pathname === "/" || location.pathname === "/home")) {
+      if (
+        !hasLoaded &&
+        (location.pathname === "/" || location.pathname === "/home")
+      ) {
         setIsLoading(true);
-        setShowPreloader(true);  // Trigger preloader
+        setShowPreloader(true); // Trigger preloader
         const timer = setTimeout(() => {
           setIsLoading(false);
-          setHasLoaded(true);  // Prevent further preloader displays
-          setShowPreloader(false);  // Hide preloader after 3 seconds
+          setHasLoaded(true); // Prevent further preloader displays
+          setShowPreloader(false); // Hide preloader after 3 seconds
         }, 3000); // Preloader duration
 
         return () => clearTimeout(timer); // Cleanup timer
@@ -51,7 +60,7 @@ const App: React.FC = () => {
       if (hasLoaded) {
         setIsLoading(false); // Hide the preloader after the first load
       }
-    }, [location.pathname, hasLoaded]);  // Add `hasLoaded` to dependencies
+    }, [location.pathname, hasLoaded]); // Add `hasLoaded` to dependencies
 
     return showPreloader ? (
       <Preloader onFinish={() => setIsLoading(false)} />
@@ -59,9 +68,9 @@ const App: React.FC = () => {
       <div>
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
-          <Route path="/announcement" element={<ParadeAnnouncementsPage />}/>
+          <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
           <Route path="/ncos" element={<UserDetailsPage />} />
-          <Route path="/404" element={<UnderConstruction/>}/>
+          <Route path="/404" element={<UnderConstruction />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/squadmanagement" element={<SquadManagement />} />
           <Route path="/test" element={<TestToast />} />
@@ -73,16 +82,16 @@ const App: React.FC = () => {
           <Route path="/write" element={<Write />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
-          <Route path="/us" element={<Aboutus/>}/>
-          <Route path="/paradelist" element={<ParadeList/>}/>
-          <Route path="/paradeform" element={<ParadeForm/>}/>
+          <Route path="/us" element={<Aboutus />} />
+          <Route path="/paradelist" element={<ParadeList />} />
+          <Route path="/paradeform" element={<ParadeForm />} />
           <Route path="/event" element={<EventsListPage />} />
-          <Route path="/calendar" element={<EventCalendar  />} />
-          <Route path="/leaveform" element={<LeaveForm  />} />
-          <Route path="/AttendanceChecker" element={<TotalParadesPage  />} />
-          <Route path="/BirthdayList" element={<BirthdayList  />} />
-  <Route path="/event/new" element={<EventFormPage />} />
-  <Route path="/event/edit/:id" element={<EventFormPage />} />
+          <Route path="/calendar" element={<EventCalendar />} />
+          <Route path="/leaveform" element={<LeaveForm />} />
+          <Route path="/AttendanceChecker" element={<TotalParadesPage />} />
+          <Route path="/BirthdayList" element={<BirthdayList />} />
+          <Route path="/event/new" element={<EventFormPage />} />
+          <Route path="/event/edit/:id" element={<EventFormPage />} />
           <Route
             path="/badgelist"
             element={
@@ -101,8 +110,10 @@ const App: React.FC = () => {
 
   return (
     <Router>
+    <MobileRedirect>
       <AppContent />
-    </Router>
+    </MobileRedirect>
+  </Router>
   );
 };
 
