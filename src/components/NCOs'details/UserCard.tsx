@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid, Paper, Box, Typography } from "@mui/material";
+import { Member, Rank } from "../../enum";
 
-// Import or define rankAbbreviations if it's not globally accessible
-const rankAbbreviations: Record<string, string> = {
+const rankAbbreviations: Record<Rank, string> = {
   Recruit: "RCT",
   Private: "PVT",
   "Lance Corporal": "LCPL",
@@ -10,90 +10,85 @@ const rankAbbreviations: Record<string, string> = {
   Sergeant: "SGT",
 };
 
-type User = {
-  id: string;
-  name: string;
-  rank: string;
-  profileImageUrl?: string;
-};
-
 interface UserCardProps {
-  user: User;
+  user: Member;
   onSelect: () => void;
 }
 
-const UserCard: React.FC<UserCardProps> = ({ user, onSelect }) => (
-  <Grid item xs={12} sm={6} md={4} lg={3}>
-    <Paper
-      elevation={3}
-      sx={{
-        position: "relative",
-        height: 300,
-        cursor: "pointer",
-        overflow: "hidden",
-        transition: "transform 0.3s ease-in-out", // Smooth zoom transition
-      }}
-      onClick={onSelect}
-    >
-      {/* Background Image */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          filter: "brightness(0.75)",
-          height: "100%",
-          backgroundImage: `url(../images/pfp/${user.name.replace(/\s+/g, '-').toLowerCase()}.jpg)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          transition: "transform 0.3s ease-in-out", // Smooth zoom transition
-          transform: "scale(1)", // Default scale
-          "&:hover": {
-            transform: "scale(1.1)", // Zoom in when hovering
-            filter: "brightness(1)",
+const UserCard: React.FC<UserCardProps> = ({
+  user,
+  onSelect,
+}) => {
+  const imageName = user.name
+    .replace(/\s+/g, "-")
+    .toLowerCase();
 
-            
-          },
-        }}
-      />
-      {/* Text Overlay */}
-      <Box
+  return (
+    <Grid item xs={12} sm={6} md={4} lg={3}>
+      <Paper
+        elevation={3}
         sx={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
-          color: "white",
-          textAlign: "left",
-          py: 2,
-          px: 2,
-          background: "rgba(0, 0, 0, 0.5)",
-          
+          position: "relative",
+          height: 300,
+          cursor: "pointer",
+          overflow: "hidden",
+          transition: "transform 0.3s ease-in-out",
         }}
+        onClick={onSelect}
       >
-        <Typography
-          variant="h5"
+        {/* Background Image */}
+        <Box
           sx={{
-            fontFamily: '"Bebas Neue", sans-serif',
-            textTransform: "uppercase",
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `url(../images/pfp/${imageName}.jpg)`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            filter: "brightness(0.75)",
+            transition: "transform 0.3s ease-in-out",
+            "&:hover": {
+              transform: "scale(1.1)",
+              filter: "brightness(1)",
+            },
+          }}
+        />
+
+        {/* Text Overlay */}
+        <Box
+          sx={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            px: 2,
+            py: 2,
+            background: "rgba(0, 0, 0, 0.5)",
           }}
         >
-          {rankAbbreviations[user.rank] || user.rank}
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            fontWeight: "500",
-            fontFamily: "Montserrat, Bebas Neue",
-            textTransform: "uppercase",
-          }}
-        >
-          {user.name}
-        </Typography>
-      </Box>
-    </Paper>
-  </Grid>
-);
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: '"Bebas Neue", sans-serif',
+              textTransform: "uppercase",
+              color:"white"
+            }}
+          >
+            {rankAbbreviations[user.rank] ?? user.rank}
+          </Typography>
+
+          <Typography
+            variant="h6"
+            sx={{
+              fontWeight: 500,
+              textTransform: "uppercase",
+              color:"white"
+            }}
+          >
+            {user.name}
+          </Typography>
+        </Box>
+      </Paper>
+    </Grid>
+  );
+};
 
 export default UserCard;

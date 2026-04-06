@@ -4,8 +4,11 @@ import {
   Route,
   Routes,
   useLocation,
+  Navigate
 } from "react-router-dom";
+import Awardslist from "./pages/Awardslist.tsx"
 import Write from "./pages/Write";
+import Awards from "./pages/Award.tsx"
 import BadgeList from "./pages/Read";
 import Home from "./pages/Homepage";
 import AddUser from "./pages/AddMembers";
@@ -31,7 +34,19 @@ import TotalParadesPage from "./pages/AttendanceChecker.tsx";
 import BirthdayList from "./pages/BirthdayList.tsx";
 import UnderConstruction from "./pages/UnderConstruction.tsx";
 import ParadeAnnouncementsPage from "./pages/Announcement.tsx";
-import MobileRedirect from "./components/MobileRedirect.tsx";
+// import MobileRedirect from "./components/MobileRedirect.tsx";
+import BadgeStatistics from "./pages/BadgeStatistics.tsx";
+import MemberManagement from "./pages/MemberManagement.tsx";
+import BadgeApproval from "./pages/BadgeApproval.tsx";
+import BadgeLeaderboard from "./pages/BadgeLeaderboard.tsx";
+import MemberSelfRegistration from "./components/Squad Listing/MemberSelfRegistration.tsx";
+import SquadOverview from "./pages/squad/SquadOverview.tsx";
+import SquadDetail from "./pages/squad/SquadDetail.tsx";
+import AttendanceStatsPage from "./components/Attendance/AttendanceStats.tsx";
+import MemberProfile from "./components/Members/MemberProfile.tsx"
+import NCODashboard from "./pages/ncos.tsx";
+import CheckMembers from "./pages/Debug.tsx";
+
 
 const App: React.FC = () => {
   const [, setIsLoading] = useState(false);
@@ -69,17 +84,24 @@ const App: React.FC = () => {
         <ToastContainer position="top-right" autoClose={3000} />
         <Routes>
           <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
-          <Route path="/ncos" element={<UserDetailsPage />} />
+          <Route path="/MemberRegister" element={<MemberSelfRegistration />} />
+<Route path="/members/:memberId" element={<MemberProfile />} />
+        <Route path="/squad" element={<SquadOverview />} />        
+        <Route path="/squad/:squadNumber" element={<SquadDetail />} />
+        <Route path="/debug" element={<CheckMembers/>}/>
+          <Route path="/nah" element={<UserDetailsPage />} />
+          <Route path="/ncos" element={<NCODashboard />} />
           <Route path="/404" element={<UnderConstruction />} />
           <Route path="/attendance" element={<AttendancePage />} />
+          <Route path="/attendance/stats" element={<AttendanceStatsPage />} />
           <Route path="/squadmanagement" element={<SquadManagement />} />
           <Route path="/test" element={<TestToast />} />
           <Route path="/secret" element={<SecretPage />} />
           <Route path="/member" element={<MembersDashboard />} />
-          <Route path="/edituser" element={<UserDetailsPageEdit />} />
-          <Route path="/add" element={<AddUser />} />
-          <Route path="/read" element={<BadgeList />} />
-          <Route path="/write" element={<Write />} />
+          <Route path="/editMember" element={<UserDetailsPageEdit />} />
+          <Route path="/addMember" element={<AddUser />} />
+          <Route path="/readBadge" element={<BadgeList />} />
+          <Route path="/writeBadge" element={<Write />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<Home />} />
           <Route path="/us" element={<Aboutus />} />
@@ -88,10 +110,16 @@ const App: React.FC = () => {
           <Route path="/event" element={<EventsListPage />} />
           <Route path="/calendar" element={<EventCalendar />} />
           <Route path="/leaveform" element={<LeaveForm />} />
-          <Route path="/AttendanceChecker" element={<TotalParadesPage />} />
+          <Route path="/attendancechecker" element={<TotalParadesPage />} />
           <Route path="/BirthdayList" element={<BirthdayList />} />
           <Route path="/event/new" element={<EventFormPage />} />
+          <Route path="/awards" element={<Awards />} />
+          <Route path="/awardslist" element={<Awardslist />} />
           <Route path="/event/edit/:id" element={<EventFormPage />} />
+          <Route path="/badgestats" element={<BadgeStatistics />} />
+          <Route path="/removeduplicate" element={<MemberManagement />}/>
+          <Route path="/BadgeApproval" element={<BadgeApproval />}/>
+          <Route path="/BadgeLeaderboard" element={<BadgeLeaderboard />}/>
           <Route
             path="/badgelist"
             element={
@@ -101,6 +129,7 @@ const App: React.FC = () => {
               />
             }
           />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>
     );
@@ -110,9 +139,9 @@ const App: React.FC = () => {
 
   return (
     <Router>
-    <MobileRedirect>
+    {/* <MobileRedirect> */}
       <AppContent />
-    </MobileRedirect>
+    {/* </MobileRedirect> */}
   </Router>
   );
 };

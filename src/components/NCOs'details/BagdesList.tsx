@@ -1,161 +1,160 @@
 import React from "react";
-import { List, ListItem, ListItemText, Typography } from "@mui/material";
-
-type Badge = {
-  iconUrl?: string;
-  name: string;
-  level?: string;
-  category: string;
-  subCategory: string;
-  description?: string;
-};
+import { SelectedBadge } from "../../enum";
 
 interface BadgesListProps {
-  badges: Badge[];
+  badges: BadgeWithDescription[];
 }
 
-/** Formats category by adding spaces and capitalizing */
-const formatCategory = (category: string): string =>
-  category.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/\b[a-z]/g, (char) => char.toUpperCase());
-
-/** Returns badge details based on its category */2
-const getBadgeDetails = (badge: Badge): string => {
-  if (badge.category === "specialAwards" || badge.category === "serviceAwards") {
-    return badge.description || "No description available";
-  }
-
-  if (badge.category === "proficiencyAwards") {
-    if (typeof badge.description === "object" && badge.level) {
-      // Extract the description based on the level
-      const levelDescription = badge.description[badge.level];
-      if (levelDescription) {
-        return `${levelDescription} `;
-      }
-    }
-    return badge.level ? `Level: ${badge.level}` : "No description or level specified";
-  }
-
-  return badge.subCategory
-    ? badge.subCategory.replace(/([a-z])([A-Z])/g, "$1 $2").replace("group", "Group").trim()
-    : "Unspecified";
+type BadgeWithDescription = SelectedBadge & {
+  description?: {
+    Basic?: string;
+    Advanced?: string;
+  };
 };
 
 
-/** BadgeItem Component - Renders individual badge details */
-const BadgeItem: React.FC<{ badge: Badge }> = ({ badge }) => {
-  // Clean badge name by removing any "(xN)" pattern
-  const cleanBadgeName = badge.name.replace(/\s*\(x\d+\)$/, "").trim();
+const getBadgeImage = (name: string) =>
+  `/images/badges/${name.toLowerCase().replace(/\s+/g, "-")}.png`;
 
+const getBadgeDetails = (badge: SelectedBadge): string | null => {
+  if (!badge.description) return null;
+
+  if (
+    badge.level === "Advanced" &&
+    badge.description.Advanced
+  ) {
+    return badge.description.Advanced;
+  }
+
+  if (
+    badge.level === "Basic" &&
+    badge.description.Basic
+  ) {
+    return badge.description.Basic;
+  }
+
+  // fallback if no level-specific
   return (
-    <ListItem sx={{ py: 1, paddingLeft: "5px" }}>
-      <div
-        style={{
-          position: "relative",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          width: 60,
-          height: 60,
-          marginRight: 16,
-        }}
-      >
-        {badge.level?.toLowerCase() === "advanced" && (
-          <div
-            style={{
-              position: "absolute",
-              width: "70px", // Fixed width for the circle
-              height: "70px", // Fixed height for the circle
-              backgroundColor: "red",
-              borderRadius: "50%",
-              zIndex: 0,
-            }}
-          ></div>
-        )}
-
-        <img
-          src={
-            badge.iconUrl ||
-            `/images/badges/${cleanBadgeName.replace(/\s+/g, "-").toLowerCase()}.png?v=${Date.now()}`
-          }
-          alt={badge.name}
-          style={{
-            width: "90%",
-            height: "90%",
-            objectFit: "contain",
-            objectPosition: "center",
-            zIndex: 1,
-          }}
-        />
-      </div>
-      <ListItemText
-        primary={badge.name}
-        secondary={
-          <>
-            <Typography variant="body2" color="textSecondary">
-              <strong>Category:</strong> {formatCategory(badge.category)}
-            </Typography>
-            <Typography variant="body2" color="textSecondary">
-              <strong>Details:</strong> {getBadgeDetails(badge)}
-            </Typography>
-          </>
-        }
-      />
-    </ListItem>
+    badge.description.Basic ??
+    badge.description.Advanced ??
+    null
   );
 };
 
-
-
-/** Main BadgesList Component */
 const BadgesList: React.FC<BadgesListProps> = ({ badges }) => {
-  if (!badges.length) {
+  if (!badges || badges.length === 0) {
     return (
-      <Typography variant="body2" color="textSecondary">
-        No badges available.
-      </Typography>
+      <p className="text-sm text-gray-500">
+        No badges recorded.
+      </p>
     );
   }
+console.log("BadgesList received badges:", badges);
 
-  // Sort badges with custom rules
-  const sortedBadges = [...badges].sort((a, b) => {
-    // Rule 1: "Target Badge" in "compulsory" comes first
-    if (a.subCategory === "compulsory" && a.name === "Target Badge") return -1;
-    if (b.subCategory === "compulsory" && b.name === "Target Badge") return 1;
+  /**
+   * category -> subCategory -> SelectedBadge[]
+   */
 
-    // Rule 2: In "specialAwards" or "serviceAwards", "Founder" comes first
-    if (
-      (a.category === "specialAwards" || a.category === "serviceAwards") &&
-      a.name === "Founder's Badge"
-    )
-      return -1;
-    if (
-      (b.category === "specialAwards" || b.category === "serviceAwards") &&
-      b.name === "Founder's Badge"
-    )
-      return 1;
+  
+  const grouped = badges.reduce<
+    Record<string, Record<string, SelectedBadge[]>>
+  >((acc, badge) => {
+    const category = badge.category || "Others";
+    const subCategory = badge.subCategory || "General";
 
-    // Rule 3: In "specialAwards" or "serviceAwards", "Second President" comes second
-    if (
-      (a.category === "specialAwards" || a.category === "serviceAwards") &&
-      a.name === "President's Badge"
-    )
-      return -1;
-    if (
-      (b.category === "specialAwards" || b.category === "serviceAwards") &&
-      b.name === "President's Badge"
-    )
-      return 1;
+    if (!acc[category]) acc[category] = {};
+    if (!acc[category][subCategory]) acc[category][subCategory] = [];
 
-    // Preserve order for other badges
-    return 0;
-  });
+    acc[category][subCategory].push(badge);
+    return acc;
+  }, {});
 
   return (
-    <List>
-      {sortedBadges.map((badge, index) => (
-        <BadgeItem key={index} badge={badge} />
+    <div className="space-y-8">
+      {Object.entries(grouped).map(([category, subCategories]) => (
+        <div key={category}>
+          {/* Category */}
+          <h3 className="text-lg font-semibold text-gray-900 mb-1">
+            {category}
+          </h3>
+
+          {Object.entries(subCategories).map(
+            ([subCategory, badges]) => (
+              <div key={subCategory} className="mb-6">
+                {/* Subcategory */}
+                <p className="text-sm text-gray-500 mb-4">
+                  {subCategory}
+                </p>
+
+                <div className="space-y-4">
+                  {badges.map((badge, index) => {
+                    console.log("Badge:", badge.name);
+console.log("Level:", badge.level);
+console.log("Description:", badge.description);
+
+                    const details = getBadgeDetails(badge);
+
+                    return (
+                      <div
+                        key={`${badge.badgeKey}-${index}`}
+                        className="flex items-start gap-4"
+                      >
+                        {/* Badge icon */}
+                        <img
+                          src={getBadgeImage(badge.name)}
+                          alt={badge.name}
+                          className="h-12 w-12 rounded-full object-contain"
+                          onError={(e) => {
+                            (e.currentTarget as HTMLImageElement).src =
+                              "/images/badges/default.png";
+                          }}
+                        />
+
+                        {/* Badge text */}
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900">
+                            {badge.name}
+                            {badge.level && (
+                              <span
+                                className={`ml-2 text-xs font-normal ${
+                                  badge.level === "Advanced"
+                                    ? "text-blue-600"
+                                    : "text-gray-500"
+                                }`}
+                              >
+                                ({badge.level})
+                              </span>
+                            )}
+                          </p>
+
+                          <p className="text-sm text-gray-500">
+                            <span className="font-medium text-gray-600">
+                              Categorys:
+                            </span>{" "}
+                            {badge.category}
+                          </p>
+
+                          {details && (
+                            <p className="text-sm text-gray-500">
+                              <span className="font-medium text-gray-600">
+                                Details:
+                              </span>{" "}
+                              {details}
+                            </p>
+                          )}
+
+                          
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )
+          )}
+        </div>
       ))}
-    </List>
+    </div>
   );
 };
 

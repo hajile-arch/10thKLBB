@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
 import UserDialog from "../components/NCOs'details/UserDialog";
 import UserGroup from "../components/NCOs'details/UserGroup";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Typography,
@@ -11,61 +11,77 @@ import {
   Button,
 } from "@mui/material";
 import { HomeIcon } from "lucide-react";
+import { Member, SelectedBadge, Rank } from "../enum";
 
-type RankType =
-  | "Sergeant"
-  | "Corporal"
-  | "Lance Corporal"
-  | "Private"
-  | "Recruit";
+interface MemberWithBadges extends Member {
+  id: string;
+  badges?: SelectedBadge[];
+}
 
-const rankAbbreviations: Record<RankType, string> = {
-  Recruit: "RCT",
-  Private: "PVT",
-  "Lance Corporal": "LCPL",
-  Corporal: "CPL",
-  Sergeant: "SGT",
+const rankAbbreviations: Record<Rank, string> = {
+  [Rank.REC]: "RCT",
+  [Rank.PTE]: "PVT",
+  [Rank.LCPL]: "LCPL",
+  [Rank.CPL]: "CPL",
+  [Rank.SGT]: "SGT",
 };
 
-
-
-const getRankColor = (rank: RankType) => {
-  const colors: Record<RankType, string> = {
-    Sergeant: "#8b0000",
-    Corporal: "#00008b",
-    "Lance Corporal": "#006400",
-    Private: "#2f4f4f",
-    Recruit: "#4a4a4a",
+const getRankColor = (rank: Rank) => {
+  const colors: Record<Rank, string> = {
+    [Rank.SGT]: "#8b0000",
+    [Rank.CPL]: "#00008b",
+    [Rank.LCPL]: "#006400",
+    [Rank.PTE]: "#2f4f4f",
+    [Rank.REC]: "#4a4a4a",
   };
   return colors[rank];
 };
 
 export const UserDetailsPage: React.FC = () => {
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<MemberWithBadges[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+  const [selectedUser, setSelectedUser] =
+    useState<MemberWithBadges | null>(null);
+
   const navigate = useNavigate();
-  const rankOrder: RankType[] = [
-    "Sergeant",
-    "Corporal",
-    "Lance Corporal",
-    "Private",
-    "Recruit",
+
+  const rankOrder: Rank[] = [
+    Rank.SGT,
+    Rank.CPL,
+    Rank.LCPL,
+    Rank.PTE,
+    Rank.REC,
   ];
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const result = await getDataFromFirebase("users");
+        const membersResult = await getDataFromFirebase("members");
+        const badgesResult = await getDataFromFirebase("memberBadges");
 
-        if (result.success) {
-          const transformedUsers = Object.values(result.data || {});
-          setUsers(transformedUsers);
-        } else {
-          setError(result.message || "Failed to fetch user data.");
+        if (!membersResult.success) {
+          setError(membersResult.message || "Failed to fetch members.");
+          return;
         }
+
+        const membersData = membersResult.data || {};
+        const badgesData = badgesResult.success
+          ? badgesResult.data || {}
+          : {};
+
+        const membersWithBadges: MemberWithBadges[] = Object.entries(
+          membersData
+        ).map(([memberId, memberData]: [string, any]) => ({
+          ...memberData,
+          id: memberId,
+          badges: badgesData[memberId]?.badges ?? [],
+        }));
+
+        console.log("Members with badges:", membersWithBadges);
+        setUsers(membersWithBadges);
       } catch (err) {
+        console.error(err);
         setError("An error occurred while fetching user data.");
       }
     };
@@ -73,11 +89,11 @@ export const UserDetailsPage: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // Simulate a loading screen for at least 5 seconds
+  // ✅ KEEP your cinematic loading delay
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1500); // Keep loading for at least 5 seconds
-    return () => clearTimeout(timer); // Cleanup the timer
-  }, [users]); // This will only reset after the users have been set
+    const timer = setTimeout(() => setLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, [users]);
 
   if (loading) {
     return (
@@ -95,10 +111,7 @@ export const UserDetailsPage: React.FC = () => {
           <CircularProgress
             size={60}
             thickness={5}
-            sx={{
-              color: "#8b0000",
-              mb: 2,
-            }}
+            sx={{ color: "#8b0000", mb: 2 }}
           />
           <Typography
             sx={{
@@ -142,9 +155,7 @@ export const UserDetailsPage: React.FC = () => {
             sx={{
               mt: 2,
               bgcolor: "#8b0000",
-              "&:hover": {
-                bgcolor: "#660000",
-              },
+              "&:hover": { bgcolor: "#660000" },
             }}
             onClick={() => window.location.reload()}
           >
@@ -155,14 +166,11 @@ export const UserDetailsPage: React.FC = () => {
     );
   }
 
-  // Group users by rank
-  const groupedUsers = (Object.keys(rankAbbreviations) as RankType[])
-    .map((rank) => ({
-      rank,
-      users: users.filter((user) => user.rank === rank),
-    }))
-    .sort((a, b) => rankOrder.indexOf(a.rank) - rankOrder.indexOf(b.rank));
-  
+  const groupedUsers = rankOrder.map((rank) => ({
+    rank,
+    users: users.filter((u) => u.rank === rank),
+  }));
+
   return (
     <Box
       sx={{
@@ -172,14 +180,8 @@ export const UserDetailsPage: React.FC = () => {
         color: "#fff",
       }}
     >
-      <Box
-        sx={{
-          width: 1200,
-          margin: "0 auto",
-          pt: 6,
-          pb: 8,
-        }}
-      >
+      <Box sx={{ width: 1200, margin: "0 auto", pt: 6, pb: 8 }}>
+        {/* 🔒 HEADER – unchanged */}
         <Box
           sx={{
             mb: 6,
@@ -190,9 +192,9 @@ export const UserDetailsPage: React.FC = () => {
           <Typography
             variant="h3"
             sx={{
-              display:"flex",
-              alignItems:"center", 
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
               fontWeight: 600,
               textTransform: "uppercase",
               letterSpacing: "0.2em",
@@ -203,20 +205,19 @@ export const UserDetailsPage: React.FC = () => {
             Your NCO's
             <Box
               component={HomeIcon}
-              onClick={() => navigate('/')}
+              onClick={() => navigate("/")}
               sx={{
                 fontSize: 40,
-                mr: 2, // Adds margin-left
+                mr: 2,
                 cursor: "pointer",
                 color: "#fff",
-                "&:hover": {
-                  color: "#ff9800",
-                },
+                "&:hover": { color: "#ff9800" },
               }}
             />
           </Typography>
         </Box>
 
+        {/* 🔒 RANK SECTIONS – unchanged */}
         <Box sx={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {groupedUsers.map(({ rank, users }) => (
             <Box
@@ -253,7 +254,6 @@ export const UserDetailsPage: React.FC = () => {
                 {rank}
               </Typography>
 
-              {/* Rendering UserGroup once per rank */}
               <UserGroup
                 rank={rank}
                 users={users}
@@ -264,9 +264,13 @@ export const UserDetailsPage: React.FC = () => {
         </Box>
       </Box>
 
-      {/* Render UserDialog only once */}
+      {/* ✅ Dialog now uses user.badges */}
       {selectedUser && (
-        <UserDialog user={selectedUser} onClose={() => setSelectedUser(null)} />
+        <UserDialog
+          user={selectedUser}
+          badges={selectedUser.badges ?? []}
+          onClose={() => setSelectedUser(null)}
+        />
       )}
     </Box>
   );

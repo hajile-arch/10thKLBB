@@ -9,6 +9,12 @@
   src: url("fonts/ESRebondGrotesqueTRIAL-Bold-BF66189040400df.otf") format("opentype");
 }
 
+/* Prevents zoom on input focus */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}
 
 /* Hide arrows in number input for all browsers */
 input[type="number"]::-webkit-outer-spin-button,
@@ -16,6 +22,7 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
 
 
 html {

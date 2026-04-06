@@ -125,8 +125,8 @@ const SquadListing = () => {
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-white">{squad.members.length} members</p>
-                <p className="text-sm text-gray-400">{squad.squadName}</p>
+                {/* <p className="text-white">{squad.members.length} members</p>
+                <p className="text-sm text-gray-400">{squad.squadName}</p> */}
               </div>
             </div>
           </div>
@@ -136,7 +136,7 @@ const SquadListing = () => {
       {/* Modal */}
       {selectedSquad && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg shadow-lg w-96 p-6">
+          <div className="bg-gray-800 rounded-lg shadow-lg w-50% p-6">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-white">
                 {selectedSquad.squadName || "Unnamed Squad"}

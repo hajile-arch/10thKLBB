@@ -3,7 +3,7 @@ import { Squad } from "../../types";
 import { UserPlus, Trash2, Users, ChevronDown } from "lucide-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+const generateId = () => '_' + Math.random().toString(36).substr(2, 9);
 interface SquadFormProps {
   formData: Omit<Squad, "id">;
   onChange: (formData: Omit<Squad, "id">) => void;

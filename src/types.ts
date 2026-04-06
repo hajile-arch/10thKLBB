@@ -5,7 +5,18 @@ export interface BadgeDescription {
   Advanced?: string;
 }
 
+export interface BadgeDescription {
+  Basic?: string;
+  Advanced?: string;
+  [key: string]: string | undefined; // This allows string indexing
+}
+
 export interface Badge {
+  badgeKey?: string; // Add this if it exists
+  iconUrl?: string;
+  level?: string;
+  category: string;
+  subCategory: string;
   name: string;
   description: string | BadgeDescription;
   points?: {
@@ -13,6 +24,7 @@ export interface Badge {
     Advanced?: number;
   };
 }
+
 
 export interface BadgesStructure {
   [category: string]: {
@@ -74,6 +86,7 @@ export interface AttendanceRecord {
 }
 
 export interface Member {
+  
   id: string;
   name: string;
   rank: string;
@@ -154,3 +167,14 @@ export interface MonthlyParades {
     };
   };
 }
+
+export interface EventFormData {
+  name: string;
+  startDateTime: string;
+  endDateTime: string;
+  thingsToBring: string;
+  primaryOic: string;
+  venue: string;
+  ncoic: string;
+  programme: string;
+} 

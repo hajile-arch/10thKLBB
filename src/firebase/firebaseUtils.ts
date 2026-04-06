@@ -4,6 +4,7 @@ import { getDatabase, ref, set, push, get, remove, update } from "firebase/datab
 
 // Function to upload data to Firebase
 export const uploadToFirebase = async (path: string, data: { [key: string]: any }) => {
+  console.trace("🔥 uploadToFirebase CALLED", path);
   try {
     const db = getDatabase(app);
     const newDocRef = push(ref(db, path)); // Generate a unique reference
@@ -50,6 +51,18 @@ export const updateDataInFirebase = async (
   }
 };
 
+export const setDataInFirebase = async (
+  path: string,
+  data: { [key: string]: any }
+) => {
+  try {
+    const db = getDatabase(app);
+    await set(ref(db, path), data); // 🔥 overwrite
+    return { success: true };
+  } catch (error: any) {
+    return { success: false, message: error.message };
+  }
+};
 
 // Function to delete data from Firebase
 export const deleteDataFromFirebase = async (path: string) => {

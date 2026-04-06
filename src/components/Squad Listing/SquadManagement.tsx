@@ -5,7 +5,8 @@ import { Modal } from './Modal';
 import { SquadCard } from './SquadCard';
 import { SquadForm } from './SquadForm';
 import { uploadToFirebase, getDataFromFirebase, updateFirebaseData, deleteDataFromFirebase } from '../../firebase/firebaseUtils';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 const SquadManagement = () => {
@@ -22,8 +23,10 @@ const SquadManagement = () => {
     squadName: "",
     squadLeader: "",
     squadLeaderRank: "Recruit",
+    squadLeaderBirthday: "", // Add this for squad leader birthday
     assistantSquadLeader: "",
     assistantSquadLeaderRank: "Recruit",
+    assistantSquadLeaderBirthday: "", // Add this for assistant squad leader birthday
     officerOne: "",
     officerTwo: "",
     members: [],
@@ -56,11 +59,39 @@ const SquadManagement = () => {
             squad.id === editingSquad.id ? { ...formData, id: squad.id } : squad
           )
         );
+        toast.success("Update Successful", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            backgroundColor: "#43a047",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "8px"
+          }
+        });
       }
     } else {
       const result = await uploadToFirebase('squads', formData);
       if (result.success) {
         await fetchSquads();
+        toast.success("Squad Created Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          style: {
+            backgroundColor: "#43a047",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "8px"
+          }
+        });
       }
     }
     handleCloseModal();
@@ -71,6 +102,16 @@ const SquadManagement = () => {
       const result = await deleteDataFromFirebase(`squads/${id}`);
       if (result.success) {
         setSquads(prev => prev.filter(squad => squad.id !== id));
+        toast.success("Squad Deleted Successfully", {
+          position: "top-right",
+          autoClose: 3000,
+          style: {
+            backgroundColor: "#ef5350",
+            color: "white",
+            fontWeight: "bold",
+            borderRadius: "8px"
+          }
+        });
       }
     }
   };
@@ -82,8 +123,10 @@ const SquadManagement = () => {
       squadNumber: squad.squadNumber,
       squadLeader: squad.squadLeader,
       squadLeaderRank: squad.squadLeaderRank,
+      squadLeaderBirthday: squad.squadLeaderBirthday || "", // Include birthday data
       assistantSquadLeaderRank: squad.assistantSquadLeaderRank,
       assistantSquadLeader: squad.assistantSquadLeader,
+      assistantSquadLeaderBirthday: squad.assistantSquadLeaderBirthday || "", // Include birthday data
       officerOne: squad.officerOne,
       officerTwo: squad.officerTwo,
       members: squad.members
@@ -99,8 +142,10 @@ const SquadManagement = () => {
       squadName: "",
       squadLeader: "",
       squadLeaderRank: "Recruit",
+      squadLeaderBirthday: "", // Reset birthday data
       assistantSquadLeader: "",
       assistantSquadLeaderRank: "Recruit",
+      assistantSquadLeaderBirthday: "", // Reset birthday data
       officerOne: "",
       officerTwo: "",
       members: [],
@@ -226,7 +271,6 @@ const SquadManagement = () => {
           onClose={handleCloseModal}
           title={editingSquad ? 'Edit Squad' : 'Add New Squad'}
         >
-          <ToastContainer position="top-right" autoClose={3000} />
           <SquadForm
             formData={formData}
             onChange={setFormData}
@@ -235,6 +279,9 @@ const SquadManagement = () => {
             isEditing={!!editingSquad} 
           />
         </Modal>
+        
+        {/* Toast Container */}
+        <ToastContainer position="top-right" autoClose={3000} />
       </div>
     </div>
   );

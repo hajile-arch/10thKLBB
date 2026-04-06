@@ -1,4 +1,4 @@
-// UserPage.tsx
+// UserPage.tsx (Need include delete button for each NCOs)
 import React, { useEffect, useState } from "react";
 import { getDataFromFirebase, updateDataInFirebase } from "../firebase/firebaseUtils";
 import { User } from "../types";

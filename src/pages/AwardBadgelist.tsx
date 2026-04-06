@@ -1,25 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Container, 
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  MenuItem
-} from '@mui/material';
-import { getDataFromFirebase } from '../firebase/firebaseUtils';
+import { getDataFromFirebase } from '../firebase/firebaseUtils.ts';
 import { 
   BadgesStructure, 
   SelectedBadge,
   Badge
-} from '../enum';
-import { BadgeLevelDialog } from '../components/addBadges/BadgeLevelDialog.tsx';
-import { BadgeCategoryRenderer } from '../components/addBadges/BadgeCategoryRenderer.tsx';
+} from '../types.ts';
+import { BadgeLevelDialog } from '../components/addBadges/BadgeLevelDialog.tsx.tsx';
+import { BadgeCategoryRenderer } from '../components/addBadges/BadgeCategoryRenderer.tsx.tsx';
 import { SelectedBadgesList } from '../components/addBadges/SelectedBadgesList.tsx';
 
 interface BadgeSelectionProps {
@@ -27,7 +14,7 @@ interface BadgeSelectionProps {
   setSelectedBadges: React.Dispatch<React.SetStateAction<SelectedBadge[]>>;
 }
 
-export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
+export const AwardBadgeSelection: React.FC<BadgeSelectionProps> = ({
   selectedBadges,
   setSelectedBadges,
 }) => {
@@ -51,7 +38,10 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
         const result = await getDataFromFirebase('badges');
         
         if (result.success) {
-          setBadges(result.data || {});
+          let badgeData = result.data || {};
+          const hiddenBadges = ["President's Badge", "Founder's Badge", "NCO Proficiency Star"];
+          badgeData = filterBadges(badgeData, hiddenBadges);
+          setBadges(badgeData);
           setError(null);
         } else {
           setError(result.message || 'Failed to fetch badges');
@@ -66,23 +56,36 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     fetchBadges();
   }, []);
 
+  const filterBadges = (badgeData: BadgesStructure, hiddenBadges: string[]): BadgesStructure => {
+    const filteredData: BadgesStructure = {};
+    
+    Object.entries(badgeData).forEach(([category, subCategories]) => {
+      filteredData[category] = {};
+      
+      Object.entries(subCategories).forEach(([subCategory, badges]) => {
+        filteredData[category][subCategory] = {};
+        
+        Object.entries(badges).forEach(([badgeKey, badge]) => {
+          if (!hiddenBadges.includes(badge.name)) {
+            filteredData[category][subCategory][badgeKey] = badge;
+          }
+        });
+      });
+    });
+    
+    return filteredData;
+  };
+
   const handleBadgeSelect = (category: string, subCategory: string, badgeKey: string) => {
     const badge = badges[category][subCategory][badgeKey];
     
-    // For Proficiency Awards, open level selection dialog
     if (category === 'proficiencyAwards') {
       setLevelSelectionOpen({ category, subCategory, badgeKey, badge });
       return;
     }
     
-    // For "One Year Service" badges, open number dialog
-    if (badge.name === 'One Year Service') {
-      setBadgeToAdd({ category, subCategory, badge });
-      setNumberDialogOpen(true);
-      return;
-    }
+    
 
-    // For other categories, directly add badge
     addBadgeToSelection(category, subCategory, badgeKey, badge);
   };
 
@@ -94,7 +97,6 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     level?: "Basic" | "Advanced",
     count: number = 1
   ) => {
-    // Skip adding President or Founder badges
     if (badge.name === "President" || badge.name === "Founder") {
       return;
     }
@@ -108,7 +110,6 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     );
 
     if (isAlreadySelected) {
-      // Remove badge if already selected
       setSelectedBadges(
         selectedBadges.filter(
           (selected) =>
@@ -121,21 +122,17 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
         )
       );
     } else {
-      // Prepare the new badge objects
       const newBadges = Array.from({ length: count }, () => ({
         category,
         subCategory,
         badgeKey,
         ...badge,
-        ...(level ? { level } : {}), // Only include level if it is defined
+        ...(level ? { level } : {}),
       }));
 
-      // Add badges to selection
       setSelectedBadges([...selectedBadges, ...newBadges]);
 
-      // If "Advanced" badge is selected, automatically select the "Basic" version as well
       if (level === "Advanced") {
-        // Check if Basic version exists and is not already selected
         const basicBadge = badges[category]?.[subCategory]?.[badgeKey];
         if (basicBadge && !selectedBadges.some(
             (selected) =>
@@ -144,7 +141,6 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
               selected.badgeKey === badgeKey &&
               selected.level === "Basic"
           )) {
-          // Add Basic badge to selection
           setSelectedBadges((prevSelectedBadges) => [
             ...prevSelectedBadges,
             {
@@ -159,7 +155,6 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
       }
     }
 
-    // Close level selection dialog if open
     if (levelSelectionOpen) {
       setLevelSelectionOpen(null);
     }
@@ -177,27 +172,28 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
-      </Container>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Container maxWidth="lg" sx={{ textAlign: 'center', mt: 4 }}>
-        <Typography variant="h6" color="error">
-          {error}
-        </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={() => window.location.reload()}>
+      <div className="text-center mt-8">
+        <div className="text-red-600 text-lg font-semibold">{error}</div>
+        <button 
+          onClick={() => window.location.reload()}
+          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+        >
           Retry
-        </Button>
-      </Container>
+        </button>
+      </div>
     );
   }
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <div className="w-full p-4 md:p-6">
       <BadgeLevelDialog 
         open={!!levelSelectionOpen} 
         onClose={() => setLevelSelectionOpen(null)}
@@ -206,66 +202,46 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
         addBadgeToSelection={addBadgeToSelection}
       />
 
-<Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
-  <DialogTitle>Select Number of Badges</DialogTitle>
-  <DialogContent>
-    <TextField
-      select
-      label="Number of badges"
-      value={desiredCount}
-      onChange={(e) => setDesiredCount(Number(e.target.value))}
-      fullWidth
-      variant="outlined"
-    >
-      {[...Array(10)].map((_, index) => (
-        <MenuItem key={index + 1} value={index + 1}>
-          {index + 1}
-        </MenuItem>
-      ))}
-    </TextField>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
-    <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
-      Add
-    </Button>
-  </DialogActions>
-</Dialog>
-<Dialog open={numberDialogOpen} onClose={() => setNumberDialogOpen(false)}>
-  <DialogTitle>Select Number of Badges</DialogTitle>
-  <DialogContent>
-    <TextField
-      select
-      label="Number of badges"
-      value={desiredCount}
-      onChange={(e) => setDesiredCount(Number(e.target.value))}
-      fullWidth
-      variant="outlined"
-    >
-      {[...Array(10)].map((_, index) => (
-        <MenuItem key={index + 1} value={index + 1}>
-          {index + 1}
-        </MenuItem>
-      ))}
-    </TextField>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={() => setNumberDialogOpen(false)}>Cancel</Button>
-    <Button onClick={handleNumberDialogSubmit} variant="contained" color="primary">
-      Add
-    </Button>
-  </DialogActions>
-</Dialog>
+      {/* Number Dialog */}
+      {numberDialogOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-11/12 max-w-md">
+            <h3 className="text-lg font-semibold mb-4">Select Number of Badges</h3>
+            <select
+              value={desiredCount}
+              onChange={(e) => setDesiredCount(Number(e.target.value))}
+              className="w-full p-2 border border-gray-300 rounded mb-4"
+            >
+              {[...Array(10)].map((_, index) => (
+                <option key={index + 1} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
+            <div className="flex justify-end space-x-2">
+              <button
+                onClick={() => setNumberDialogOpen(false)}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleNumberDialogSubmit}
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Add
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
-
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4">Badge Selection</Typography>
-        <Box>
-          <Typography variant="subtitle1">
-            Total Selected: {selectedBadges.length} badges
-          </Typography>
-        </Box>
-      </Box>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 sm:mb-0">Badge Selection</h2>
+        <div className="text-sm sm:text-base font-medium text-gray-600">
+          Total Selected: {selectedBadges.length} badges
+        </div>
+      </div>
 
       {Object.keys(badges).length > 0 ? (
         <BadgeCategoryRenderer 
@@ -274,24 +250,27 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
           handleBadgeSelect={handleBadgeSelect}
         />
       ) : (
-        <Typography variant="body1" color="textSecondary" align="center">
+        <div className="text-center text-gray-500 py-8">
           No badges found.
-        </Typography>
+        </div>
       )}
 
-      <Box sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
-        <Button 
-          variant="contained" 
-          color="primary"
+      <div className="mt-6 flex justify-center">
+        <button 
           disabled={selectedBadges.length === 0}
+          className={`px-6 py-2 rounded ${
+            selectedBadges.length === 0
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600 text-white'
+          }`}
         >
           Confirm Selection ({selectedBadges.length} badges)
-        </Button>
-      </Box>
+        </button>
+      </div>
 
       <SelectedBadgesList selectedBadges={selectedBadges} />
-    </Container>
+    </div>
   );
 };
 
-export default BadgeSelection;
+export default AwardBadgeSelection;

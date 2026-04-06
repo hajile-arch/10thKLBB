@@ -71,12 +71,12 @@ const ParadeForm = () => {
         return false;
       }
 
-      if (selectedDate <= now) {
-        setErrorMessage("Parade date must be in the future.");
-        return false;
-      }
+      // if (selectedDate <= now) {
+      //   setErrorMessage("Parade date must be in the future.");
+      //   return false;
+      // }
 
-      if (selectedDate.getFullYear() !== 2025) {
+      if (selectedDate.getFullYear() !== 2026) {
         setErrorMessage("Parades can only be scheduled for 2025.");
         return false;
       }

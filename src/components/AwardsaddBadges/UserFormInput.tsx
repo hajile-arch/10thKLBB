@@ -1,4 +1,4 @@
-// UserFormInput.tsx
+// UserFormInput.tsx (improved version)
 import React from 'react';
 
 interface UserFormInputProps {
@@ -9,9 +9,9 @@ interface UserFormInputProps {
   required?: boolean;
   className?: string;
   options?: string[];
-  min?: string; // Add this line
-  max?: string; // Add this line
-  
+  min?: string;
+  max?: string;
+  placeholder?: string; // Added placeholder prop
 }
 
 export const UserFormInput: React.FC<UserFormInputProps> = ({
@@ -23,15 +23,16 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
   className = '',
   min,
   max,
-  options = []
+  options = [],
+  placeholder // Added placeholder
 }) => {
   const baseClasses =
-    "w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
+    "w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm md:text-base";
 
   if (type === 'select') {
     return (
-      <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700">{label}</label>
+      <div className="space-y-1 md:space-y-2">
+        <label className="text-sm font-medium md:font-semibold text-gray-700">{label}</label>
         <select
           className={`${baseClasses} ${className}`}
           value={value}
@@ -49,16 +50,17 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
   }
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-semibold text-gray-700">{label}</label>
+    <div className="space-y-1 md:space-y-2">
+      <label className="text-sm font-medium md:font-semibold text-gray-700">{label}</label>
       <input
         type={type}
         className={`${baseClasses} ${className}`}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        min={min} // Add min here
-        max={max} // Add max here
+        min={min}
+        max={max}
+        placeholder={placeholder}
       />
     </div>
   );

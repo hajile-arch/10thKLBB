@@ -11,24 +11,25 @@ import {
 } from "lucide-react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
 import { useNavigate } from "react-router-dom";
+import {EventFormData} from "../types"
 
-interface Event {
-  id: string;
-  name: string;
-  startDateTime: string;
-  endDateTime: string;
-  primaryOic: string;
-  secondaryOic?: string;
-  ncoic: string;
-  venue: string;
-  thingsToBring: string;
-  programme: string;
-}
+// interface Event {
+//   id: string;
+//   name: string;
+//   startDateTime: string;
+//   endDateTime: string;
+//   primaryOic: string;
+//   secondaryOic?: string;
+//   ncoic: string;
+//   venue: string;
+//   thingsToBring: string;
+//   programme: string;
+// }
 
 interface CalendarDay {
     day: number | string;
     empty?: boolean;
-    events?: Event[];
+    events?: EventFormData[];
     hasEvents?: boolean;
     isWithinEventRange?: boolean; // Add this property
   }
@@ -41,8 +42,8 @@ interface DateRange {
 
 const EventCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
-  const [events, setEvents] = useState<Event[]>([]);
-  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+  const [events, setEvents] = useState<EventFormData[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<EventFormData | null>(null);
   const navigate=useNavigate();
 
   const handleBack=()=>{
@@ -60,7 +61,7 @@ const EventCalendar: React.FC = () => {
   
       if (fetchedData.success && fetchedData.data) {
         // Convert the object into an array of events
-        const eventsArray: Event[] = Object.values(fetchedData.data); // Explicitly type as Event[]
+        const eventsArray: EventFormData[] = Object.values(fetchedData.data); // Explicitly type as Event[]
         console.log("Converted events array:", eventsArray);
         setEvents(eventsArray); // Set the events state with the array
       } else {
@@ -86,7 +87,7 @@ const EventCalendar: React.FC = () => {
     }
   
     // Helper function to check if a day is within an event's date range
-    const isWithinRange = (event: Event, date: Date): boolean => {
+    const isWithinRange = (event: EventFormData, date: Date): boolean => {
       const start = new Date(event.startDateTime);
       const end = new Date(event.endDateTime);
       const checkDate = new Date(date);
@@ -116,37 +117,45 @@ const EventCalendar: React.FC = () => {
   };
   
   
-  const formatDateRange = (start: string, end: string): DateRange => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
+  const formatDateRange = (start: string, end: string) => {
+  const s = new Date(start);
+  const e = new Date(end);
 
-    const formatTime = (date: Date): string => {
-      return date
-        .toLocaleString("en-US", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        })
-        .replace(",", "");
-    };
+  const formatDate = (d: Date) =>
+    d.toLocaleDateString("en-US", {
+      weekday: "short",
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
 
-    const days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+  const formatTime = (d: Date) =>
+    d.toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+  const isSameDay =
+    s.getFullYear() === e.getFullYear() &&
+    s.getMonth() === e.getMonth() &&
+    s.getDate() === e.getDate();
+
+  if (isSameDay) {
+    // Same-day event
     return {
-      dateRange: `${formatTime(startDate)} to ${formatTime(endDate)}`,
-      duration: `${days[startDate.getDay()]} to ${days[endDate.getDay()]}`,
+      dateRange: `${formatDate(s)} · ${formatTime(s)} – ${formatTime(e)}`,
+      duration: "",
     };
+  }
+
+  // Multi-day event
+  return {
+    dateRange: `${formatDate(s)}, ${formatTime(s)} → ${formatDate(e)}, ${formatTime(e)}`,
+    duration: "",
   };
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: `url("/images/calendar.png")`, }}>
@@ -271,15 +280,10 @@ const EventCalendar: React.FC = () => {
                   <Users size={18} />
                   <div>
                     <p>
-                      <span className="font-medium">Primary OIC:</span>{" "}
+                      <span className="font-medium">Officer in Charge:</span>{" "}
                       {selectedEvent.primaryOic}
                     </p>
-                    {selectedEvent.secondaryOic && (
-                      <p>
-                        <span className="font-medium">Secondary OIC:</span>{" "}
-                        {selectedEvent.secondaryOic}
-                      </p>
-                    )}
+                    
                     <p>
                       <span className="font-medium">NCO IC:</span>{" "}
                       {selectedEvent.ncoic}

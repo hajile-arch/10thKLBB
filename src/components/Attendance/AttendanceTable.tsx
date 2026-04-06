@@ -1,4 +1,5 @@
-import { Member, AttendanceRecord } from '../../types';
+import { useEffect } from 'react';
+import { Member, AttendanceRecord, isSquadLeader, isAssistantSquadLeader } from '../../types';
 
 // Add explicit type for member ID
 type MemberId = string;
@@ -14,12 +15,24 @@ export const AttendanceTable = ({ members, attendance, onUpdateAttendance }: Att
     if (member.role === 'Squad Leader') return member.squadLeaderRank || 'N/A';
     if (member.role === 'Assistant Squad Leader') return member.assistantSquadLeaderRank || 'N/A';
     return member.rank || 'N/A';
-    
   };
+  
   console.log('AttendanceTable Props:', {
     members,
     attendance,
   });
+
+  useEffect(() => {
+    console.log('Members with birthdays:', members.map(m => ({
+      name: m.name,
+      role: m.role,
+      birthday: m.birthday,
+      rank: m.rank,
+      squadLeaderRank: m.squadLeaderRank,
+      assistantSquadLeaderRank: m.assistantSquadLeaderRank
+    })));
+  }, [members]);
+  
   // Generate a consistent ID for members without one
   const generateMemberId = (member: Member): MemberId => {
     if (member.id) return member.id;
@@ -64,6 +77,31 @@ export const AttendanceTable = ({ members, attendance, onUpdateAttendance }: Att
     }
   };
 
+  // Format the birthday in a readable way
+  const formatBirthday = (birthday: string | undefined) => {
+    if (!birthday) return 'N/A';
+    
+    // If the birthday is already in a readable format, just return it
+    // Otherwise, you might want to format it using a library like date-fns
+    return birthday;
+  };
+  
+  // Get the birthday based on member type and role
+  const getBirthday = (member: Member): string | undefined => {
+    console.log(`Getting birthday for ${member.name}, role: ${member.role}, birthday: ${member.birthday}`);
+    
+    if (isSquadLeader(member)) {
+      console.log(`${member.name} is a Squad Leader`);
+      return member.birthday || undefined;
+    } else if (isAssistantSquadLeader(member)) {
+      console.log(`${member.name} is an Assistant Squad Leader`);
+      return member.birthday || undefined;
+    } else {
+      console.log(`${member.name} is a regular member`);
+      return member.birthday;
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="w-full border-collapse border border-gray-700">
@@ -72,6 +110,7 @@ export const AttendanceTable = ({ members, attendance, onUpdateAttendance }: Att
             <th className="p-3 text-left">Rank</th>
             <th className="p-3 text-left">Name</th>
             <th className="p-3 text-left">Squad</th>
+            <th className="p-3 text-left">Birthday</th>
             <th className="p-3 text-left">Status</th>
             <th className="p-3 text-left">Actions</th>
           </tr>
@@ -89,6 +128,7 @@ export const AttendanceTable = ({ members, attendance, onUpdateAttendance }: Att
                   {member.role && <span className="text-sm text-gray-500">({member.role})</span>}
                 </td>
                 <td className="p-3">{member.squadName || member.squadNumber || 'N/A'}</td>
+                <td className="p-3">{formatBirthday(getBirthday(member))}</td>
                 <td className="p-3">
                   {currentAttendance?.status || <span className="text-gray-500">Not marked</span>}
                 </td>
