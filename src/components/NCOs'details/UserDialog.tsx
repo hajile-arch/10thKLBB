@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,6 +7,7 @@ import {
   Box,
   Typography,
   Divider,
+  LinearProgress,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Member, SelectedBadge } from "../../enum";
@@ -20,53 +21,91 @@ interface UserDialogProps {
 }
 
 const UserDialog: React.FC<UserDialogProps> = ({ user, badges, onClose }) => {
-  const safeBadges: SelectedBadge[] = (badges || []).map((b, index) => ({
-  badgeKey: b.badgeKey || `${b.name}-${index}`, // ensure unique key
-  name: b.name || "Unnamed Badge",
-  level: b.level === "Basic" || b.level === "Advanced" ? b.level : undefined,
-  category: b.category,
-  subCategory: b.subCategory,
-  awardedDate: b.awardedDate,
-}));
+  const safeBadges = useMemo(() => badges || [], [badges]);
+  
+  const uniqueBadges = useMemo(() => {
+  const map = new Map<string, SelectedBadge>();
 
-console.log("UserDialog received badges:", badges);
+  safeBadges.forEach((b) => {
+    const existing = map.get(b.badgeKey);
 
+    // Keep Advanced if exists, otherwise Basic
+    if (!existing || b.level === "Advanced") {
+      map.set(b.badgeKey, b);
+    }
+  });
+
+  return Array.from(map.values());
+}, [safeBadges]);
+  const totalBadges = uniqueBadges.length;
+
+  // progress (adjust later if needed)
+  const targetBadges = 50;
+  const progress = Math.min((totalBadges / targetBadges) * 100, 100);
 
   return (
-    <Dialog open onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle sx={{ display: "flex", alignItems: "center" }}>
-        <Box>
-          <Typography variant="h6">{user.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {user.rank} • {user.status}
-          </Typography>
-        </Box>
+    <Dialog
+      open
+      onClose={onClose}
+      maxWidth={false}
+      PaperProps={{
+        sx: {
+          borderRadius: 2,
+          width: "100%",
+          maxWidth: 800,
+          mx: "auto",
 
-        <IconButton onClick={onClose} sx={{ marginLeft: "auto" }} size="small">
-          <CloseIcon />
-        </IconButton>
+          // responsive tweak for mobile
+          px: { xs: 1, sm: 2 },
+        },
+      }}
+    >
+      {/* HEADER */}
+      <DialogTitle>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Box>
+            <Typography variant="h6">
+              {user.name}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {user.rank} • {user.status}
+            </Typography>
+          </Box>
+
+          <IconButton onClick={onClose} size="small">
+            <CloseIcon />
+          </IconButton>
+        </Box>
       </DialogTitle>
 
       <Divider />
 
-      <DialogContent dividers>
-        <Box mb={4}>
-          <Typography variant="h6" gutterBottom>
-            Badges
+      {/* CONTENT */}
+      <DialogContent>
+        <Box py={2}>
+          <Typography variant="body2" gutterBottom>
+            Badge Progress: {uniqueBadges.length}/45
           </Typography>
-          <BadgesList badges={safeBadges} />
+
+          <LinearProgress
+            variant="determinate"
+            value={progress}
+            sx={{ height: 8, borderRadius: 5 }}
+          />
         </Box>
-        <Box mb={2}>
-  <Typography variant="body2">Debug: {safeBadges.length} badges loaded</Typography>
-</Box>
 
-        <Divider sx={{ my: 3 }} />
+        <Divider sx={{ my: 2 }} />
 
+        {/* BADGES LIST */}
+        <BadgesList badges={safeBadges} />
+
+        <Divider sx={{ my: 2 }} />
+
+        {/* ELIGIBILITY CHECKER */}
         <EligibilityChecker member={user} memberBadges={safeBadges} />
       </DialogContent>
     </Dialog>
   );
 };
-
 
 export default UserDialog;

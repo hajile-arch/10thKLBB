@@ -21,7 +21,7 @@ const SquadDetail = () => {
     squadName: '',
     officerName: '',
     squadLeaderId: '',
-assistantSquadLeaderIds: [],
+    assistantSquadLeaderIds: [],
     members: {},
   });
 

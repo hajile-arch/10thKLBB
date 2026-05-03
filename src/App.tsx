@@ -13,7 +13,7 @@ import BadgeList from "./pages/Read";
 import Home from "./pages/Homepage";
 import AddUser from "./pages/AddMembers";
 import BadgeSelection from "./pages/Badgelist";
-import UserDetailsPage from "./pages/UserDetailsPage";
+import UserDetailsPage, { NCODashboards } from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
 import UserDetailsPageEdit from "./pages/UserDetailsPageEdit.tsx";
 import UpcomingEventsPage from "./pages/EventFormPage.tsx";
@@ -44,8 +44,9 @@ import SquadOverview from "./pages/squad/SquadOverview.tsx";
 import SquadDetail from "./pages/squad/SquadDetail.tsx";
 import AttendanceStatsPage from "./components/Attendance/AttendanceStats.tsx";
 import MemberProfile from "./components/Members/MemberProfile.tsx"
-import NCODashboard from "./pages/ncos.tsx";
+
 import CheckMembers from "./pages/Debug.tsx";
+import BadgeAdder from "./pages/ncos.tsx";
 
 
 const App: React.FC = () => {
@@ -85,12 +86,12 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
           <Route path="/MemberRegister" element={<MemberSelfRegistration />} />
-<Route path="/members/:memberId" element={<MemberProfile />} />
+        <Route path="/members/:memberId" element={<MemberProfile />} />
         <Route path="/squad" element={<SquadOverview />} />        
         <Route path="/squad/:squadNumber" element={<SquadDetail />} />
         <Route path="/debug" element={<CheckMembers/>}/>
-          <Route path="/nah" element={<UserDetailsPage />} />
-          <Route path="/ncos" element={<NCODashboard />} />
+          <Route path="/ncos" element={<NCODashboards />} />
+          <Route path="/BadgeAdder" element={<BadgeAdder />} />
           <Route path="/404" element={<UnderConstruction />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/attendance/stats" element={<AttendanceStatsPage />} />
@@ -99,7 +100,7 @@ const App: React.FC = () => {
           <Route path="/secret" element={<SecretPage />} />
           <Route path="/member" element={<MembersDashboard />} />
           <Route path="/editMember" element={<UserDetailsPageEdit />} />
-          <Route path="/addMember" element={<AddUser />} />
+          {/* <Route path="/addMember" element={<AddUser />} /> */}
           <Route path="/readBadge" element={<BadgeList />} />
           <Route path="/writeBadge" element={<Write />} />
           <Route path="/home" element={<Home />} />

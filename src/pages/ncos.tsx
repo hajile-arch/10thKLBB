@@ -4,7 +4,7 @@ import app from '../firebase/firebase';
 import { Member, MemberStatus, SelectedBadge } from '../enum';
 import { BadgeSelection } from './Badgelist';
 
-const BadgeManagement = () => {
+const BadgeAdder = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [members, setMembers] = useState<Member[]>([]);
@@ -294,4 +294,4 @@ const BadgeManagement = () => {
   );
 };
 
-export default BadgeManagement;
+export default BadgeAdder;

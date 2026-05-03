@@ -31,9 +31,6 @@ const PROFICIENCY_GROUPS = ["groupA", "groupB", "groupC", "groupD"];
 // HELPER FUNCTIONS
 // =====================
 
-/**
- * Safely checks for missing required badges.
- */
 const checkRequiredBadges = (
   badges: SelectedBadge[],
   requiredBadges: string[]
@@ -71,7 +68,7 @@ const getProficiencyBadgesByGroup = (
       (b) =>
         b.category === "proficiencyAwards" &&
         b.subCategory !== "compulsory" &&
-        b.name // ignore invalid badges
+        b.name
     )
     .forEach((b) => {
       const group = b.subCategory || "Uncategorized";
@@ -91,7 +88,9 @@ const countAdvancedBadges = (badges: SelectedBadge[]): number => {
 };
 
 const hasBadge = (badges: SelectedBadge[], badgeName: string): boolean => {
-  return badges.some((b) => b.name?.trim().toLowerCase() === badgeName.toLowerCase());
+  return badges.some(
+    (b) => b.name?.trim().toLowerCase() === badgeName.toLowerCase()
+  );
 };
 
 // =====================
@@ -106,7 +105,6 @@ interface Props {
 const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
   const [isSummaryVisible, setIsSummaryVisible] = useState(false);
 
-  // Safely default to empty array
   const badges = memberBadges || [];
 
   const missingRequiredBadges = checkRequiredBadges(badges, REQUIRED_BADGES);
@@ -135,47 +133,103 @@ const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
     ];
 
     const groupCriteria = PROFICIENCY_GROUPS.map((group) => ({
-      text: `You need at least one badge from Group ${group.toUpperCase()}.`,
+      text: `You need at least one badge from Group ${group.replace("group", "").toUpperCase()}.`,
       fulfilled: Boolean(proficiencyBadgesByGroup[group]?.size),
     }));
 
     return [...base, ...groupCriteria];
-  }, [isMembershipSufficient, missingRequiredBadges, totalProficiencyBadges, totalAdvancedBadges, proficiencyBadgesByGroup]);
+  }, [
+    isMembershipSufficient,
+    missingRequiredBadges,
+    totalProficiencyBadges,
+    totalAdvancedBadges,
+    proficiencyBadgesByGroup,
+  ]);
 
   const fulfilledCriteria = criteria.filter((c) => c.fulfilled);
   const unfulfilledCriteria = criteria.filter((c) => !c.fulfilled);
   const progressPercentage = (fulfilledCriteria.length / criteria.length) * 100;
+  const [isFounderSummaryVisible, setIsFounderSummaryVisible] = useState(false);
 
   const handleProgressClick = () => {
     if (progressPercentage === 100) setIsSummaryVisible(true);
   };
 
+  const pulseStyle =
+    progressPercentage === 100
+      ? { animation: "pulse-glow 1.5s ease-in-out infinite" }
+      : {};
+
   if (isSummaryVisible) {
-    return <EligibilitySummary isFounderBadge={isFounderBadge} isPresidentBadge={isPresidentBadge} />;
+    return (
+      <EligibilitySummary
+        isFounderBadge={isFounderBadge}
+        isPresidentBadge={isPresidentBadge}
+      />
+    );
   }
+if (isPresidentBadge) {
+  return (
+    <Box sx={{ padding: 3, borderLeft: "4px solid #FFD700", marginLeft: 1, marginBottom: 2 }}>
+      <Typography variant="overline" color="text.secondary">Next Achievement</Typography>
+      <Typography variant="h5" fontWeight="bold">Founder's Badge</Typography>
+      <Typography variant="body2" color="text.secondary" sx={{ marginTop: 1 }}>
+        You've earned your place. The next step is a conversation —
+        meet <strong>Inst Elijah</strong> to find out what's next.
+      </Typography>
+    </Box>
+  );
+}
 
   return (
     <Box sx={{ padding: 2 }}>
+      <style>{`
+        @keyframes pulse-glow {
+          0%   { box-shadow: 0 0 6px 2px rgba(76, 175, 80, 0.4); }
+          50%  { box-shadow: 0 0 18px 6px rgba(76, 175, 80, 0.85); }
+          100% { box-shadow: 0 0 6px 2px rgba(76, 175, 80, 0.4); }
+        }
+      `}</style>
+
       <Typography variant="h5" gutterBottom>
         Eligibility Checker for President&apos;s Badge
       </Typography>
 
       <Box sx={{ marginBottom: 2 }}>
-        <Typography>Total Proficiency Badges: <strong>{totalProficiencyBadges}</strong></Typography>
-        <Typography>Total Advanced Badges: <strong>{totalAdvancedBadges}</strong></Typography>
+        <Typography>
+          Total Proficiency Badges: <strong>{totalProficiencyBadges}</strong>
+        </Typography>
+        <Typography>
+          Total Advanced Badges: <strong>{totalAdvancedBadges}</strong>
+        </Typography>
         <Divider sx={{ marginY: 1 }} />
       </Box>
 
       <Box sx={{ marginBottom: 3 }}>
-        <Typography fontWeight="bold" marginBottom={1}>Eligibility Progress</Typography>
-        <Box sx={{ position: "relative", height: 30, backgroundColor: "#f5f5f5", borderRadius: 15, overflow: "hidden" }}>
+        <Typography fontWeight="bold" marginBottom={1}>
+          Progress Bar
+        </Typography>
+        <Box
+          sx={{
+            position: "relative",
+            height: 30,
+            backgroundColor: "#f5f5f5",
+            borderRadius: 12,
+            // overflow: "hidden",
+          }}
+        >
           <Box
             sx={{
               width: `${progressPercentage}%`,
               height: "100%",
-              background: progressPercentage === 100 ? "#4caf50" : "linear-gradient(to right, #4caf50, #81c784)",
+              background:
+                progressPercentage === 100
+                  ? "#4caf50"
+                  : "linear-gradient(to right, #4caf50, #81c784)",
               transition: "width 0.4s ease-in-out",
               cursor: progressPercentage === 100 ? "pointer" : "default",
+              borderRadius: 15,
+              ...pulseStyle,
             }}
             onClick={handleProgressClick}
           />
@@ -187,33 +241,41 @@ const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
               transform: "translate(-50%, -50%)",
               color: progressPercentage < 50 ? "#000" : "#fff",
               fontWeight: progressPercentage === 100 ? "bold" : "normal",
+              pointerEvents: "none",
             }}
-            onClick={handleProgressClick}
           >
             {Math.round(progressPercentage)}%
           </Typography>
         </Box>
       </Box>
 
-      <Paper sx={{ padding: 2, marginBottom: 2 }}>
-        <Typography variant="h6" gutterBottom>Unfulfilled Criteria</Typography>
-        <Stack spacing={1}>
-          {unfulfilledCriteria.map((criterion, index) => (
-            <Box key={index} display="flex" alignItems="center">
-              <CancelIcon sx={{ color: "error.main", marginRight: 1 }} />
-              <Typography color="error">{criterion.text}</Typography>
-            </Box>
-          ))}
-        </Stack>
-      </Paper>
+      {unfulfilledCriteria.length > 0 && (
+        <Paper sx={{ padding: 2, marginBottom: 2 }}>
+          <Typography variant="h6" gutterBottom>
+            Unfulfilled Criteria
+          </Typography>
+          <Stack spacing={1}>
+            {unfulfilledCriteria.map((criterion, index) => (
+              <Box key={index} display="flex" alignItems="center">
+                <CancelIcon sx={{ color: "error.main", marginRight: 1 }} />
+                <Typography color="error">{criterion.text}</Typography>
+              </Box>
+            ))}
+          </Stack>
+        </Paper>
+      )}
 
       <Paper sx={{ padding: 2 }}>
-        <Typography variant="h6" gutterBottom>Fulfilled Criteria</Typography>
+        <Typography variant="h6" gutterBottom>
+          Fulfilled Criteria
+        </Typography>
         <Stack spacing={1}>
           {fulfilledCriteria.map((criterion, index) => (
             <Box key={index} display="flex" alignItems="center">
               <CheckCircleIcon sx={{ color: "success.main", marginRight: 1 }} />
-              <Typography sx={{ textDecoration: "line-through" }}>{criterion.text}</Typography>
+              <Typography sx={{ textDecoration: "line-through" }}>
+                {criterion.text}
+              </Typography>
             </Box>
           ))}
         </Stack>

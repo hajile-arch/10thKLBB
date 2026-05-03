@@ -37,22 +37,17 @@ const getRankColor = (rank: Rank) => {
   return colors[rank];
 };
 
-export const UserDetailsPage: React.FC = () => {
+export const NCODashboards: React.FC = () => {
   const [users, setUsers] = useState<MemberWithBadges[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedUser, setSelectedUser] =
-    useState<MemberWithBadges | null>(null);
+  const [selectedUser, setSelectedUser] = useState<MemberWithBadges | null>(
+    null,
+  );
 
   const navigate = useNavigate();
 
-  const rankOrder: Rank[] = [
-    Rank.SGT,
-    Rank.CPL,
-    Rank.LCPL,
-    Rank.PTE,
-    Rank.REC,
-  ];
+  const rankOrder: Rank[] = [Rank.SGT, Rank.CPL, Rank.LCPL, Rank.PTE, Rank.REC];
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -66,12 +61,10 @@ export const UserDetailsPage: React.FC = () => {
         }
 
         const membersData = membersResult.data || {};
-        const badgesData = badgesResult.success
-          ? badgesResult.data || {}
-          : {};
+        const badgesData = badgesResult.success ? badgesResult.data || {} : {};
 
         const membersWithBadges: MemberWithBadges[] = Object.entries(
-          membersData
+          membersData,
         ).map(([memberId, memberData]: [string, any]) => ({
           ...memberData,
           id: memberId,
@@ -180,7 +173,16 @@ export const UserDetailsPage: React.FC = () => {
         color: "#fff",
       }}
     >
-      <Box sx={{ width: 1200, margin: "0 auto", pt: 6, pb: 8 }}>
+      <Box
+        sx={{
+          maxWidth: 1200,
+          width: "100%",
+          margin: "0 auto",
+          pt: { xs: 3, md: 6 },
+          pb: { xs: 4, md: 8 },
+          px: { xs: 2, md: 4 },
+        }}
+      >
         {/* 🔒 HEADER – unchanged */}
         <Box
           sx={{
@@ -197,7 +199,8 @@ export const UserDetailsPage: React.FC = () => {
               justifyContent: "space-between",
               fontWeight: 600,
               textTransform: "uppercase",
-              letterSpacing: "0.2em",
+              letterSpacing: { xs: "0.05em", md: "0.2em" },
+              fontSize: { xs: "1.5rem", sm: "2rem", md: "3rem" },
               color: "#fff",
               textShadow: "2px 2px 4px rgba(0,0,0,0.5)",
             }}
@@ -226,7 +229,7 @@ export const UserDetailsPage: React.FC = () => {
                 background:
                   "linear-gradient(to right, rgba(255,255,255,0.05), transparent)",
                 borderLeft: `4px solid ${getRankColor(rank)}`,
-                p: 4,
+                p: { xs: 2, md: 4 },
               }}
             >
               <Typography
@@ -276,4 +279,4 @@ export const UserDetailsPage: React.FC = () => {
   );
 };
 
-export default UserDetailsPage;
+export default NCODashboards;

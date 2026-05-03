@@ -12,6 +12,7 @@ module.exports = {
         bebas: ['Bebas Neue', 'sans-serif'],
         lunasima: ['Lunasima', 'serif'],
         dmSerif: ['DM Serif Display', 'serif'],
+        
       },
       keyframes: {
         'fade-in': {
