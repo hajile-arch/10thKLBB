@@ -4,25 +4,8 @@ import { uploadToFirebase } from "../firebase/firebaseUtils";
 import { UserFormInput } from "../components/addBadges/UserFormInput";
 import { UserFormMessage } from "../components/addBadges/UserFormMessage";
 import { BadgeSelection } from "../pages/Badgelist";
-
-const RANK_OPTIONS = [
-  "Recruit",
-  "Private",
-  "Lance Corporal",
-  "Corporal",
-  "Sergeant",
-];
-
-const SQUAD_OPTIONS = [
-  "Squad 1",
-  "Squad 2",
-  "Squad 3",
-  "Squad 4",
-  "Squad 5",
-  "Squad 6",
-  "Squad 7",
-  "Squad 8",
-];
+import { RANK_OPTIONS, SQUAD_OPTIONS } from "../enum";
+import { ThemeToggle } from "../components/ThemeToggle";
 
 // Helper function to calculate age
 const calculateAge = (dob: string): number => {
@@ -121,13 +104,16 @@ export const UserFormWithBadgeSelection: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
       {/* User Form Section */}
       <div className="w-1/2 flex justify-center items-center p-6">
-        <div className="max-w-lg w-full p-8 bg-white shadow-lg rounded-lg space-y-6">
-          <h1 className="text-3xl font-semibold text-center text-gray-800 mb-4 mt-10">
-            Add New User
-          </h1>
+        <div className="max-w-lg w-full p-8 bg-white dark:bg-gray-900 shadow-lg dark:shadow-black/40 rounded-lg space-y-6">
+          <div className="relative mb-4 mt-10">
+            <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-100">
+              Add New User
+            </h1>
+            <ThemeToggle className="absolute right-0 top-1/2 -translate-y-1/2" />
+          </div>
 
           <UserFormMessage message={message} />
 
@@ -192,7 +178,7 @@ export const UserFormWithBadgeSelection: React.FC = () => {
       </div>
 
       {/* Badge Selection Section */}
-      <div className="w-1/2 bg-gray-100 p-6 overflow-y-auto">
+      <div className="w-1/2 bg-gray-100 dark:bg-gray-950 p-6 overflow-y-auto">
         <BadgeSelection
           selectedBadges={selectedBadges}
           setSelectedBadges={setSelectedBadges}

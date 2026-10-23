@@ -93,6 +93,16 @@
         onClose={onClose}
         maxWidth="sm"
         fullWidth
+        PaperProps={{
+          sx: {
+            '.dark &': {
+              bgcolor: '#111827',
+              color: '#f3f4f6',
+              '& .MuiCard-root': { bgcolor: '#1f2937', color: '#f3f4f6' },
+              '& .MuiTypography-colorTextSecondary, & .MuiTypography-body2': { color: '#9ca3af' },
+            },
+          },
+        }}
       >
         <DialogTitle>Select Badge Level</DialogTitle>
         <DialogContent>
