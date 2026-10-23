@@ -20,6 +20,21 @@ export enum Rank {
 
 }
 
+export const RANK_OPTIONS: Rank[] = Object.values(Rank);
+
+export enum SquadOption {
+  SQ1 = 'Squad 1',
+  SQ2 = 'Squad 2',
+  SQ3 = 'Squad 3',
+  SQ4 = 'Squad 4',
+  SQ5 = 'Squad 5',
+  SQ6 = 'Squad 6',
+  SQ7 = 'Squad 7',
+  SQ8 = 'Squad 8',
+}
+
+export const SQUAD_OPTIONS: SquadOption[] = Object.values(SquadOption);
+
 export enum Gender {
   M = 'M',
   F = 'F',
