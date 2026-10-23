@@ -86,10 +86,10 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
           <Route path="/MemberRegister" element={<MemberSelfRegistration />} />
-        <Route path="/members/:memberId" element={<MemberProfile />} />
-        <Route path="/squad" element={<SquadOverview />} />        
-        <Route path="/squad/:squadNumber" element={<SquadDetail />} />
-        <Route path="/debug" element={<CheckMembers/>}/>
+          <Route path="/members/:memberId" element={<MemberProfile />} />
+          <Route path="/squad" element={<SquadOverview />} />        
+          <Route path="/squad/:squadNumber" element={<SquadDetail />} />
+          <Route path="/debug" element={<CheckMembers/>}/>
           <Route path="/ncos" element={<NCODashboards />} />
           <Route path="/BadgeAdder" element={<BadgeAdder />} />
           <Route path="/404" element={<UnderConstruction />} />
