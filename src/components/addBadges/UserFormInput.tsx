@@ -11,6 +11,7 @@ interface UserFormInputProps {
   options?: string[];
   min?: string; // Add this line
   max?: string; // Add this line
+  hint?: string; // Optional helper text under the field
   
 }
 
@@ -23,15 +24,20 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
   className = '',
   min,
   max,
+  hint,
   options = []
 }) => {
   const baseClasses =
-    "w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
+    "w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:[color-scheme:dark]";
+  const hintEl = hint ? (
+    <p className="text-xs text-gray-500 dark:text-gray-400">{hint}</p>
+  ) : null;
+  const labelClasses = "text-sm font-semibold text-gray-700 dark:text-gray-300";
 
   if (type === 'select') {
     return (
       <div className="space-y-2">
-        <label className="text-sm font-semibold text-gray-700">{label}</label>
+        <label className={labelClasses}>{label}</label>
         <select
           className={`${baseClasses} ${className}`}
           value={value}
@@ -44,13 +50,14 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
             </option>
           ))}
         </select>
+        {hintEl}
       </div>
     );
   }
 
   return (
     <div className="space-y-2">
-      <label className="text-sm font-semibold text-gray-700">{label}</label>
+      <label className={labelClasses}>{label}</label>
       <input
         type={type}
         className={`${baseClasses} ${className}`}
@@ -60,6 +67,7 @@ export const UserFormInput: React.FC<UserFormInputProps> = ({
         min={min} // Add min here
         max={max} // Add max here
       />
+      {hintEl}
     </div>
   );
 };
