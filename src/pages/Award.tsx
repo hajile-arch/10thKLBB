@@ -215,6 +215,22 @@ export const Awards: React.FC = () => {
               max={new Date().getFullYear().toString()}
               className={inputClass}
             />
+            <div className="space-y-2">
+  <iframe
+    src="/Handbook.pdf#toolbar=0"
+    title="Award guide"
+    style={{ colorScheme: "light" }}
+    className="w-full h-96 rounded-lg border border-gray-300 dark:border-gray-700 bg-white"
+  />
+  <a
+    href="/Handbook.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-sm underline dark:text-white"
+  >
+    Open / download the PDF
+  </a>
+</div>
 
             <UserFormInput
               label="Google Drive Link"
