@@ -49,6 +49,18 @@ const SquadOverview = () => {
       const membersData = membersSnap.val();
       const updates: { [key: string]: null } = {};
 
+      // Also clear each squad's own roster for this year, otherwise the squad
+      // pages keep showing members who are no longer assigned
+      const squadsSnap = await get(ref(db, `squads/${CURRENT_YEAR}`));
+      if (squadsSnap.exists()) {
+        Object.keys(squadsSnap.val()).forEach((squadKey) => {
+          const base = `squads/${CURRENT_YEAR}/${squadKey}`;
+          updates[`${base}/members`] = null;
+          updates[`${base}/squadLeaderId`] = null;
+          updates[`${base}/assistantSquadLeaderIds`] = null;
+        });
+      }
+
       // Build batch update to remove currentSquad from all members
       Object.keys(membersData).forEach((memberId) => {
         updates[`members/${memberId}/currentSquad`] = null;

@@ -54,7 +54,7 @@ const ParadeForm = () => {
   const validateForm = () => {
     try {
       const selectedDate = new Date(paradeDate);
-      const now = new Date();
+      const currentYear = new Date().getFullYear();
 
       if (!month || !validMonths.includes(month)) {
         setErrorMessage("Please select a valid month.");
@@ -76,8 +76,13 @@ const ParadeForm = () => {
       //   return false;
       // }
 
-      if (selectedDate.getFullYear() !== 2026) {
-        setErrorMessage("Parades can only be scheduled for 2025.");
+      if (selectedDate.getFullYear() !== currentYear) {
+        setErrorMessage(`Parades can only be scheduled for ${currentYear}.`);
+        return false;
+      }
+
+      if (validMonths[selectedDate.getMonth()] !== month) {
+        setErrorMessage("The selected month does not match the parade date.");
         return false;
       }
 

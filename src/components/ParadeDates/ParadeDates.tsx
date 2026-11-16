@@ -60,7 +60,7 @@ const ParadeList = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <div className="container mx-auto p-8">
         <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
-          2025 Parade Calendar
+          {new Date().getFullYear()} Parade Calendar
         </h1>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getDataFromFirebase } from '../firebase/firebaseUtils';
+import { getDataFromFirebase, isYearKey } from '../firebase/firebaseUtils';
 import { ArrowLeft, Calendar, Gift, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +48,8 @@ const BirthdayList = () => {
         });
 
         // Process each squad
-        Object.values(response.data).forEach((squad: any) => {
+        Object.entries(response.data).forEach(([squadKey, squad]: [string, any]) => {
+          if (isYearKey(squadKey)) return;
           const processMembers = (memberData: any, role: string) => {
             if (memberData.birthday) {
               const date = new Date(memberData.birthday);
@@ -84,7 +85,7 @@ const BirthdayList = () => {
           );
 
           // Process regular members
-          squad.members.forEach((member: any) => {
+          (squad.members || []).forEach((member: any) => {
             processMembers(member, 'Member');
           });
         });

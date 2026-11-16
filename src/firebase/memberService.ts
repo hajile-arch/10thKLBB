@@ -1,8 +1,7 @@
 import { 
   getDataFromFirebase, 
   updateFirebaseData, 
-  deleteDataFromFirebase, 
-  setDataInFirebase
+  deleteDataFromFirebase
 } from '../firebase/firebaseUtils';
 import { Member } from '../enum';
 
@@ -11,10 +10,19 @@ export const saveMember = async (member: Member) => {
   try {
     if (!member.id) throw new Error("Member ID missing");
 
-    await setDataInFirebase(
-      `members/${member.id}`,
-      member
-    );
+    // Firebase rejects `undefined`, so cleared fields are sent as null (which
+    // deletes them). Merging keeps fields this form doesn't manage, such as
+    // the member's squad assignment.
+    const { id, ...fields } = member;
+    const data: { [key: string]: any } = { id };
+    Object.entries(fields).forEach(([key, value]) => {
+      data[key] = value === undefined ? null : value;
+    });
+
+    const result = await updateFirebaseData(`members/${id}`, data);
+    if (!result.success) {
+      return { success: false, error: result.message };
+    }
 
     return { success: true };
   } catch (error: any) {

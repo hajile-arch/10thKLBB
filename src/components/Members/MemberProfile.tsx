@@ -128,7 +128,7 @@ const MemberProfile = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Member Not Found</h2>
           <p className="text-gray-600 mb-6">The member you're looking for doesn't exist.</p>
           <button
-            onClick={() => navigate('/members')}
+            onClick={() => navigate('/member')}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
           >
             Back to Members
@@ -423,7 +423,7 @@ const MemberProfile = () => {
                     <input
                       type="number"
                       value={displayMember.yearJoined || ''}
-                      onChange={(e) => updateField('yearJoined', parseInt(e.target.value))}
+                      onChange={(e) => updateField('yearJoined', parseInt(e.target.value) || null)}
                       className="text-gray-900 font-medium border border-gray-300 rounded px-2 py-1 w-24 text-right"
                       placeholder="2016"
                     />

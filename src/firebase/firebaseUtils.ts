@@ -93,3 +93,8 @@ export const updateFirebaseData = async (path: string, data: { [key: string]: an
     return { success: false, message: error.message };
   }
 };
+
+// The "squads" node holds two layouts: the original flat list of squads, and the
+// newer per-year layout (squads/2026/1...). Pages built for the flat list must
+// skip the year entries, otherwise a whole year is treated as a single squad.
+export const isYearKey = (key: string) => /^\d{4}$/.test(key);

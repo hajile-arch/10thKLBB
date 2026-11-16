@@ -2,7 +2,7 @@ import Sidebar from "../components/Members/Sidebar";
 import MemberHeader from "../components/Members/MemberHeader";
 import ThemeCard from "../components/Members/Theme";
 import { useEffect, useState } from "react";
-import { getDataFromFirebase } from "../firebase/firebaseUtils";
+import { getDataFromFirebase, isYearKey } from "../firebase/firebaseUtils";
 import UpcomingEvent from "../components/Members/UpcomingEvent";
 import UserAnalytics from "../components/Members/MembersCount";
 import SquadListing from "../components/Members/SquadListing";
@@ -51,10 +51,12 @@ const MembersDashboard = () => {
     const fetchSquads = async () => {
       const response = await getDataFromFirebase("squads");
       if (response.success && response.data) {
-        const squadsArray = Object.entries(response.data).map(([id, value]: [string, any]) => ({
-          id,
-          ...value,
-        }));
+        const squadsArray = Object.entries(response.data)
+          .filter(([id]) => !isYearKey(id))
+          .map(([id, value]: [string, any]) => ({
+            id,
+            ...value,
+          }));
         setSquads(squadsArray);
     
         // Gather all members including squad leaders and assistant squad leaders

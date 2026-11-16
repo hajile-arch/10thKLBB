@@ -239,7 +239,7 @@ const BadgeList = () => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => navigate("/write")}
+          onClick={() => navigate("/writeBadge")}
           sx={{ py: 1 }}
         >
           Go to Write

@@ -4,7 +4,7 @@
 // EditBadgeList.tsx
 import React from "react";
 import { SelectedBadge } from "../../types";
-import { FaTrash } from "react-icons/fa";
+import { Trash2 } from "lucide-react";
 import BadgeSelectionInterface from "./BadgeSelectionInterface";
 
 interface EditBadgeListProps {
@@ -80,7 +80,7 @@ const EditBadgeList: React.FC<EditBadgeListProps> = ({ badges, onDeleteBadge, on
                           className="text-red-600 hover:text-red-800 transition-colors duration-300"
                           aria-label="Delete Badge"
                         >
-                          <FaTrash size={20} />
+                          <Trash2 size={20} />
                         </button>
                       </div>
                     ))}

@@ -44,7 +44,10 @@ const BadgeForm = () => {
       return;
     }
 
-    const path = `badges/${category}/${subCategory || ""}`;
+    // Only proficiency awards have sub-categories; the others live under "compulsory"
+    const effectiveSubCategory =
+      category === "proficiencyAwards" ? subCategory : "compulsory";
+    const path = `badges/${category}/${effectiveSubCategory}`;
     const data: Record<string, any> = {
       name,
     };
@@ -157,7 +160,7 @@ const BadgeForm = () => {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={() => navigate("/read")}
+        onClick={() => navigate("/readBadge")}
         fullWidth
         sx={{ py: 1.5 }}
       >
