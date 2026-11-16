@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
-import UserDialog from "../components/NCOs'details/UserDialog";
-import UserGroup from "../components/NCOs'details/UserGroup";
+import UserDialog from "../components/NCODetails/UserDialog";
+import UserGroup from "../components/NCODetails/UserGroup";
 import { useNavigate } from "react-router-dom";
 import {
   Box,

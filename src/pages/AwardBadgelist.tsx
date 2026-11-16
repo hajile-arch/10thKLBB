@@ -6,8 +6,8 @@ import {
   SelectedBadge,
   Badge
 } from '../types.ts';
-import { BadgeLevelDialog } from '../components/addBadges/BadgeLevelDialog.tsx.tsx';
-import { BadgeCategoryRenderer } from '../components/addBadges/BadgeCategoryRenderer.tsx.tsx';
+import { BadgeLevelDialog } from '../components/addBadges/BadgeLevelDialog';
+import { BadgeCategoryRenderer } from '../components/addBadges/BadgeCategoryRenderer';
 
 interface BadgeSelectionProps {
   selectedBadges: SelectedBadge[];
