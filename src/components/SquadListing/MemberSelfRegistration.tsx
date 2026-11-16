@@ -96,7 +96,7 @@ const loadMemberData = async (id: string) => {
     e.preventDefault();
     
     // Basic validation
-    if (!formData.name.trim()) {
+    if (!(formData.name || '').trim()) {
       toast.error('Name is required');
       return;
     }

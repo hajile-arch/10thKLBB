@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getDatabase, ref, get, set } from "firebase/database";
+import { getDatabase, ref, get, set, update } from "firebase/database";
 import app from "../../firebase/firebase";
 import { Member, MemberStatus, AttendanceStatus } from "../../enum";
 import { useNavigate } from "react-router-dom";
@@ -167,6 +167,17 @@ setSquadLeaders(leadershipMap);
           }
         });
 
+        // Members with no saved record for this date (new members, or squads
+        // not yet marked) default to absent so they can still be saved.
+        membersList.forEach((member: Member) => {
+          if (!mergedAttendance[member.id]) {
+            mergedAttendance[member.id] = {
+              memberId: member.id,
+              status: "absent",
+            };
+          }
+        });
+
         setAttendance(mergedAttendance);
       } else {
         // Initialize with all members as absent
@@ -197,16 +208,19 @@ setSquadLeaders(leadershipMap);
       } = {};
 
       members.forEach((member) => {
-        const record = attendance[member.id];
+        const record: AttendanceRecord = attendance[member.id] || {
+          memberId: member.id,
+          status: "absent",
+        };
         const cleanRecord: AttendanceRecord = {
-          memberId: record.memberId,
-          status: record.status,
+          memberId: member.id,
+          status: record.status || "absent",
           ...(record.notes !== undefined && record.notes !== ""
             ? { notes: record.notes }
             : {}),
         };
 
-        if (record) {
+        {
           const squadKey = member.currentSquad
             ? `squad${member.currentSquad}`
             : "unassigned";
@@ -222,10 +236,14 @@ setSquadLeaders(leadershipMap);
         ...squadGroups,
       };
 
-      await set(
-        ref(db, `attendance/${CURRENT_YEAR}/${dateKey}`),
-        attendanceData,
-      );
+      const dayRef = ref(db, `attendance/${CURRENT_YEAR}/${dateKey}`);
+      if (filterSquad === "all") {
+        await set(dayRef, attendanceData);
+      } else {
+        // Only one squad is loaded, so only replace that squad's records.
+        // Overwriting the whole day here would erase every other squad.
+        await update(dayRef, attendanceData);
+      }
       alert("Attendance saved successfully!");
     } catch (error) {
       console.error("Error saving attendance:", error);
@@ -667,9 +685,7 @@ const bIsASL = leadership?.assistants?.includes(b.id);
                     }
                     if (squadLeaders[member.currentSquad!]?.assistants?.includes(member.id)) {
   leadershipTitles.push("ASL");
-} {
-                      leadershipTitles.push("ASL");
-                    }
+}
 
                     return (
                       <tr key={member.id} className="hover:bg-gray-50">

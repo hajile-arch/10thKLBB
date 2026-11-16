@@ -53,8 +53,8 @@ const MemberManagement: React.FC = () => {
           id: id
         }));
         setUsers(usersArray);
-        findDuplicates(usersArray);
-        prepareExportData(usersArray);
+        const { duplicates, deleteIds } = findDuplicates(usersArray);
+        prepareExportData(usersArray, duplicates, deleteIds);
       } else {
         setUsers([]);
         setDuplicateUsers(new Map());
@@ -79,6 +79,7 @@ const MemberManagement: React.FC = () => {
     });
 
     const duplicates = new Map<string, User[]>();
+    const deleteIds = new Set<string>();
     nameMap.forEach((users, name) => {
       if (users.length > 1) {
         const sortedUsers = users.sort((a, b) => {
@@ -89,12 +90,13 @@ const MemberManagement: React.FC = () => {
         });
         
         duplicates.set(name, sortedUsers);
-        const usersToDeleteIds = sortedUsers.slice(1).map(user => user.id);
-        setUsersToDelete(prev => new Set([...prev, ...usersToDeleteIds]));
+        sortedUsers.slice(1).forEach(user => deleteIds.add(user.id));
       }
     });
 
+    setUsersToDelete(prev => new Set([...prev, ...deleteIds]));
     setDuplicateUsers(duplicates);
+    return { duplicates, deleteIds };
   };
 
   const formatBadgesForExport = (badges: Badge[] | undefined): string => {
@@ -116,11 +118,15 @@ const MemberManagement: React.FC = () => {
       .join(", ");
   };
 
-  const prepareExportData = (usersArray: User[]) => {
+  const prepareExportData = (
+    usersArray: User[],
+    duplicates: Map<string, User[]>,
+    deleteIds: Set<string>
+  ) => {
     const data = usersArray.map(user => {
       const badgesText = formatBadgesForExport(user.badges);
-      const isDuplicate = duplicateUsers.has(user.name);
-      const markedForDeletion = usersToDelete.has(user.id);
+      const isDuplicate = duplicates.has(user.name);
+      const markedForDeletion = deleteIds.has(user.id);
       
       return {
         'Name': user.name,
@@ -306,7 +312,7 @@ const MemberManagement: React.FC = () => {
               </>
             )}
             <Link 
-              to="/bs" 
+              to="/badgestats" 
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               View Statistics
@@ -332,7 +338,7 @@ const MemberManagement: React.FC = () => {
             <h2 className="text-xl font-semibold mb-2">No duplicates found!</h2>
             <p className="text-gray-600">All user records are unique.</p>
             <Link 
-              to="/bs" 
+              to="/badgestats" 
               className="inline-block mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               View Badge Statistics

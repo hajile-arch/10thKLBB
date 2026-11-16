@@ -1,5 +1,5 @@
 import  { useEffect, useState } from "react";
-import { getDataFromFirebase } from "../firebase/firebaseUtils";
+import { getDataFromFirebase, isYearKey } from "../firebase/firebaseUtils";
 import { ArrowLeft, Calendar, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -69,7 +69,8 @@ export const TotalParadesPage = () => {
         const squadsResult = await getDataFromFirebase("squads");
         if (squadsResult.success) {
           const allMembers: Member[] = [];
-          Object.values(squadsResult.data).forEach((squad: any) => {
+          Object.entries(squadsResult.data).forEach(([squadKey, squad]: [string, any]) => {
+            if (isYearKey(squadKey)) return;
             // Add squad leader
             allMembers.push({
               id: `${squad.squadNumber}_${squad.squadLeader}`,
@@ -89,7 +90,7 @@ export const TotalParadesPage = () => {
             });
 
             // Add regular members
-            squad.members.forEach((member: any) => {
+            (squad.members || []).forEach((member: any) => {
               allMembers.push({
                 id: `${squad.squadNumber}_${member.name}`,
                 name: member.name,

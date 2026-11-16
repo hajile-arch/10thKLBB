@@ -4,7 +4,7 @@ import { Squad } from '../../types';
 import { Modal } from './Modal';
 import { SquadCard } from './SquadCard';
 import { SquadForm } from './SquadForm';
-import { uploadToFirebase, getDataFromFirebase, updateFirebaseData, deleteDataFromFirebase } from '../../firebase/firebaseUtils';
+import { uploadToFirebase, getDataFromFirebase, updateFirebaseData, deleteDataFromFirebase, isYearKey } from '../../firebase/firebaseUtils';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
@@ -40,10 +40,12 @@ const SquadManagement = () => {
     setIsLoading(true);
     const result = await getDataFromFirebase('squads');
     if (result.success && result.data) {
-      const squadsArray = Object.entries(result.data).map(([id, data]) => ({
-        id,
-        ...(data as Omit<Squad, 'id'>)
-      }));
+      const squadsArray = Object.entries(result.data)
+        .filter(([id]) => !isYearKey(id))
+        .map(([id, data]) => ({
+          id,
+          ...(data as Omit<Squad, 'id'>)
+        }));
       setSquads(squadsArray);
     }
     setIsLoading(false);
@@ -153,8 +155,8 @@ const SquadManagement = () => {
   };
 
   const filteredSquads = squads.filter(squad =>
-    squad.squadName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    squad.squadLeader.toLowerCase().includes(searchTerm.toLowerCase())
+    (squad.squadName || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (squad.squadLeader || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (

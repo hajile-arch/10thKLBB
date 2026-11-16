@@ -42,7 +42,7 @@ const SquadDetail = () => {
             ...data,
             id,
           } as Member))
-          .filter((m) => m.status === MemberStatus.ACTIVE || MemberStatus.LEAVE)
+          .filter((m) => m.status === MemberStatus.ACTIVE || m.status === MemberStatus.LEAVE)
           .sort((a, b) => a.name.localeCompare(b.name));
         
         setAllMembers(membersList);
@@ -57,7 +57,15 @@ const SquadDetail = () => {
       // Load squad data
       const squadSnap = await get(ref(db, `squads/${CURRENT_YEAR}/${squadNumber}`));
       if (squadSnap.exists()) {
-        setSquadData(squadSnap.val());
+        // Firebase drops empty lists/objects, so restore them on load
+        const saved = squadSnap.val();
+        setSquadData({
+          ...saved,
+          year: saved.year ?? CURRENT_YEAR,
+          squadNumber: saved.squadNumber ?? currentSquadNum,
+          assistantSquadLeaderIds: saved.assistantSquadLeaderIds || [],
+          members: saved.members || {},
+        });
       }
     } catch (error) {
       console.error('Error loading data:', error);

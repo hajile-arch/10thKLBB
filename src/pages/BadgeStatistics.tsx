@@ -31,6 +31,7 @@ const BadgeStatistics: React.FC = () => {
   const [badgeCounts, setBadgeCounts] = useState<BadgeCount[]>([]);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalBadges, setTotalBadges] = useState(0);
+  const [advancedCount, setAdvancedCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,6 +48,7 @@ const BadgeStatistics: React.FC = () => {
 
           const badgeMap = new Map<string, BadgeCount>();
           let totalBadgeCount = 0;
+          let advancedBadgeCount = 0;
 
           usersArray.forEach(user => {
             if (user.badges && Array.isArray(user.badges)) {
@@ -55,6 +57,7 @@ const BadgeStatistics: React.FC = () => {
 
                 // Exclude badges with level 'advanced'
                 if (badge.level && badge.level.toLowerCase() === 'advanced') {
+                  advancedBadgeCount += 1;
                   return;
                 }
 
@@ -87,6 +90,7 @@ const BadgeStatistics: React.FC = () => {
 
           setBadgeCounts(badgeCountsArray);
           setTotalBadges(totalBadgeCount);
+          setAdvancedCount(advancedBadgeCount);
         } else {
           setBadgeCounts([]);
         }
@@ -165,14 +169,7 @@ const BadgeStatistics: React.FC = () => {
           {/* Advanced badges count */}
           <div className="mt-4">
             <h4 className="text-xl font-semibold text-gray-700">
-              {(() => {
-                // Count the number of badges with level 'advanced'
-                const advCount = badgeCounts.reduce((sum, b) => {
-                  if (b.level && b.level.toLowerCase() === 'advanced') return sum + b.count;
-                  return sum;
-                }, 0);
-                return `${advCount} badges are "Advanced"`;
-              })()}
+              {`${advancedCount} badges are "Advanced"`}
             </h4>
           </div>
         </div>

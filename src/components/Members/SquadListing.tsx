@@ -7,7 +7,7 @@ import {
   X,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { getDataFromFirebase } from "../../firebase/firebaseUtils";
+import { getDataFromFirebase, isYearKey } from "../../firebase/firebaseUtils";
 import { Squad } from "../../types";
 
 const SquadListing = () => {
@@ -28,10 +28,12 @@ const SquadListing = () => {
     setIsLoading(true);
     const result = await getDataFromFirebase("squads");
     if (result.success && result.data) {
-      const squadsArray = Object.entries(result.data).map(([id, data]) => ({
-        id,
-        ...(data as Omit<Squad, "id">),
-      }));
+      const squadsArray = Object.entries(result.data)
+        .filter(([id]) => !isYearKey(id))
+        .map(([id, data]) => ({
+          id,
+          ...(data as Omit<Squad, "id">),
+        }));
       setSquads(squadsArray);
     }
     setIsLoading(false);
