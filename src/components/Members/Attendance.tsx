@@ -56,7 +56,11 @@ const [squadLeaders, setSquadLeaders] = useState<
         Object.values(paradesData).forEach((monthData: any) => {
           // Loop through dates in each month
           Object.values(monthData).forEach((dateEntry: any) => {
-            if (dateEntry.date) {
+            // Parades are stored by month only, so keep this year's dates
+            if (
+              dateEntry.date &&
+              new Date(dateEntry.date).getFullYear() === CURRENT_YEAR
+            ) {
               dates.push(dateEntry.date);
             }
           });
@@ -117,8 +121,13 @@ setSquadLeaders(leadershipMap);
               }) as Member,
           )
           .filter((m) => {
-            // Filter by active status
-            if (m.status !== MemberStatus.ACTIVE) return false;
+            // Active members, plus members on leave (shown with a tag so
+            // the officer can decide their attendance)
+            if (
+              m.status !== MemberStatus.ACTIVE &&
+              m.status !== MemberStatus.LEAVE
+            )
+              return false;
 
             // Filter by squad
             if (filterSquad !== "all") {
@@ -344,6 +353,7 @@ setSquadLeaders(leadershipMap);
   const stats = getStats();
   const filteredMembers = getFilteredMembers();
   const rankPriority: Record<string, number> = {
+    "Staff Sergeant": 0,
     Sergeant: 1,
     Corporal: 2,
     "Lance Corporal": 3,
@@ -708,6 +718,11 @@ const bIsASL = leadership?.assistants?.includes(b.id);
     ASL
   </span>
 )}
+                              {member.status === MemberStatus.LEAVE && (
+                                <span className="text-xs font-semibold bg-orange-100 text-orange-800 px-2 py-0.5 rounded">
+                                  On Leave
+                                </span>
+                              )}
                             </div>
                             <div className="text-sm text-gray-600">
                               {member.rank} • Squad{" "}
@@ -836,6 +851,11 @@ const bIsASL = leadership?.assistants?.includes(b.id);
     ASL
   </span>
 )}
+                          {member.status === MemberStatus.LEAVE && (
+                                <span className="text-xs font-semibold bg-orange-100 text-orange-800 px-2 py-0.5 rounded">
+                                  On Leave
+                                </span>
+                              )}
                         </div>
                         <div className="text-sm text-gray-600">
                           {member.rank} • Squad{" "}

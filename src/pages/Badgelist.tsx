@@ -41,7 +41,7 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     badge?: Badge;
   } | null>(null);
   const [numberDialogOpen, setNumberDialogOpen] = useState(false);
-  const [badgeToAdd, setBadgeToAdd] = useState<{ category: string; subCategory: string; badge: Badge } | null>(null);
+  const [badgeToAdd, setBadgeToAdd] = useState<{ category: string; subCategory: string; badgeKey: string; badge: Badge } | null>(null);
   const [desiredCount, setDesiredCount] = useState<number>(1);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
     
     // For "One Year Service" badges, open number dialog
     if (badge.name === 'One Year Service') {
-      setBadgeToAdd({ category, subCategory, badge });
+      setBadgeToAdd({ category, subCategory, badgeKey, badge });
       setNumberDialogOpen(true);
       return;
     }
@@ -167,8 +167,8 @@ export const BadgeSelection: React.FC<BadgeSelectionProps> = ({
 
   const handleNumberDialogSubmit = () => {
     if (badgeToAdd) {
-      const { category, subCategory, badge } = badgeToAdd;
-      addBadgeToSelection(category, subCategory, badge.name, badge, undefined, desiredCount);
+      const { category, subCategory, badgeKey, badge } = badgeToAdd;
+      addBadgeToSelection(category, subCategory, badgeKey, badge, undefined, desiredCount);
     }
     setNumberDialogOpen(false);
     setBadgeToAdd(null);

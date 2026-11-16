@@ -4,7 +4,7 @@ import { getDataFromFirebase } from "../firebase/firebaseUtils";
 import Header from "../components/Homepage/Header";
 
 export default function Homepage() {
-  const [nextParadeDate, setNextParadeDate] = useState<Date | null>(null);
+  const [paradeDates, setParadeDates] = useState<Date[] | null>(null);
 
   useEffect(() => {
 
@@ -22,16 +22,10 @@ export default function Homepage() {
           });
         });
 
-        // Find the next parade date (the one that's in the future)
-        const now = new Date();
-        const futureParades = allParadeDates.filter((date) => date > now);
-        const nextParade = futureParades.sort((a, b) => a.getTime() - b.getTime())[0];
-
-        if (nextParade) {
-          setNextParadeDate(nextParade);
-        }
+        setParadeDates(allParadeDates.filter((date) => !isNaN(date.getTime())));
       } else {
         console.error(result.message);
+        setParadeDates([]);
       }
     };
 
@@ -67,9 +61,9 @@ export default function Homepage() {
         </div>
 
         {/* Countdown Timer */}
-        {nextParadeDate ? (
+        {paradeDates ? (
           <div className="mt-8">
-            <CountdownTimer targetDate={nextParadeDate} />
+            <CountdownTimer paradeDates={paradeDates} />
           </div>
         ) : (
           <div className="mt-8 text-center text-xl">Loading next parade...</div>

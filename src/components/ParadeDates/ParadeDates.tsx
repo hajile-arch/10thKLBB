@@ -36,7 +36,17 @@ const ParadeList = () => {
     const fetchParades = async () => {
       const result = await getDataFromFirebase("parades");
       if (result.success) {
-        setParades(result.data as ParadesByMonth);
+        // Parades are stored by month only, so keep this year's dates
+        const currentYear = new Date().getFullYear();
+        const thisYear: ParadesByMonth = {};
+        Object.entries(result.data as ParadesByMonth).forEach(([month, monthParades]) => {
+          Object.entries(monthParades || {}).forEach(([key, parade]) => {
+            if (new Date(parade.date).getFullYear() !== currentYear) return;
+            thisYear[month] ??= {};
+            thisYear[month][key] = parade;
+          });
+        });
+        setParades(thisYear);
       }
       setLoading(false);
     };
@@ -107,7 +117,9 @@ const ParadeList = () => {
                 </h3>
                 {parades && getParadeCount(month) > 0 ? (
                   <div className="space-y-3">
-                    {Object.entries(parades[month]).map(([key, parade]) => (
+                    {Object.entries(parades[month])
+                      .sort(([, a], [, b]) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                      .map(([key, parade]) => (
                       <div
                         key={key}
                         className="bg-blue-50/80 p-4 rounded-lg border border-blue-100 hover:bg-blue-50 transition-colors"

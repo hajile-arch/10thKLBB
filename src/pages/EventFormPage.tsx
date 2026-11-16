@@ -26,6 +26,9 @@ const EventFormPage: React.FC = () => {
 
   const [errors, setErrors] = useState<{ startDateTime?: string; endDateTime?: string }>({});
   const [startMin, setStartMin] = useState<string>("");
+  // Start time of the event as saved, used to allow edits shortly after it starts
+  const [originalStart, setOriginalStart] = useState<Date | null>(null);
+  const EDIT_GRACE_HOURS = 2;
 
   // Helpers to convert between Date/ISO and datetime-local (YYYY-MM-DDTHH:MM)
   const pad = (n: number) => String(n).padStart(2, "0");
@@ -57,6 +60,8 @@ const EventFormPage: React.FC = () => {
       const response = await getDataFromFirebase(`events/${id}`);
       if (response.success && response.data) {
         const fetched = response.data as Partial<EventFormData>;
+        const savedStart = new Date(fetched.startDateTime as string);
+        if (!isNaN(savedStart.getTime())) setOriginalStart(savedStart);
         setFormData({
           name: fetched.name || "",
           startDateTime: isoToDateTimeLocal(fetched.startDateTime as string),
@@ -83,11 +88,20 @@ const EventFormPage: React.FC = () => {
     const start = new Date(data.startDateTime);
     const end = new Date(data.endDateTime);
 
-    if (!data.startDateTime) {
+    // An existing event can still be edited until 2 hours after it starts
+    const editDeadline = originalStart
+      ? new Date(originalStart.getTime() + EDIT_GRACE_HOURS * 60 * 60 * 1000)
+      : null;
+    const isEditingStartedEvent =
+      !!id && !!originalStart && originalStart <= now;
+
+    if (isEditingStartedEvent && editDeadline && now > editDeadline) {
+      e.startDateTime = `This event started more than ${EDIT_GRACE_HOURS} hours ago and can no longer be edited`;
+    } else if (!data.startDateTime) {
       e.startDateTime = "Start date & time is required";
     } else if (isNaN(start.getTime())) {
       e.startDateTime = "Invalid start date/time";
-    } else if (start < now) {
+    } else if (start < now && !isEditingStartedEvent) {
       e.startDateTime = "Start cannot be before today's date & time";
     }
 
@@ -141,10 +155,12 @@ const EventFormPage: React.FC = () => {
     };
 
     try {
-      if (id) {
-        await updateFirebaseData(`events/${id}`, eventToSave);
-      } else {
-        await uploadToFirebase("events", eventToSave);
+      const result = id
+        ? await updateFirebaseData(`events/${id}`, eventToSave)
+        : await uploadToFirebase("events", eventToSave);
+      if (!result.success) {
+        alert(`Error saving event: ${result.message}`);
+        return;
       }
       navigate("/event");
     } catch (err) {
@@ -154,6 +170,11 @@ const EventFormPage: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // When editing an event that has already started, the browser's own
+  // "no past dates" limit would block saving, so it is lifted
+  const isStartedEventEdit =
+    !!id && !!originalStart && originalStart <= new Date();
 
   if (loading) {
     return (
@@ -213,7 +234,7 @@ const EventFormPage: React.FC = () => {
                 onChange={handleInputChange}
                 className={`mt-1 block w-full p-2 border rounded ${errors.startDateTime ? "border-red-400" : "border-gray-300"}`}
                 required
-                min={startMin}
+                min={isStartedEventEdit ? undefined : startMin}
               />
               {errors.startDateTime && <p className="text-sm text-red-600 mt-1">{errors.startDateTime}</p>}
             </div>
@@ -229,7 +250,7 @@ const EventFormPage: React.FC = () => {
                 className={`mt-1 block w-full p-2 border rounded ${errors.endDateTime ? "border-red-400" : "border-gray-300"}`}
                 required
                 // UX: ensure end cannot be earlier than start; min is start or now
-                min={formData.startDateTime || startMin}
+                min={formData.startDateTime || (isStartedEventEdit ? undefined : startMin)}
               />
               {errors.endDateTime && <p className="text-sm text-red-600 mt-1">{errors.endDateTime}</p>}
             </div>

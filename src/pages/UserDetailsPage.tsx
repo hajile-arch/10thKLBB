@@ -24,10 +24,12 @@ const rankAbbreviations: Record<Rank, string> = {
   [Rank.LCPL]: "LCPL",
   [Rank.CPL]: "CPL",
   [Rank.SGT]: "SGT",
+  [Rank.SSGT]: "SSGT",
 };
 
 const getRankColor = (rank: Rank) => {
   const colors: Record<Rank, string> = {
+    [Rank.SSGT]: "#5c0000",
     [Rank.SGT]: "#8b0000",
     [Rank.CPL]: "#00008b",
     [Rank.LCPL]: "#006400",
@@ -47,7 +49,7 @@ export const NCODashboards: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const rankOrder: Rank[] = [Rank.SGT, Rank.CPL, Rank.LCPL, Rank.PTE, Rank.REC];
+  const rankOrder: Rank[] = [Rank.SSGT, Rank.SGT, Rank.CPL, Rank.LCPL, Rank.PTE, Rank.REC];
 
   useEffect(() => {
     const fetchUsers = async () => {

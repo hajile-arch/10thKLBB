@@ -81,6 +81,8 @@ const MemberProfile = () => {
 
   const getRankBadgeColor = (rank: Rank) => {
     switch (rank) {
+      case Rank.SSGT:
+        return 'bg-purple-800 text-white';
       case Rank.SGT:
         return 'bg-purple-600 text-white';
       case Rank.CPL:
@@ -227,6 +229,7 @@ const MemberProfile = () => {
                     onChange={(e) => updateField('rank', e.target.value as Rank)}
                     className="bg-transparent text-white font-bold text-xs"
                   >
+                    <option value={Rank.SSGT} className="text-gray-900">{Rank.SSGT}</option>
                     <option value={Rank.SGT} className="text-gray-900">{Rank.SGT}</option>
                     <option value={Rank.CPL} className="text-gray-900">{Rank.CPL}</option>
                     <option value={Rank.LCPL} className="text-gray-900">{Rank.LCPL}</option>

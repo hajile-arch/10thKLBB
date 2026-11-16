@@ -56,10 +56,16 @@ const EventsListPage: React.FC = () => {
       setLoading(true);
       const response = await getDataFromFirebase("events");
       if (response.success && response.data) {
-        const eventsArray = Object.entries(response.data).map(([id, value]: [string, any]) => ({
-          id,
-          ...value,
-        }));
+        const eventsArray = Object.entries(response.data)
+          .map(([id, value]: [string, any]) => ({
+            id,
+            ...value,
+          }))
+          .sort(
+            (a, b) =>
+              new Date(a.startDateTime).getTime() -
+              new Date(b.startDateTime).getTime()
+          );
         setEvents(eventsArray);
       }
       setLoading(false);

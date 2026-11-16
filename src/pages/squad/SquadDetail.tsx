@@ -13,6 +13,7 @@ const SquadDetail = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [aslSearchQuery, setAslSearchQuery] = useState('');
   const [allMembers, setAllMembers] = useState<Member[]>([]);
   const [availableMembers, setAvailableMembers] = useState<Member[]>([]);
   const [squadData, setSquadData] = useState<Squad>({
@@ -277,8 +278,8 @@ if (squadData.assistantSquadLeaderIds.includes(m.id)) return false;
     <input
       type="text"
       placeholder="Search ASL by name or rank..."
-      value={searchQuery}
-      onChange={(e) => setSearchQuery(e.target.value)}
+      value={aslSearchQuery}
+      onChange={(e) => setAslSearchQuery(e.target.value)}
       className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
     />
     <svg
@@ -289,9 +290,9 @@ if (squadData.assistantSquadLeaderIds.includes(m.id)) return false;
     >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
     </svg>
-    {searchQuery && (
+    {aslSearchQuery && (
       <button
-        onClick={() => setSearchQuery('')}
+        onClick={() => setAslSearchQuery('')}
         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -333,8 +334,8 @@ if (squadData.assistantSquadLeaderIds.includes(m.id)) return false;
         .filter((m) => m.rank === rank)
         .filter((m) => !m.currentSquad || m.currentSquad === currentSquadNum)
         .filter((m) => {
-          if (!searchQuery.trim()) return true;
-          const q = searchQuery.toLowerCase();
+          if (!aslSearchQuery.trim()) return true;
+          const q = aslSearchQuery.toLowerCase();
           return m.name.toLowerCase().includes(q) || m.rank.toLowerCase().includes(q);
         });
 

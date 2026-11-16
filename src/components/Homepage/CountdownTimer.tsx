@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { PARADE_DURATION_HOURS } from "../../enum";
 
 interface CountdownTimerProps {
-  targetDate: Date;
+  paradeDates: Date[];
 }
 
-const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
+type Status = "countdown" | "ongoing" | "none";
+
+const PARADE_DURATION_MS = PARADE_DURATION_HOURS * 60 * 60 * 1000;
+
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ paradeDates }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -12,35 +17,58 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
     seconds: 0,
   });
 
-  const [isTimeUp, setIsTimeUp] = useState(false); // Tracks if countdown is complete
+  const [status, setStatus] = useState<Status>("countdown");
 
   const formatWithLeadingZero = (num: number): string => {
     return num < 10 ? `0${num}` : `${num}`;
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
+    const sorted = [...paradeDates].sort((a, b) => a.getTime() - b.getTime());
 
-      if (difference <= 0) {
-        clearInterval(interval); // Stop the countdown if time is up
-        setIsTimeUp(true); // Indicate that the time is up
+    const tick = () => {
+      const now = Date.now();
+      // The current parade (still running) or the next one to come
+      const current = sorted.find(
+        (date) => date.getTime() + PARADE_DURATION_MS > now
+      );
+
+      if (!current) {
+        setStatus("none");
         return;
       }
 
+      const difference = current.getTime() - now;
+      if (difference <= 0) {
+        setStatus("ongoing");
+        return;
+      }
+
+      setStatus("countdown");
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((difference / (1000 * 60)) % 60);
       const seconds = Math.floor((difference / 1000) % 60);
 
       setTimeLeft({ days, hours, minutes, seconds });
-    }, 1000);
+    };
 
+    tick();
+    const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [targetDate]);
+  }, [paradeDates]);
 
-  if (isTimeUp) {
+  if (status === "none") {
+    return (
+      <div className="text-center">
+        <h4 className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">
+          No upcoming parade scheduled
+        </h4>
+      </div>
+    );
+  }
+
+  if (status === "ongoing") {
     return (
       <div className="text-center">
         <h4 className="text-2xl md:text-3xl font-medium uppercase tracking-wide mb-6">

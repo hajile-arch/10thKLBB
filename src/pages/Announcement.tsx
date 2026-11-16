@@ -23,6 +23,10 @@ interface Parade {
   };
 }
 
+type AnnouncementMap = {
+  [id: string]: { title: string; description: string; time: string };
+};
+
 interface ParadesByMonth {
   [month: string]: {
     [key: string]: Parade;
@@ -37,6 +41,11 @@ interface AnnouncementForm {
 
 export const ParadeAnnouncementsPage = () => {
   const [parades, setParades] = useState<ParadesByMonth | null>(null);
+  // Announcements saved under announcements/<month>/<parade date>/<id>,
+  // re-keyed by parade date so each parade can find its own
+  const [announcementsByDate, setAnnouncementsByDate] = useState<{
+    [paradeDate: string]: AnnouncementMap;
+  }>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [expandedDates, setExpandedDates] = useState<string[]>([]);
@@ -61,6 +70,22 @@ export const ParadeAnnouncementsPage = () => {
       } else {
         setError(result.message);
       }
+
+      const announcementsResult = await getDataFromFirebase("announcements");
+      const byDate: { [paradeDate: string]: AnnouncementMap } = {};
+      if (announcementsResult.success && announcementsResult.data) {
+        Object.values(announcementsResult.data as Record<string, any>).forEach(
+          (monthData) => {
+            Object.entries(monthData || {}).forEach(([paradeDate, items]) => {
+              byDate[paradeDate] = {
+                ...(byDate[paradeDate] || {}),
+                ...(items as AnnouncementMap),
+              };
+            });
+          }
+        );
+      }
+      setAnnouncementsByDate(byDate);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch parade data');
     } finally {
@@ -69,21 +94,13 @@ export const ParadeAnnouncementsPage = () => {
   };
 
   useEffect(() => {
-    const fetchParades = async () => {
-      try {
-        const paradesResult = await getDataFromFirebase("parades");
-        if (paradesResult.success) {
-          setParades(paradesResult.data as ParadesByMonth);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch parade data');
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchParades();
   }, []);
+
+  const getParadeAnnouncements = (parade: Parade): AnnouncementMap => ({
+    ...(parade.announcements || {}),
+    ...(announcementsByDate[parade.date] || {}),
+  });
 
   const toggleDate = (date: string) => {
     setExpandedDates(prev => 
@@ -117,7 +134,7 @@ export const ParadeAnnouncementsPage = () => {
     e.preventDefault();
     if (!selectedDate) return;
   
-    const month = new Date(selectedDate).toLocaleString('default', { month: 'long' });
+    const month = new Date(selectedDate).toLocaleString('en-US', { month: 'long' });
     const announcement: Announcement = {
       ...formData,
       createdAt: new Date().toISOString(),
@@ -168,11 +185,9 @@ export const ParadeAnnouncementsPage = () => {
         .flatMap(([_, monthParades]) => 
           Object.entries(monthParades).map(([_, parade]) => parade)
         )
-        .sort((a, b) => {
-          const monthA = new Date(a.date).getMonth();
-          const monthB = new Date(b.date).getMonth();
-          return monthA - monthB;
-        })
+        // Parades are stored by month only, so keep this year's dates
+        .filter((parade) => new Date(parade.date).getFullYear() === new Date().getFullYear())
+        .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
     : [];
 
   return (
@@ -210,7 +225,7 @@ export const ParadeAnnouncementsPage = () => {
                       {formatDate(parade.date)}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {parade.announcements ? Object.keys(parade.announcements).length : 0} announcements
+                      {Object.keys(getParadeAnnouncements(parade)).length} announcements
                     </span>
                   </div>
                   {expandedDates.includes(parade.date) ? (
@@ -231,7 +246,7 @@ export const ParadeAnnouncementsPage = () => {
                         Add Announcement
                       </button>
                     </div>
-                    {parade.announcements && Object.entries(parade.announcements).map(([id, announcement]) => (
+                    {Object.entries(getParadeAnnouncements(parade)).map(([id, announcement]) => (
                       <div 
                         key={id}
                         className="bg-white rounded-lg p-4 space-y-2 border border-gray-200"
@@ -245,7 +260,7 @@ export const ParadeAnnouncementsPage = () => {
                         </p>
                       </div>
                     ))}
-                    {(!parade.announcements || Object.keys(parade.announcements).length === 0) && (
+                    {Object.keys(getParadeAnnouncements(parade)).length === 0 && (
                       <div className="text-center py-6 text-gray-500">
                         No announcements yet. Add one to get started.
                       </div>
