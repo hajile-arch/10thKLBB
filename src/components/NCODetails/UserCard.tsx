@@ -8,7 +8,6 @@ const rankAbbreviations: Record<Rank, string> = {
   "Lance Corporal": "LCPL",
   Corporal: "CPL",
   Sergeant: "SGT",
-  "Staff Sergeant": "SSGT",
 };
 
 interface UserCardProps {

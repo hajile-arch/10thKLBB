@@ -17,14 +17,13 @@ export enum Rank {
   LCPL = 'Lance Corporal',
   CPL = 'Corporal',
   SGT = 'Sergeant',
-  SSGT = 'Staff Sergeant',
 
 }
 
 export const RANK_OPTIONS: Rank[] = Object.values(Rank);
 
 // Ranks that count as NCO (used for the President's Award)
-export const NCO_RANKS: Rank[] = [Rank.LCPL, Rank.CPL, Rank.SGT, Rank.SSGT];
+export const NCO_RANKS: Rank[] = [Rank.LCPL, Rank.CPL, Rank.SGT];
 
 // Year the member is treated as entering the Senior Section (the year they turn 13)
 export const SENIOR_SECTION_AGE = 13;

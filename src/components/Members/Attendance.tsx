@@ -353,7 +353,6 @@ setSquadLeaders(leadershipMap);
   const stats = getStats();
   const filteredMembers = getFilteredMembers();
   const rankPriority: Record<string, number> = {
-    "Staff Sergeant": 0,
     Sergeant: 1,
     Corporal: 2,
     "Lance Corporal": 3,
