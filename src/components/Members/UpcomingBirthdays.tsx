@@ -1,14 +1,12 @@
 import { ChevronLeft, ChevronRight, Cake } from 'lucide-react';
 import React from 'react';
+import { Member, parseDob } from '../../enum';
 
-interface Member {
+interface BirthdayMember {
+  id: string;
   name: string;
   rank: string;
-  birthday: string;
   squadName: string;
-}
-
-interface BirthdayMember extends Member {
   date: Date;
   daysUntil: number;
 }
@@ -21,23 +19,17 @@ const UpcomingBirthdays: React.FC<UpcomingBirthdaysProps> = ({ members }) => {
   const [currentPage, setCurrentPage] = React.useState(0);
   const itemsPerPage = 5;
 
-  const calculateUpcomingBirthday = (birthday: string) => {
-    const today = new Date();
-    const birthDate = new Date(birthday);
-    const nextBirthday = new Date(today.getFullYear(), birthDate.getMonth(), birthDate.getDate());
-    
-    // Check if birthday is today
-    const isToday = nextBirthday.toDateString() === today.toDateString();
-    if (isToday) {
-      return { date: nextBirthday, daysUntil: 0 };
-    }
-    
+  const calculateUpcomingBirthday = (month: number, day: number) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const nextBirthday = new Date(today.getFullYear(), month, day);
+
     // If birthday has passed this year, set to next year
     if (nextBirthday < today) {
       nextBirthday.setFullYear(today.getFullYear() + 1);
     }
-    
-    const daysUntil = Math.ceil((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+    const daysUntil = Math.round((nextBirthday.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     return { date: nextBirthday, daysUntil };
   };
 
@@ -49,14 +41,21 @@ const UpcomingBirthdays: React.FC<UpcomingBirthdaysProps> = ({ members }) => {
   };
 
   // Sort all members by upcoming birthday
-  const sortedMembers = members
-    .map(member => ({
-      ...member,
-      ...calculateUpcomingBirthday(member.birthday)
-    }))
-    .sort((a, b) => a.daysUntil - b.daysUntil);
+  const sortedMembers: BirthdayMember[] = members
+    .flatMap(member => {
+      const dob = parseDob(member.dob);
+      if (!dob) return [];
+      return [{
+        id: member.id,
+        name: member.name,
+        rank: member.rank,
+        squadName: member.currentSquad ? `Squad ${member.currentSquad}` : 'Unassigned',
+        ...calculateUpcomingBirthday(dob.month, dob.day)
+      }];
+    })
+    .sort((a, b) => a.daysUntil - b.daysUntil || a.name.localeCompare(b.name));
 
-  const totalPages = Math.ceil(sortedMembers.length / itemsPerPage);
+  const totalPages = Math.max(1, Math.ceil(sortedMembers.length / itemsPerPage));
   const currentMembers = sortedMembers.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
@@ -116,7 +115,7 @@ const UpcomingBirthdays: React.FC<UpcomingBirthdaysProps> = ({ members }) => {
           <tbody>
             {currentMembers.map((member: BirthdayMember) => (
               <tr 
-                key={member.name} 
+                key={member.id} 
                 className="border-t border-gray-700 hover:bg-gray-700/30 transition-colors"
               >
                 <td className="py-4 px-4">
@@ -130,7 +129,7 @@ const UpcomingBirthdays: React.FC<UpcomingBirthdaysProps> = ({ members }) => {
                 </td>
                 <td className="py-4 px-4">
                   <span className="text-gray-300 text-sm">
-                    {new Date(member.birthday).toLocaleDateString('en-US', {
+                    {member.date.toLocaleDateString('en-US', {
                       month: 'long',
                       day: 'numeric'
                     })}
@@ -138,7 +137,7 @@ const UpcomingBirthdays: React.FC<UpcomingBirthdaysProps> = ({ members }) => {
                 </td>
                 <td className="py-4 px-4">
                   <span className="text-gray-300 text-sm">
-                    {member.daysUntil} days
+                    {member.daysUntil} {member.daysUntil === 1 ? 'day' : 'days'}
                   </span>
                 </td>
                 <td className="py-4 px-4">

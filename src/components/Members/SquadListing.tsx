@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   MoreVertical,
   Users,
@@ -6,45 +6,40 @@ import {
   ChevronRight,
   X,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { getDataFromFirebase, isYearKey } from "../../firebase/firebaseUtils";
-import { Squad } from "../../types";
+import { useNavigate } from "react-router-dom";
+import { Member, Squad, parseDob } from "../../enum";
+import { getSquadPeople } from "../../firebase/squadService";
 
-const SquadListing = () => {
-  const [squads, setSquads] = useState<Squad[]>([]);
+interface SquadListingProps {
+  squads: Squad[];
+  members: Member[];
+  isLoading: boolean;
+}
+
+const MONTHS_SHORT = [
+  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+];
+
+const formatBirthday = (dob?: string) => {
+  const parsed = parseDob(dob);
+  return parsed ? `${parsed.day} ${MONTHS_SHORT[parsed.month]}` : "";
+};
+
+const SquadListing = ({ squads, members, isLoading }: SquadListingProps) => {
   const [startIndex, setStartIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedSquad, setSelectedSquad] = useState<Squad | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchSquads();
-  }, []);
-
-  const fetchSquads = async () => {
-    setIsLoading(true);
-    const result = await getDataFromFirebase("squads");
-    if (result.success && result.data) {
-      const squadsArray = Object.entries(result.data)
-        .filter(([id]) => !isYearKey(id))
-        .map(([id, data]) => ({
-          id,
-          ...(data as Omit<Squad, "id">),
-        }));
-      setSquads(squadsArray);
-    }
-    setIsLoading(false);
-  };
-
   const handlePrevious = () => {
     setStartIndex((prev) => Math.max(0, prev - 3));
   };
 
   const handleNext = () => {
-    setStartIndex((prev) => Math.min(squads.length - 3, prev + 3));
+    setStartIndex((prev) => Math.max(0, Math.min(squads.length - 3, prev + 3)));
   };
 
   const visibleSquads = squads.slice(startIndex, startIndex + 3);
@@ -65,11 +60,15 @@ const SquadListing = () => {
     const correctPassword = "10thkl"; // Replace with your desired password
     if (password === correctPassword) {
       setShowPasswordModal(false);
-      navigate("/squadmanagement");
+      navigate("/squad");
     } else {
       setError("Incorrect password. Please try again.");
     }
   };
+
+  const selectedPeople = selectedSquad
+    ? getSquadPeople(selectedSquad, members)
+    : null;
 
   if (isLoading) {
     return (
@@ -106,9 +105,15 @@ const SquadListing = () => {
         </div>
       </div>
       <div className="space-y-4">
-        {visibleSquads.map((squad) => (
+        {squads.length === 0 && (
+          <p className="text-sm text-gray-400">No squads set up for this year yet.</p>
+        )}
+        {visibleSquads.map((squad) => {
+          const { leader, assistants, regulars } = getSquadPeople(squad, members);
+          const headcount = (leader ? 1 : 0) + assistants.length + regulars.length;
+          return (
           <div
-            key={squad.id}
+            key={squad.squadNumber}
             className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors cursor-pointer"
             onClick={() => handleSquadClick(squad)}
           >
@@ -119,29 +124,35 @@ const SquadListing = () => {
                 </div>
                 <div>
                   <h4 className="text-white font-medium">
-                    {squad.squadNumber}
+                    Squad {squad.squadNumber}
                   </h4>
                   <p className="text-sm text-gray-400">
-                    {squad.squadLeaderRank} {squad.squadLeader}
+                    {leader ? `${leader.rank} ${leader.name}` : "No squad leader"}
                   </p>
                 </div>
               </div>
               <div className="text-right">
-                {/* <p className="text-white">{squad.members.length} members</p>
-                <p className="text-sm text-gray-400">{squad.squadName}</p> */}
+                <p className="text-sm text-gray-400">{headcount} in squad</p>
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Modal */}
-      {selectedSquad && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-gray-800 rounded-lg shadow-lg w-50% p-6">
+      {selectedSquad && selectedPeople && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={closeModal}
+        >
+          <div
+            className="bg-gray-800 rounded-lg shadow-lg w-full max-w-lg max-h-[85vh] overflow-y-auto p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-bold text-white">
-                {selectedSquad.squadName || "Unnamed Squad"}
+                Squad {selectedSquad.squadNumber}
               </h3>
               <button
                 onClick={closeModal}
@@ -152,46 +163,50 @@ const SquadListing = () => {
             </div>
             <div className="space-y-3 text-sm text-gray-300">
               <p>
-                <span className="font-medium text-gray-200">Squad Number:</span>{" "}
-                {selectedSquad.squadNumber}
-              </p>
-              <p>
                 <span className="font-medium text-gray-200">Squad Leader:</span>{" "}
-                {selectedSquad.squadLeaderRank} {selectedSquad.squadLeader}
+                {selectedPeople.leader
+                  ? `${selectedPeople.leader.rank} ${selectedPeople.leader.name}`
+                  : "N/A"}
               </p>
               <p>
                 <span className="font-medium text-gray-200">
-                  Assistant Leader:
+                  Assistant {selectedPeople.assistants.length > 1 ? "Leaders" : "Leader"}:
                 </span>{" "}
-                {selectedSquad.assistantSquadLeader || "N/A"}
+                {selectedPeople.assistants
+                  .map((m) => `${m.rank} ${m.name}`)
+                  .join(", ") || "N/A"}
               </p>
               <p>
                 <span className="font-medium text-gray-200">Officers:</span>{" "}
-                {[selectedSquad.officerOne, selectedSquad.officerTwo]
+                {[selectedSquad.officerName, selectedSquad.officerTwoName]
                   .filter(Boolean)
                   .join(", ") || "N/A"}
               </p>
               <div>
-                <span className="font-medium text-gray-200">Members:</span>
+                <span className="font-medium text-gray-200">
+                  Members ({selectedPeople.regulars.length}):
+                </span>
                 <ul className="mt-2 space-y-2">
-                  {selectedSquad.members.map((member, index) => (
+                  {selectedPeople.regulars.map((member) => (
                     <li
-                      key={index}
-                      className="flex justify-between items-center bg-gray-700 p-2 rounded-lg"
+                      key={member.id}
+                      className="flex justify-between items-center gap-4 bg-gray-700 p-2 rounded-lg"
                     >
                       <div className="flex gap-2 items-center">
                         <span className="text-gray-300">{member.rank}</span>
                         <span className="text-white">{member.name}</span>
                       </div>
-                      <span className="font-medium ml-[150px] text-white">
-                        {member.birthday}
+                      <span className="font-medium text-white whitespace-nowrap">
+                        {formatBirthday(member.dob)}
                       </span>
                     </li>
                   ))}
+                  {selectedPeople.regulars.length === 0 && (
+                    <li className="text-gray-400">No members assigned.</li>
+                  )}
                 </ul>
               </div>
             </div>
-            <div className="mt-4 text-right"></div>
           </div>
         </div>
       )}

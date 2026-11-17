@@ -1,7 +1,6 @@
 import { MoreVertical } from "lucide-react";
-import { useEffect, useState } from "react";
-import { getDataFromFirebase } from "../../firebase/firebaseUtils";
 import { Link } from "react-router-dom";
+import { Member } from "../../enum";
 
 type RankCounts = {
   rank: string;
@@ -22,38 +21,29 @@ const rankColors: Record<string, string> = {
 //   Private: "▪",
 // };
 
-const UserAnalytics = () => {
-  const [rankData, setRankData] = useState<RankCounts[]>([]);
-  const [totalUsers, setTotalUsers] = useState(0);
+interface UserAnalyticsProps {
+  members: Member[];
+}
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const result = await getDataFromFirebase("users");
-      if (result.success && result.data) {
-        const rankCounts: Record<string, number> = {
-          Sergeant: 0,
-          Corporal: 0,
-          "Lance Corporal": 0,
-          Private: 0,
-        };
+const UserAnalytics = ({ members }: UserAnalyticsProps) => {
+  // Privates (probates) count as NCOs here; Recruits do not
+  const rankCounts: Record<string, number> = {
+    Sergeant: 0,
+    Corporal: 0,
+    "Lance Corporal": 0,
+    Private: 0,
+  };
 
-        Object.values(result.data).forEach((user: any) => {
-          if (user.rank && user.rank !== "Recruit") {
-            rankCounts[user.rank]++;
-          }
-        });
+  members.forEach((member) => {
+    if (member.rank in rankCounts) {
+      rankCounts[member.rank]++;
+    }
+  });
 
-        const data = Object.entries(rankCounts).map(([rank, count]) => ({
-          rank,
-          count
-        }));
-
-        setRankData(data);
-        setTotalUsers(Object.values(rankCounts).reduce((a, b) => a + b, 0));
-      }
-    };
-    fetchUsers();
-  }, []);
+  const rankData: RankCounts[] = Object.entries(rankCounts).map(
+    ([rank, count]) => ({ rank, count })
+  );
+  const totalUsers = rankData.reduce((sum, { count }) => sum + count, 0);
 
   return (
     <div className="col-span-4 bg-gray-900 rounded-2xl p-6 border border-gray-800">
@@ -82,7 +72,7 @@ const UserAnalytics = () => {
               {count.toLocaleString()}
             </div>
             <div className="text-xs text-gray-400">
-              {((count / totalUsers) * 100).toFixed(1)}% of total
+              {totalUsers > 0 ? ((count / totalUsers) * 100).toFixed(1) : "0.0"}% of total
             </div>
           </div>
         ))}

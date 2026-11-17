@@ -145,6 +145,7 @@ export interface Squad {
   squadNumber: number;   // 1–8
   squadName?:string;
   officerName?: string;
+  officerTwoName?: string;    // optional second officer
 
   squadLeaderId?: string;
 assistantSquadLeaderIds: string[];
@@ -213,3 +214,25 @@ export interface EventFormData {
   venue: string;
   programme: string;
 }
+
+
+// =====================
+// DATE HELPERS
+// =====================
+
+// Reads "YYYY-MM-DD" without timezone shifts (new Date("YYYY-MM-DD") is UTC)
+export const parseDob = (
+  dob?: string
+): { year: number; month: number; day: number } | null => {
+  const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(dob || "");
+  if (!match) return null;
+  return {
+    year: Number(match[1]),
+    month: Number(match[2]) - 1, // 0 = January
+    day: Number(match[3]),
+  };
+};
+
+// Members who are currently part of the company
+export const isCurrentMember = (member: Member): boolean =>
+  member.status === MemberStatus.ACTIVE || member.status === MemberStatus.LEAVE;

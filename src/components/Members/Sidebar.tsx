@@ -10,11 +10,13 @@ import {
   Key,
   Cake,
   Search,
+  Contact,
 } from 'lucide-react';
 
 const Sidebar = () => {
   const navItems = [
     { icon: <House className="h-5 w-5" />, label: 'Home', path: '/' },
+    { icon: <Contact className="h-5 w-5" />, label: 'Members', path: '/members' },
     { icon: <Users className="h-5 w-5" />, label: 'NCOs', path: '/ncos' },
     { icon: <BarChart3 className="h-5 w-5" />, label: 'Attendance', path: '/attendance' },
     {
@@ -25,7 +27,7 @@ const Sidebar = () => {
     },
     { icon: <Calendar className="h-5 w-5" />, label: 'Event Calendar', path: '/calendar' },
     { icon: <Cake className="h-5 w-5" />, label: 'Birthday List', path: '/BirthdayList' },
-    { icon: <Search className="h-5 w-5" />, label: 'Attendance Checker', path: '/AttendanceChecker' },
+    { icon: <Search className="h-5 w-5" />, label: 'Attendance Checker', path: '/attendance/stats' },
   ];
 
   return (

@@ -11,6 +11,7 @@ import Write from "./pages/Write";
 import Awards from "./pages/Award.tsx"
 import BadgeList from "./pages/Read";
 import Home from "./pages/Homepage";
+import MemberList from "./pages/MemberList.tsx";
 import BadgeSelection from "./pages/Badgelist";
 import { NCODashboards } from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
@@ -25,7 +26,6 @@ import MembersDashboard from "./pages/Members.tsx";
 import SecretPage from "./pages/secret.tsx";
 import LeaveForm from "./pages/LeaveForm.tsx";
 import SquadManagement from "./components/SquadListing/SquadManagement.tsx";
-import TestToast from "./pages/test.tsx";
 import { ToastContainer } from "react-toastify";
 import AttendancePage from "./components/Members/Attendance.tsx";
 import TotalParadesPage from "./pages/AttendanceChecker.tsx";
@@ -43,7 +43,6 @@ import SquadDetail from "./pages/squad/SquadDetail.tsx";
 import AttendanceStatsPage from "./components/Attendance/AttendanceStats.tsx";
 import MemberProfile from "./components/Members/MemberProfile.tsx"
 
-import CheckMembers from "./pages/Debug.tsx";
 import BadgeAdder from "./pages/ncos.tsx";
 
 
@@ -84,17 +83,16 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
           <Route path="/MemberRegister" element={<MemberSelfRegistration />} />
+          <Route path="/members" element={<MemberList />} />
           <Route path="/members/:memberId" element={<MemberProfile />} />
           <Route path="/squad" element={<SquadOverview />} />        
           <Route path="/squad/:squadNumber" element={<SquadDetail />} />
-          <Route path="/debug" element={<CheckMembers/>}/>
           <Route path="/ncos" element={<NCODashboards />} />
           <Route path="/BadgeAdder" element={<BadgeAdder />} />
           <Route path="/404" element={<UnderConstruction />} />
           <Route path="/attendance" element={<AttendancePage />} />
           <Route path="/attendance/stats" element={<AttendanceStatsPage />} />
           <Route path="/squadmanagement" element={<SquadManagement />} />
-          <Route path="/test" element={<TestToast />} />
           <Route path="/secret" element={<SecretPage />} />
           <Route path="/member" element={<MembersDashboard />} />
           <Route path="/editMember" element={<UserDetailsPageEdit />} />

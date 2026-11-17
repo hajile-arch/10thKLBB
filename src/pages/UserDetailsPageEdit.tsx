@@ -1,36 +1,38 @@
-// UserPage.tsx (Need include delete button for each NCOs)
+// Member management: pick a member, edit their details and badges
 import React, { useEffect, useState } from "react";
-import { getDataFromFirebase, updateDataInFirebase } from "../firebase/firebaseUtils";
-import { User } from "../types";
 import { Users, User as UserIcon, Users2, ChevronRight } from "lucide-react";
-import EditUserForm from "../components/EditMembers/EditUserForm";
+import EditUserForm, { MemberEdits } from "../components/EditMembers/EditUserForm";
+import {
+  getAllMembers,
+  getAllMemberBadges,
+  updateMember,
+  saveMemberBadges,
+} from "../firebase/memberService";
+import { Member } from "../enum";
+import { SelectedBadge } from "../types";
 
+type RankName = "Sergeant" | "Corporal" | "Lance Corporal" | "Private" | "Recruit";
 
 const UsersPage: React.FC = () => {
-  const [users, setUsers] = useState<User[]>([]);
+  const [users, setUsers] = useState<Member[]>([]);
+  const [badgesByMember, setBadgesByMember] = useState<Record<string, SelectedBadge[]>>({});
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [editedUser, setEditedUser] = useState<Partial<User> | null>(null);
+  const [editingUser, setEditingUser] = useState<Member | null>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const result = await getDataFromFirebase("users");
-        if (result.success) {
-          const fetchedUsers: User[] = Object.entries(result.data || {}).map(
-            ([firebaseId, user]) => ({
-              ...(user as Omit<User, "firebaseId">),
-              firebaseId,
-            })
-          );
-          setUsers(fetchedUsers);
-        } else {
-          setError(result.message || "Failed to fetch user data.");
-        }
+        const [members, badges] = await Promise.all([
+          getAllMembers(),
+          getAllMemberBadges(),
+        ]);
+        setUsers(members.sort((a, b) => (a.name || "").localeCompare(b.name || "")));
+        setBadgesByMember(badges as Record<string, SelectedBadge[]>);
       } catch {
-        setError("An error occurred while fetching user data.");
+        setError("An error occurred while fetching member data.");
       } finally {
         setLoading(false);
       }
@@ -39,38 +41,51 @@ const UsersPage: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleEditClick = (user: User) => {
+  const handleEditClick = (user: Member) => {
     setEditingUser(user);
-    setEditedUser(user);
   };
 
-  const handleSaveChanges = async (updatedUser: Partial<User>) => {
+  const handleSaveChanges = async (edits: MemberEdits, badges: SelectedBadge[]) => {
     if (!editingUser) return;
 
+    setSaving(true);
     try {
-      const result = await updateDataInFirebase(editingUser.firebaseId, updatedUser);
-      if (result.success) {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.firebaseId === editingUser.firebaseId ? { ...user, ...updatedUser } : user
-          )
-        );
-        setEditingUser(null);
-        setEditedUser(null);
-      } else {
-        alert("Failed to save changes.");
+      const memberResult = await updateMember(editingUser.id, edits as Partial<Member>);
+      if (!memberResult.success) {
+        alert(`Failed to save changes: ${memberResult.error || "unknown error"}`);
+        return;
       }
+
+      const badgeResult = await saveMemberBadges(editingUser.id, badges);
+      if (!badgeResult.success) {
+        alert(
+          `Member details were saved, but the badges were not: ${badgeResult.error || "unknown error"}`
+        );
+        return;
+      }
+
+      const { yearJoined, ...rest } = edits;
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === editingUser.id
+            ? { ...user, ...rest, yearJoined: yearJoined ?? undefined }
+            : user
+        )
+      );
+      setBadgesByMember((prev) => ({ ...prev, [editingUser.id]: badges }));
+      setEditingUser(null);
     } catch {
       alert("An error occurred while saving changes.");
+    } finally {
+      setSaving(false);
     }
   };
 
   const handleCancelEdit = () => {
     setEditingUser(null);
-    setEditedUser(null);
   };
 
-  const getRankColor = (rank: User['rank']) => ({
+  const getRankColor = (rank: RankName) => ({
     "Sergeant": "bg-red-800",
     "Corporal": "bg-blue-800",
     "Lance Corporal": "bg-green-800",
@@ -78,7 +93,7 @@ const UsersPage: React.FC = () => {
     "Recruit": "bg-gray-500"
   }[rank]);
 
-  const getRankIcon = (rank: User['rank']) => {
+  const getRankIcon = (rank: RankName) => {
     const size = 24;
     const color = "white";
     switch (rank) {
@@ -103,7 +118,7 @@ const UsersPage: React.FC = () => {
     </div>
   );
 
-  const rankOrder: User['rank'][] = ["Sergeant", "Corporal", "Lance Corporal", "Private", "Recruit"];
+  const rankOrder: RankName[] = ["Sergeant", "Corporal", "Lance Corporal", "Private", "Recruit"];
   const groupedUsers = rankOrder.map((rank) => ({
     rank,
     users: users.filter((user) => user.rank === rank),
@@ -118,13 +133,16 @@ const UsersPage: React.FC = () => {
           </h1>
           <div className="flex items-center space-x-2 text-gray-400">
             <Users size={24} />
-            <span className="text-lg">{users.length} Users</span>
+            <span className="text-lg">{users.length} Members</span>
           </div>
         </div>
 
-        {editingUser && editedUser ? (
+        {editingUser ? (
           <EditUserForm
-            editedUser={editedUser}
+            key={editingUser.id}
+            member={editingUser}
+            badges={badgesByMember[editingUser.id] || []}
+            saving={saving}
             onSave={handleSaveChanges}
             onCancel={handleCancelEdit}
           />
@@ -142,14 +160,17 @@ const UsersPage: React.FC = () => {
                 <div className="p-6 space-y-4">
                   {users.map((user) => (
                     <div
-                      key={user.firebaseId}
+                      key={user.id}
                       className="bg-gray-700 rounded-lg p-4 hover:bg-gray-600 transition-colors group cursor-pointer"
                       onClick={() => handleEditClick(user)}
                     >
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="text-lg font-medium text-white">{user.name}</h3>
-                          <p className="text-gray-400 text-sm">{user.squad}</p>
+                          <p className="text-gray-400 text-sm">
+                            {user.currentSquad ? `Squad ${user.currentSquad}` : "Unassigned"}
+                            {user.status && user.status !== "Active" && ` • ${user.status}`}
+                          </p>
                         </div>
                         <ChevronRight className="text-gray-400 group-hover:text-white transition-colors" />
                       </div>
