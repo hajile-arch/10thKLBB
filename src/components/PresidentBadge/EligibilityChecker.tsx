@@ -11,7 +11,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 
 import EligibilitySummary from "./EligibilitySummary";
 
-import { Member, SelectedBadge } from "../../enum";
+import { Member, SelectedBadge, NCO_RANKS, SENIOR_SECTION_AGE } from "../../enum";
 
 // =====================
 // CONSTANTS
@@ -52,11 +52,41 @@ const checkRequiredBadges = (
   return missing;
 };
 
-const checkMembershipDuration = (member: Member): boolean => {
-  if (!member.yearJoined) return false;
-  const currentYear = new Date().getFullYear();
-  return currentYear - member.yearJoined >= 3;
+// Ages and years use the year only (birthdays are ignored on purpose)
+const getBirthYear = (member: Member): number | null => {
+  const year = member.dob ? parseInt(member.dob.slice(0, 4), 10) : NaN;
+  return isNaN(year) ? null : year;
 };
+
+const getYearJoined = (member: Member): number | null => {
+  if (member.yearJoined) return member.yearJoined;
+  const match = member.yearJoinedBB?.match(/\b(\d{4})\b/);
+  return match ? parseInt(match[1], 10) : null;
+};
+
+// Years in the Senior Section: counted from the later of the year they joined
+// BB and the year they turned 13 (when members move up from the Junior Section)
+const getSeniorYears = (member: Member): number | null => {
+  const joined = getYearJoined(member);
+  const birthYear = getBirthYear(member);
+  if (joined === null || birthYear === null) return null;
+  const seniorStart = Math.max(joined, birthYear + SENIOR_SECTION_AGE);
+  return new Date().getFullYear() - seniorStart;
+};
+
+const checkMembershipDuration = (member: Member): boolean => {
+  const years = getSeniorYears(member);
+  return years !== null && years >= 3;
+};
+
+const checkAge = (member: Member): boolean => {
+  const birthYear = getBirthYear(member);
+  if (birthYear === null) return false;
+  const age = new Date().getFullYear() - birthYear;
+  return age >= 15 && age <= 20;
+};
+
+const checkIsNco = (member: Member): boolean => NCO_RANKS.includes(member.rank);
 
 const getProficiencyBadgesByGroup = (
   badges: SelectedBadge[]
@@ -109,6 +139,8 @@ const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
 
   const missingRequiredBadges = checkRequiredBadges(badges, REQUIRED_BADGES);
   const isMembershipSufficient = checkMembershipDuration(member);
+  const isAgeEligible = checkAge(member);
+  const isNco = checkIsNco(member);
   const proficiencyBadgesByGroup = getProficiencyBadgesByGroup(badges);
 
   const totalProficiencyBadges = Object.values(proficiencyBadgesByGroup).reduce(
@@ -123,7 +155,9 @@ const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
 
   const criteria = useMemo(() => {
     const base = [
-      { text: "At least 3 years of membership.", fulfilled: isMembershipSufficient },
+      { text: "Aged 15 to 20 this year.", fulfilled: isAgeEligible },
+      { text: "Holds an NCO rank (Lance Corporal or above).", fulfilled: isNco },
+      { text: "At least 3 years of service in the Senior Section.", fulfilled: isMembershipSufficient },
       ...REQUIRED_BADGES.map((badge) => ({
         text: `Possess the badge: ${badge}.`,
         fulfilled: !missingRequiredBadges.includes(badge),
@@ -139,6 +173,8 @@ const EligibilityChecker: React.FC<Props> = ({ member, memberBadges }) => {
 
     return [...base, ...groupCriteria];
   }, [
+    isAgeEligible,
+    isNco,
     isMembershipSufficient,
     missingRequiredBadges,
     totalProficiencyBadges,

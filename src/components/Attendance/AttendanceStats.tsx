@@ -47,7 +47,10 @@ const AttendanceStatsPage = () => {
               id,
             } as Member)
         )
-        .filter((m) => m.status === MemberStatus.ACTIVE);
+        .filter(
+          (m) =>
+            m.status === MemberStatus.ACTIVE || m.status === MemberStatus.LEAVE
+        );
 
       setMembers(membersList);
 

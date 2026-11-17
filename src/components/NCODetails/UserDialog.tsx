@@ -40,7 +40,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ user, badges, onClose }) => {
   const totalBadges = uniqueBadges.length;
 
   // progress (adjust later if needed)
-  const targetBadges = 50;
+  const targetBadges = 45;
   const progress = Math.min((totalBadges / targetBadges) * 100, 100);
 
   return (
@@ -84,7 +84,7 @@ const UserDialog: React.FC<UserDialogProps> = ({ user, badges, onClose }) => {
       <DialogContent>
         <Box py={2}>
           <Typography variant="body2" gutterBottom>
-            Badge Progress: {uniqueBadges.length}/45
+            Badge Progress: {uniqueBadges.length}/{targetBadges}
           </Typography>
 
           <LinearProgress

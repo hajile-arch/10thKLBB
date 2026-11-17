@@ -4,8 +4,6 @@ import { uploadToFirebase } from "../firebase/firebaseUtils";
 import { UserFormInput } from "../components/addBadges/UserFormInput";
 import { UserFormMessage } from "../components/addBadges/UserFormMessage";
 import { AwardBadgeSelection } from "../pages/AwardBadgelist";
-import { ref, get } from "firebase/database";
-import { db } from "../firebase/firebaseConfig";
 import { RANK_OPTIONS, SQUAD_OPTIONS } from "../enum";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { Loader2, Send } from "lucide-react";
@@ -40,26 +38,9 @@ export const Awards: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const usersRef = ref(db, "awards");
-      const snapshot = await get(usersRef);
-
-      if (snapshot.exists()) {
-        const users = snapshot.val();
-        const userExists = Object.values(users).some(
-          (user: any) => user.name === name && user.dob === dob
-        );
-
-        if (userExists) {
-          setMessage("This user has already been registered!");
-          return;
-        }
-      }
-    } catch (error) {
-      console.error("Error checking user existence:", error);
-      setMessage("Error checking if user exists. Please try again.");
-      return;
-    }
+    // Resubmitting is allowed on purpose: members may submit again to correct
+    // an application. The newest one is shown, and older copies can be
+    // cleaned up on the duplicate-removal page.
 
     if (!name || !dob || !rank || !squad || !yearJoined || !googleDriveLink) {
       setMessage("All fields, including 'Google Drive Link', are required!");

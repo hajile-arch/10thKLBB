@@ -22,6 +22,15 @@ export enum Rank {
 
 export const RANK_OPTIONS: Rank[] = Object.values(Rank);
 
+// Ranks that count as NCO (used for the President's Award)
+export const NCO_RANKS: Rank[] = [Rank.LCPL, Rank.CPL, Rank.SGT];
+
+// Year the member is treated as entering the Senior Section (the year they turn 13)
+export const SENIOR_SECTION_AGE = 13;
+
+// A parade runs from its start time for this long (7:30am to 1:30pm)
+export const PARADE_DURATION_HOURS = 6;
+
 export enum SquadOption {
   SQ1 = 'Squad 1',
   SQ2 = 'Squad 2',
