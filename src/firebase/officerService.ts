@@ -25,13 +25,21 @@ export type OfficerInput = Omit<Officer, "id">;
 
 const db = () => getDatabase(app);
 
-// Photo path: an explicit file name, else one made from the name
-// ("Caleb Loo" -> /images/pfp/caleb-loo.jpg), as on the NCO page
+// File name made from the officer's name: "Mr Nigel" -> "mr-nigel"
+export const photoSlug = (name: string) => name.trim().toLowerCase().replace(/\s+/g, "-");
+
+const PHOTO_EXTENSIONS = ["jpg", "png", "jpeg", "webp"];
+
+// Photo paths to try, in order: the chosen file name if one is set, else the
+// name-based file in each common format ("mr-nigel.jpg", "mr-nigel.png", ...)
+export const officerPhotoCandidates = (officer: Pick<Officer, "name" | "photo">) =>
+  officer.photo?.trim()
+    ? [`/images/pfp/${officer.photo.trim()}`]
+    : PHOTO_EXTENSIONS.map((ext) => `/images/pfp/${photoSlug(officer.name)}.${ext}`);
+
+// First photo path to try (used for hints and simple previews)
 export const officerPhoto = (officer: Pick<Officer, "name" | "photo">) =>
-  `/images/pfp/${
-    officer.photo?.trim() ||
-    `${officer.name.trim().toLowerCase().replace(/\s+/g, "-")}.jpg`
-  }`;
+  officerPhotoCandidates(officer)[0];
 
 export const DEFAULT_PHOTO = "/images/pfp/default.jpg";
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowDown, ArrowLeft, ArrowUp, Pencil, Plus, Trash2 } from "lucide-react";
+import OfficerPhoto from "../components/OfficerPhoto";
 import {
-  DEFAULT_PHOTO,
   OFFICER_RANKS,
   Officer,
   OfficerInput,
@@ -10,7 +10,7 @@ import {
   addOfficer,
   deleteOfficer,
   getOfficers,
-  officerPhoto,
+  photoSlug,
   saveOrder,
   updateOfficer,
 } from "../firebase/officerService";
@@ -199,13 +199,12 @@ const OfficerManage = () => {
                 value={form.photo || ""}
                 onChange={(e) => setForm({ ...form, photo: e.target.value })}
                 placeholder={
-                  form.name.trim()
-                    ? officerPhoto({ name: form.name }).replace("/images/pfp/", "")
-                    : "e.g. jane-tan.jpg"
+                  form.name.trim() ? `${photoSlug(form.name)}.jpg or .png` : "e.g. jane-tan.jpg"
                 }
               />
               <span className="mt-1 block text-xs text-gray-500">
-                Put the photo in <code>public/images/pfp/</code>. Leave blank to use the name-based file shown.
+                Put the photo in <code>public/images/pfp/</code>. Leave blank to use the name-based file
+                shown (.jpg, .png, .jpeg or .webp all work).
               </span>
             </label>
           </div>
@@ -258,13 +257,10 @@ const OfficerManage = () => {
                     <ul className="divide-y">
                       {group.map((officer, index) => (
                         <li key={officer.id} className="flex items-center gap-3 px-4 py-3">
-                          <img
-                            src={officerPhoto(officer)}
+                          <OfficerPhoto
+                            officer={officer}
                             alt=""
                             className="h-10 w-10 rounded-full object-cover bg-gray-200"
-                            onError={(e) => {
-                              if (!e.currentTarget.src.endsWith(DEFAULT_PHOTO)) e.currentTarget.src = DEFAULT_PHOTO;
-                            }}
                           />
                           <div className="min-w-0 flex-1">
                             <p className="font-medium truncate">{officer.name}</p>

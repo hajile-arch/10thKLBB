@@ -1,14 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Quote } from "lucide-react";
-import {
-  DEFAULT_PHOTO,
-  OFFICER_RANKS,
-  Officer,
-  OfficerRank,
-  getOfficers,
-  officerPhoto,
-} from "../firebase/officerService";
+import { OFFICER_RANKS, Officer, OfficerRank, getOfficers } from "../firebase/officerService";
+import OfficerPhoto from "../components/OfficerPhoto";
 
 // Colour for each rank: a thin accent used on labels, borders and glows
 const RANK_STYLE: Record<OfficerRank, { label: string; accent: string; text: string; border: string; glow: string }> = {
@@ -50,15 +44,7 @@ const RANK_STYLE: Record<OfficerRank, { label: string; accent: string; text: str
 };
 
 const Photo = ({ officer, className }: { officer: Officer; className: string }) => (
-  <img
-    src={officerPhoto(officer)}
-    alt={officer.name}
-    loading="lazy"
-    className={className}
-    onError={(e) => {
-      if (!e.currentTarget.src.endsWith(DEFAULT_PHOTO)) e.currentTarget.src = DEFAULT_PHOTO;
-    }}
-  />
+  <OfficerPhoto officer={officer} className={className} />
 );
 
 // Featured card for the Company Captain
