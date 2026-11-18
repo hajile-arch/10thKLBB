@@ -11,6 +11,7 @@ import {
   Cake,
   Search,
   Contact,
+  Award,
 } from 'lucide-react';
 
 const Sidebar = () => {
@@ -27,6 +28,7 @@ const Sidebar = () => {
     },
     { icon: <Calendar className="h-5 w-5" />, label: 'Event Calendar', path: '/calendar' },
     { icon: <Cake className="h-5 w-5" />, label: 'Birthday List', path: '/BirthdayList' },
+    { icon: <Award className="h-5 w-5" />, label: 'Badge Guide', path: '/badges' },
     { icon: <Search className="h-5 w-5" />, label: 'Attendance Checker', path: '/attendance/stats' },
   ];
 

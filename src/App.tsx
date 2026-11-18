@@ -12,6 +12,7 @@ import Awards from "./pages/Award.tsx"
 import BadgeList from "./pages/Read";
 import Home from "./pages/Homepage";
 import MemberList from "./pages/MemberList.tsx";
+import BadgeGuide from "./pages/BadgeGuide.tsx";
 import BadgeSelection from "./pages/Badgelist";
 import { NCODashboards } from "./pages/UserDetailsPage";
 import Preloader from "./components/Preloader.tsx";
@@ -83,6 +84,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/announcement" element={<ParadeAnnouncementsPage />} />
           <Route path="/MemberRegister" element={<MemberSelfRegistration />} />
+          <Route path="/badges" element={<BadgeGuide />} />
           <Route path="/members" element={<MemberList />} />
           <Route path="/members/:memberId" element={<MemberProfile />} />
           <Route path="/squad" element={<SquadOverview />} />        

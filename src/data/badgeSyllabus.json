@@ -1,0 +1,1347 @@
+{
+ "Arts": {
+  "pages": [
+   132,
+   133
+  ],
+  "intro": [],
+  "requirements": [
+   "Can be done as an individual or in a group, with the work assessed regularly during the assignment. Work may be carried out either:",
+   "## Option 1 – As an individual",
+   "- Choose a subject and get the Award Officer's approval before starting.",
+   "- Submit work at regular intervals over a period of time.",
+   "- Keep a logbook of time spent and work done.",
+   "- Present the end results for assessment.",
+   "- Do the work without any help from others.",
+   "## Option 2 – In a group at a badge class",
+   "- The group chooses a subject and gets the Award Officer's approval before starting.",
+   "- An instructor oversees the class, and the end results are presented for assessment.",
+   "## Suggested activities",
+   "Not limited to these; the instructor may permit other suitable activities.",
+   "- Architectural Appreciation",
+   "- Art, e.g. Painting, Sculpture, Montage, Drama & Mime",
+   "- Drawing & Design",
+   "- Orchestral & Chamber Music",
+   "- Lino Printing",
+   "- Musical activity or appreciation (other than BB band or other bands)",
+   "- Print Making",
+   "- Producing the Company Magazine",
+   "- Singing",
+   "- Theatre Appreciation",
+   "- Writing (prose & verse)",
+   "- Engraving"
+  ],
+  "notes": [
+   "The activity must be different for the Basic and Advanced levels."
+  ]
+ },
+ "Athletics": {
+  "pages": [
+   136
+  ],
+  "intro": [
+   "Trains Members in different athletic events. Members should show improvement in their physical ability and fitness. The award is gained by reaching the standard set for each event."
+  ],
+  "requirements": [
+   "Choose 2 events from each group, at both levels. Several attempts may be given before the best time or distance is taken.",
+   "## Group A – Track",
+   "| Event | Boys – Basic | Boys – Advanced | Girls – Basic | Girls – Advanced |",
+   "| 100 metres | 13.4 sec | 12.7 sec | 14.0 sec | 13.3 sec |",
+   "| 200 metres | 28.4 sec | 27.4 sec | 28.9 sec | 27.9 sec |",
+   "| 400 metres | 69.5 sec | 63.6 sec | 70.0 sec | 64.10 sec |",
+   "| 800 metres | 2 min 42 sec | 2 min 28 sec | 2 min 55 sec | 2 min 37 sec |",
+   "| 1500 metres | 5 min 53 sec | 5 min 13 sec | 6 min 10 sec | 5 min 25 sec |",
+   "| Hurdles | 75m / 13.4 sec | 75m / 12.9 sec | 75m / 13.9 sec | 75m / 13.4 sec |",
+   "## Group B – Field",
+   "| Event | Boys – Basic | Boys – Advanced | Girls – Basic | Girls – Advanced |",
+   "| High Jump | 1m 22cm | 1m 37cm | 1m 12cm | 1m 30cm |",
+   "| Long Jump | 4m 27cm | 4m 88cm | 4m 17cm | 4m 78cm |",
+   "| Triple Jump | 9m 14cm | 9m 75cm | 9m 04cm | 9m 55cm |",
+   "| Javelin | 27m 43cm | 32m | 27m 33cm | 31m 50cm |",
+   "| Discus | 25m 91cm | 30m 4cm | 25m 81cm | 29m 94cm |",
+   "| Shot Put | 9m 75cm (6lb) | 10m 36cm | 9m 65cm (6lb) | 10m 26cm |"
+  ],
+  "notes": [
+   "Times and distances are based on synthetic surfaces. Officers may use their discretion to minimally adjust them on different running surfaces.",
+   "Exemption for the Basic Level may be given to those who qualify for this award."
+  ]
+ },
+ "Bandsman": {
+  "pages": [
+   137,
+   138,
+   139,
+   140
+  ],
+  "intro": [
+   "The Band Proficiency awards (Bandsman, Buglers, Drummers and Pipers) encourage the formation of bands following the tradition of the Brigade. Members qualify by being active in the band and showing a fair amount of skill on their instrument."
+  ],
+  "levels": {
+   "Basic": [
+    "- Active member of a BB band for at least a year, playing the instrument to be tested on.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 1 (those who have passed ABRSM Grade 1 theory may be exempted).",
+    "## Practical",
+    "- Performed at least three (3) times to a public / non-BB audience.",
+    "- Show knowledge of the care and maintenance of the instrument.",
+    "- Read at sight any simple piece given by the examiner.",
+    "## Pieces",
+    "- Brass or Woodwind: play on any brass or woodwind instrument all the major and minor scales required by the examiner."
+   ],
+   "Advanced": [
+    "- Active member of a BB band for a further year, playing the same instrument tested at Basic Level.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 2 (those who have passed ABRSM Grade 2 theory may be exempted).",
+    "## Practical",
+    "- Play two pieces of your own choice: one at a quick tempo and one at a slower tempo.",
+    "- Performed at least another three (3) times in public during the year.",
+    "- Read at sight a more difficult piece given by the examiner.",
+    "- Play further exercises of arpeggios, staccato scales, harmonic and melodic minor scales, and chromatic scales.",
+    "## Drum Major (alternative Advanced route)",
+    "Drum Majors must hold the Basic Level on an instrument; they are then awarded the Advanced Level of that award. They must:",
+    "- Be an active member of a BB band for a further year, performing in public at least three times as drum major.",
+    "- Execute with good form the mace movements for basic band movements (band ready, left and right wheels, counter march, marching with the mace, halt, check time, music and drum beating cease), or conduct a band at fast and slow tempo with good control of tempo and volume.",
+    "- Execute no less than five show movements involving the mace.",
+    "- Pass ABRSM Grade 2 music theory (or be exempted as above)."
+   ]
+  },
+  "notes": [
+   "Members may attain more than one band award in a year, but may not sit two stages of the same award in one year."
+  ]
+ },
+ "Bronze Scholastics": {
+  "pages": [
+   119
+  ],
+  "intro": [
+   "Awarded in recognition of the effort a Member puts into their studies during their service in the BB."
+  ],
+  "requirements": [
+   "- At least 3 A's and 1 B in the final year examination or the 6th year of Primary education.",
+   "- Did not fail any papers or subjects in the official examination recognised by the school and the Malaysian Ministry of Education."
+  ],
+  "notes": [
+   "Please refer to the Scholastics Guideline for the grade conversion for equivalent assessments."
+  ]
+ },
+ "Buglers": {
+  "pages": [
+   137,
+   138,
+   139,
+   140
+  ],
+  "intro": [
+   "The Band Proficiency awards (Bandsman, Buglers, Drummers and Pipers) encourage the formation of bands following the tradition of the Brigade. Members qualify by being active in the band and showing a fair amount of skill on their instrument."
+  ],
+  "levels": {
+   "Basic": [
+    "- Active member of a BB band for at least a year, playing the instrument to be tested on.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 1 (those who have passed ABRSM Grade 1 theory may be exempted).",
+    "## Practical",
+    "- Performed at least three (3) times to a public / non-BB audience.",
+    "- Show knowledge of the care and maintenance of the instrument.",
+    "- Read at sight any simple piece given by the examiner.",
+    "## Pieces",
+    "- Play correctly: Last Post or Retreat, Reveille, Fall-In, First Dinner Call, Warning for Parade, Band and Double."
+   ],
+   "Advanced": [
+    "- Active member of a BB band for a further year, playing the same instrument tested at Basic Level.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 2 (those who have passed ABRSM Grade 2 theory may be exempted).",
+    "## Practical",
+    "- Play two pieces of your own choice: one at a quick tempo and one at a slower tempo.",
+    "- Performed at least another three (3) times in public during the year.",
+    "- Read at sight a more difficult piece given by the examiner.",
+    "- Play correctly a further five calls not tested at Basic Level.",
+    "## Drum Major (alternative Advanced route)",
+    "Drum Majors must hold the Basic Level on an instrument; they are then awarded the Advanced Level of that award. They must:",
+    "- Be an active member of a BB band for a further year, performing in public at least three times as drum major.",
+    "- Execute with good form the mace movements for basic band movements (band ready, left and right wheels, counter march, marching with the mace, halt, check time, music and drum beating cease), or conduct a band at fast and slow tempo with good control of tempo and volume.",
+    "- Execute no less than five show movements involving the mace.",
+    "- Pass ABRSM Grade 2 music theory (or be exempted as above)."
+   ]
+  },
+  "notes": [
+   "Members may attain more than one band award in a year, but may not sit two stages of the same award in one year."
+  ]
+ },
+ "Camping": {
+  "pages": [
+   141,
+   142,
+   143
+  ],
+  "intro": [
+   "Living outdoors in one place for a week or longer (the Expedition award, by contrast, requires moving and carrying all equipment). Camping has been a BB tradition since the 1890s; Members learn to plan and run a camp and adapt to life away from home comforts."
+  ],
+  "levels": {
+   "Basic": [
+    "Attend a camping course of 12 lessons, spend a total of four (4) consecutive days under canvas, and pass a test on the following:",
+    "- By practical, oral or written test, show adequate knowledge of:",
+    "  - the types of tents and their uses, advantages and disadvantages",
+    "  - ancillary equipment (fly sheets, groundsheets, bedding) and its correct use and care",
+    "  - personal health and hygiene while camping",
+    "  - good campsite selection and layout",
+    "  - the Country Code",
+    "- In a group of three or fewer, prepare at least one meal, showing how to start a fire and prepare a kitchen with proper hygiene.",
+    "- With three Members who hold no Camping award, pitch, strike and pack a tent completely and correctly within a time set by the instructor (if possible, not a lightweight tent).",
+    "- Build a gadget for camp use.",
+    "## Knots to tie easily",
+    "- Reef knot, figure-of-eight, clove hitch, round turn and two half hitches, double sheet bend",
+    "- Timber hitch, buntline hitch, bowline, double blackwall hitch, marline spike hitch"
+   ],
+   "Advanced": [
+    "Attend a camping course of 12 lessons, spend a total of four (4) consecutive days under canvas, and pass a test on the following:",
+    "- By practical, oral or written test, show adequate knowledge of:",
+    "  - the care, maintenance and storage of camping, cooking and other camp equipment",
+    "  - arrangements for sanitation, hygiene and safety: latrines, rubbish disposal, food storage, water supply, washing facilities, fire precautions, etc.",
+    "- In a group of three or fewer, prepare at least a full day's meals, showing how to start a fire and prepare a kitchen with proper hygiene.",
+    "- With three Members who hold no Camping award, set up a campsite (tent, kitchen, toilet, campfire and fencing) within a time set by the instructor.",
+    "## Knots to tie easily",
+    "- Timber hitch and half turn, rolling hitch, fisherman's bend, running bowline, French bowline, slip knot, middleman and butterfly knot",
+    "## Lashings",
+    "- Square, diagonal, sheer, gym and round lashing",
+    "- Plus the knots from the Basic Level"
+   ]
+  },
+  "notes": [
+   "See the handbook's annexes for notes on knots and lashings."
+  ]
+ },
+ "Christian Education": {
+  "pages": [
+   127
+  ],
+  "intro": [
+   "Crucial to a Member's development in accordance with the BB Object and the ideals of the Brigade. Every Member should strive to benefit from the teaching of God's Word in this syllabus."
+  ],
+  "levels": {
+   "Basic": [
+    "- Show a general understanding of a passage of scripture and how the Christian faith applies in everyday life, in the areas of:",
+    "  - Spiritual formation: prayer, devotion, quiet time, Sunday worship, etc.",
+    "  - Personal relationships: e.g. with family, friends, adults, leaders, etc.",
+    "- Be actively involved in one ministry within a church for not less than 6 months."
+   ],
+   "Advanced": [
+    "- Show a general understanding of a passage of scripture and how the Christian faith applies in everyday life, in the areas of:",
+    "  - Evangelism: sharing the gospel personally or in groups.",
+    "  - Community relationships: e.g. local government, social services, international relations, etc.",
+    "- Be actively involved in one ministry at the Sponsoring Body for not less than 6 months."
+   ]
+  },
+  "notes": [
+   "Resources from Alpha, Scripture Union and Our Daily Bread can be used to conduct this award's lessons."
+  ]
+ },
+ "Citizenship": {
+  "pages": [
+   144
+  ],
+  "intro": [
+   "Educates Members to be responsible citizens and to understand how the government works."
+  ],
+  "levels": {
+   "Basic": [
+    "Attend a course covering at least 3 months on one of these topics:",
+    "- The National Government",
+    "- Judicial systems",
+    "- Anti-drug abuse",
+    "- Crime prevention"
+   ],
+   "Advanced": [
+    "Individually or in a group, make a further detailed study of one of the topics above, covering:",
+    "- The agencies involved in the chosen topic",
+    "- Their contacts and the people who run those agencies",
+    "- Other NGOs that assist these agencies",
+    "- Visits to the agencies involved",
+    "- How to get involved in supporting the government's efforts"
+   ]
+  }
+ },
+ "Communication": {
+  "pages": [
+   145,
+   146
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory",
+    "- Complete at least 3 lessons from the Communication Topic List (below).",
+    "## Practical – Part 1: Personal Communication",
+    "- Conduct a 1-to-1 interview of no less than 15 minutes with a parent/guardian, teacher, officer or church youth advisor (or equivalent), and present a summary to the Officer-in-charge, who may set the topic.",
+    "## Practical – Part 2: Public Communication (choose one)",
+    "- Option 1: Give a presentation/speech to a squad or group on a topic set by the Officer/Instructor.",
+    "- Option 2: Take part in a group discussion/debate on a topic set by the Officer/Instructor.",
+    "- Option 3: Manage the Company's social media (at least 1 platform) for not less than 1 month.",
+    "## Communication Topic List",
+    "- History of communication (compulsory for Basic Level)",
+    "- Basic public speaking",
+    "- Common flaws of communication",
+    "- Conversational skills",
+    "- Emceeing",
+    "- Impromptu speech",
+    "- Media communication",
+    "- Moderating a discussion session",
+    "- Morse code",
+    "- Phonetic alphabets",
+    "- Presentation with visual aids",
+    "- Radio communication",
+    "- Social media communication",
+    "- Storytelling",
+    "- Writing skills – formal and informal"
+   ],
+   "Advanced": [
+    "## Theory",
+    "- Complete at least 3 lessons from the Communication Topic List (below).",
+    "## Practical – Part 1: Personal Communication",
+    "- Conduct a 1-to-1 interview of no less than 15 minutes with the Company Chaplain, Company Captain, a Church Leader or a school principal, and present a summary.",
+    "## Practical – Part 2: Public Communication (choose one)",
+    "- Option 1: Give a presentation/speech to an audience of not less than 20 people from other BB Company(ies), on a topic set by the Officer/Instructor.",
+    "- Option 2: Lead a group discussion/debate on a topic set by the Officer/Instructor.",
+    "- Option 3: Teach a class of Officers/Members basic Malaysian Sign Language on a topic approved by the Officer/Instructor.",
+    "- Option 4: Manage the Company's social media (at least 1 platform) for not less than 3 months.",
+    "## Communication Topic List",
+    "- History of communication (compulsory for Basic Level)",
+    "- Basic public speaking",
+    "- Common flaws of communication",
+    "- Conversational skills",
+    "- Emceeing",
+    "- Impromptu speech",
+    "- Media communication",
+    "- Moderating a discussion session",
+    "- Morse code",
+    "- Phonetic alphabets",
+    "- Presentation with visual aids",
+    "- Radio communication",
+    "- Social media communication",
+    "- Storytelling",
+    "- Writing skills – formal and informal"
+   ]
+  }
+ },
+ "Community Service": {
+  "pages": [
+   147
+  ],
+  "intro": [
+   "Educates Members about their role in the community as responsible members of society."
+  ],
+  "levels": {
+   "Basic": [
+    "- Show a working knowledge of the role and work of community service organisations, e.g. services for people with disabilities, children and the elderly, homes and training centres.",
+    "- Volunteer at a service organisation for at least 15 hours.",
+    "- Prepare a detailed report (written, or a presentation with visual aids) on the project: the work done, its effect on the recipients, and what you learned."
+   ],
+   "Advanced": [
+    "- Attend a course on the problems faced by people in areas of community service: children, youth, adults, the elderly, people with disabilities, drug addicts, immigrants and refugees.",
+    "- Make a detailed study of service organisations in Malaysia (other than those from the Basic Level), including visits to a few of them.",
+    "- Plan and carry out a service project of at least 25 hours with any organisation."
+   ]
+  }
+ },
+ "Computer Knowledge": {
+  "pages": [
+   148,
+   149
+  ],
+  "intro": [
+   "Members should become well trained in the roles, methods and benefits of computer systems in society. Instructors may choose other relevant software at their discretion."
+  ],
+  "levels": {
+   "Basic": [
+    "## Part 1 – Presentation on Personal Computing (any one topic)",
+    "- Background, trends and the latest developments",
+    "- Hardware: desktop, laptop, tablet, mobile, etc.",
+    "- Software: operating systems, applications, etc.",
+    "- Producers: Apple, Dell, Acer, Huawei, etc.",
+    "- Any other related topic",
+    "## Part 2 – Project",
+    "Carry out one project on any topic using at least two of these kinds of software (topic approved by the Officer first):",
+    "- Word processing (e.g. MS Word, Google Docs, Pages)",
+    "- Spreadsheets (e.g. MS Excel, Google Sheets, Numbers)",
+    "- Presentation graphics (e.g. PowerPoint, Google Slides, Keynote)",
+    "- Photo editing / digital drawing (e.g. Photoshop, Illustrator, Canva, GIMP, Procreate)",
+    "- Webpage builders (e.g. WordPress, Wix, Webflow)",
+    "- Setting up social media platforms (e.g. Facebook, Instagram, TikTok)"
+   ],
+   "Advanced": [
+    "## Part 1 – Presentation on Cloud Computing (any one topic)",
+    "- Background, trends and the latest developments",
+    "- Hardware: servers, etc.",
+    "- Software: operating systems, applications, etc.",
+    "- Providers: Google, Microsoft, etc.",
+    "- Any other related topic",
+    "## Part 2 – Project",
+    "Carry out one project that benefits the BB Company, using at least one of these kinds of software (topic approved by the Officer first):",
+    "- Video editing (e.g. DaVinci Resolve, Premiere Pro)",
+    "- Web application development (e.g. Bubble.io, Webflow)",
+    "- Game application / resource development (e.g. Unity, Roblox, Unreal)",
+    "- Mobile app development (e.g. AppSheet, FlutterFlow)",
+    "- Internet of Things (e.g. Arduino, Raspberry Pi, Lego coding, micro:bit)",
+    "- Generative AI (e.g. ChatGPT, DALL·E, Midjourney)"
+   ]
+  }
+ },
+ "Crafts": {
+  "pages": [
+   134
+  ],
+  "intro": [],
+  "requirements": [
+   "Can be done as an individual or in a group, with the work assessed regularly during the assignment. Work may be carried out either:",
+   "## Option 1 – As an individual",
+   "- Choose a subject and get the Award Officer's approval before starting.",
+   "- Submit work at regular intervals over a period of time.",
+   "- Keep a logbook of time spent and work done.",
+   "- Present the end results for assessment.",
+   "- Do the work without any help from others.",
+   "## Option 2 – In a group at a badge class",
+   "- The group chooses a subject and gets the Award Officer's approval before starting.",
+   "- An instructor oversees the class, and the end results are presented for assessment.",
+   "## Suggested activities",
+   "Not limited to these; the instructor may permit other suitable activities.",
+   "- Leatherwork",
+   "- Rug Making",
+   "- Carpentry & Woodwork",
+   "- Macramé",
+   "- Sewing",
+   "- Model Making",
+   "- Origami",
+   "- Wood Carving",
+   "- Marquetry",
+   "- Pottery",
+   "- Basketry",
+   "- Cane Work",
+   "- Puppetry (making & using)",
+   "- Metal Work",
+   "- Canoe Construction",
+   "- Household Maintenance",
+   "- Cooking"
+  ],
+  "notes": [
+   "The activity must be different for the Basic and Advanced levels."
+  ]
+ },
+ "Drill": {
+  "pages": [
+   128,
+   129
+  ],
+  "intro": [
+   "Drill is not meant to encourage military ideas, but to help Members develop discipline and character, as intended by the Founder. Members should grow to be confident, self-controlled and obedient, applying drill to other areas of life."
+  ],
+  "levels": {
+   "Basic": [
+    "## Practical examination (latest BBM Drill Manual)",
+    "- Personal Drill: perform basic drill movements, including static drill, marching and movement on the march.",
+    "- Uniform: maintain a high standard of wearing the uniform for 3 months.",
+    "- Squad Drill: perform well as a member of a squad.",
+    "- Commanding: give commands for all drill movements to a squad of not less than 12 members.",
+    "## Written examination",
+    "- Definitions",
+    "- Drill Theory",
+    "- Words of Command",
+    "- Paying Compliments",
+    "- Elementary Squad Drill"
+   ],
+   "Advanced": [
+    "Pass a written and practical test on:",
+    "- Drill movements for Colour Party and Guard of Honour.",
+    "- Practical ability in teaching, instructing and commanding recruits on basic drill movements, and Company members on squad drill."
+   ]
+  }
+ },
+ "Drummers": {
+  "pages": [
+   137,
+   138,
+   139,
+   140
+  ],
+  "intro": [
+   "The Band Proficiency awards (Bandsman, Buglers, Drummers and Pipers) encourage the formation of bands following the tradition of the Brigade. Members qualify by being active in the band and showing a fair amount of skill on their instrument."
+  ],
+  "levels": {
+   "Basic": [
+    "- Active member of a BB band for at least a year, playing the instrument to be tested on.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 1 (those who have passed ABRSM Grade 1 theory may be exempted).",
+    "## Practical",
+    "- Performed at least three (3) times to a public / non-BB audience.",
+    "- Show knowledge of the care and maintenance of the instrument.",
+    "- Read at sight any simple piece given by the examiner.",
+    "## Pieces",
+    "- Play on any percussion instrument (glockenspiel, tubular bells, drum set, timpani and cymbals) exercises at different beats or tempos as required by the examiner."
+   ],
+   "Advanced": [
+    "- Active member of a BB band for a further year, playing the same instrument tested at Basic Level.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 2 (those who have passed ABRSM Grade 2 theory may be exempted).",
+    "## Practical",
+    "- Play two pieces of your own choice: one at a quick tempo and one at a slower tempo.",
+    "- Performed at least another three (3) times in public during the year.",
+    "- Read at sight a more difficult piece given by the examiner.",
+    "- Play exercises at different beats or tempos on two other percussion instruments not played at Basic Level.",
+    "## Drum Major (alternative Advanced route)",
+    "Drum Majors must hold the Basic Level on an instrument; they are then awarded the Advanced Level of that award. They must:",
+    "- Be an active member of a BB band for a further year, performing in public at least three times as drum major.",
+    "- Execute with good form the mace movements for basic band movements (band ready, left and right wheels, counter march, marching with the mace, halt, check time, music and drum beating cease), or conduct a band at fast and slow tempo with good control of tempo and volume.",
+    "- Execute no less than five show movements involving the mace.",
+    "- Pass ABRSM Grade 2 music theory (or be exempted as above)."
+   ]
+  },
+  "notes": [
+   "Members may attain more than one band award in a year, but may not sit two stages of the same award in one year."
+  ]
+ },
+ "Environmental Conservation": {
+  "pages": [
+   150,
+   151
+  ],
+  "intro": [
+   "Helps Members understand the importance of looking after our surroundings, the role we can play in preserving the environment, and why people need to learn to protect it."
+  ],
+  "levels": {
+   "Basic": [
+    "- Know the minimum impact code.",
+    "- Suggest ways of re-using: glass jars; plastic ice-cream containers; books, Christmas cards and greeting cards; postage stamps; toys; old clothes.",
+    "- Investigate and report on local opportunities for recycling items such as newspaper, glass and scrap metal.",
+    "- Prepare a scrapbook of twenty newspaper and magazine articles about conservation, with a thoughtful comment on each."
+   ],
+   "Advanced": [
+    "- Collect plastic, metal and glass rubbish from a beach, lakeshore or stream, and explain how three of these items could harm wildlife.",
+    "- Give a 5-minute talk to a small group of people.",
+    "- Describe six things Malaysian motorists can do to conserve fossil fuels.",
+    "- Prepare an eye-catching, informative feature page for a teenage newspaper or magazine about rare and endangered plants and animals in Malaysia.",
+    "- Interview a member of a non-government conservation group about its activities, and take part in one of its projects to improve a local place, e.g. removing rubbish and weeds, planting trees and shrubs, or planting and maintaining a flower garden."
+   ]
+  }
+ },
+ "Expedition": {
+  "pages": [
+   152,
+   153
+  ],
+  "intro": [
+   "Tramping and similar outdoor activities over a reasonable time and distance (e.g. cycling, walking, mountain climbing, kayaking). Members build practical skills of discovery, self-sufficiency and survival. Expeditions require mobility and carrying all equipment, on land or water. A First Aid requirement applies."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory",
+    "- Packing the rucksack: types of rucksack, equipment needed and how to pack.",
+    "- Simple cooking: cook a simple meal under camp conditions.",
+    "- Basic map and compass reading.",
+    "- Camp craft: living in a tent.",
+    "- The Country Code.",
+    "## Practical (on foot)",
+    "- Walk at least 16 km in open country (preferably rural or jungle) on a route chosen beforehand, keeping an interesting log of the journey. An adult leader/officer must accompany the trainee(s) throughout.",
+    "- Spend one night under canvas using lightweight equipment, cooking an evening meal and breakfast."
+   ],
+   "Advanced": [
+    "## Training",
+    "- Safety: safe expedition techniques, discipline on the move, and how to deal with an accident in the type of country used.",
+    "- Map and compass: the nature of maps, scale, conventional signs, contours, map references, route planning, setting a map, elementary compass work.",
+    "- Camp craft: care of tents (pitching and striking), care and cleaning of the campsite, cooking arrangements, sanitation, refuse disposal and fire precautions.",
+    "- Cooking: planning and preparing hot, sustaining meals under test conditions.",
+    "- Survival: basic survival skills.",
+    "## Practical",
+    "- Complete an expedition on foot of at least 24 km across normal country over two days, with one night in tents or bivouacs.",
+    "- Use roads as little as possible.",
+    "- Prepare at least two hot meals; no food may be bought on the way (drinking water may be drawn from houses).",
+    "- Carry all necessary equipment. An expedition on water of similar difficulty is also accepted."
+   ]
+  },
+  "notes": [
+   "Members who can prove they took part in a more difficult expedition organised by the BB or another group may be awarded the Basic Level (e.g. Mt Kinabalu) or Advanced Level (e.g. Gunung Tahan, Himalayan range)."
+  ]
+ },
+ "Financial Stewardship": {
+  "pages": [
+   154,
+   155
+  ],
+  "intro": [
+   "Equips Members to make informed financial decisions that honour God, are purpose-driven and guided by biblical principles, and to see money as a tool for advancing God's kingdom and serving others rather than for personal gain."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory (written or verbal exam)",
+    "- Biblical foundations of being a steward of God's money, and tithing:",
+    "  - God's ownership (Psalm 24:1)",
+    "  - Budgeting (Luke 14:28-30)",
+    "  - Saving (Proverbs 21:20)",
+    "  - Spending with purpose (Matthew 6:25-34)",
+    "  - Giving joyfully (2 Corinthians 9:7)",
+    "- Personal budgeting, spending and saving: how to budget, expense tracking, personal accounting.",
+    "## Practical (3 consecutive months)",
+    "- Submit a monthly budget for spending, saving and tithing.",
+    "- Submit a monthly expenses report for each month.",
+    "- Submit a reflection report, written or verbal."
+   ],
+   "Advanced": [
+    "## Theory (written or verbal exam)",
+    "- Biblical teaching on debts and investments:",
+    "  - Keeping out of debt (Psalm 37:21)",
+    "  - Investing responsibly (Matthew 25:14-30)",
+    "  - Financial risk management",
+    "- Project financial management, accountability and integrity: project budgeting and project accounting.",
+    "## Practical",
+    "- Present the types of debt, with your stand on the pros and cons of debt.",
+    "- Present the types of investment and the risks involved.",
+    "- Help manage the finances of a project, event or the Company for at least half a year, supervised by an Officer."
+   ]
+  }
+ },
+ "Fire & Rescue": {
+  "pages": [
+   156,
+   157
+  ],
+  "intro": [
+   "Educates Members on safety measures in the event of a fire and practical ways to rescue others. Companies may get help from the Fire and Rescue Department and Civil Defence organisations to teach this award."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory",
+    "- Basic fire science",
+    "- Methods of extinguishing fire",
+    "- Common causes of fire",
+    "- Classification of fire",
+    "- Escaping from fire and smoke",
+    "## Practical",
+    "- Basic rescue methods: the fireman's lift, and emergency methods of moving casualties.",
+    "- Visit a fire station or the Civil Defence Department."
+   ],
+   "Advanced": [
+    "## Theory",
+    "- Fire Service / Civil Defence organisation: structure, functions and duties, rank structure and responsibilities.",
+    "- Fire-fighting and rescue equipment: types, construction, maintenance and operation.",
+    "- Fire service appliances: general structure, breaking tools, rescue equipment.",
+    "- Water supply: fire hydrants, pools and other sources.",
+    "## Practical",
+    "- Operate a fire hydrant: connecting the hose, turning on the system, and cleaning and storing the hose and equipment.",
+    "- Methods of escaping from a burning building, including ascending and descending methods.",
+    "- Visit a fire and rescue station or the local civil defence centre."
+   ]
+  }
+ },
+ "First Aid": {
+  "pages": [
+   158,
+   159
+  ],
+  "intro": [
+   "Members learn to react to different injuries and treat them temporarily while waiting for professional help. Teaching follows an authorised First Aid manual of the St John Ambulance or the Malaysian Red Crescent Society, with practical, written and oral examinations by competent, certified instructors, doctors or nurses."
+  ],
+  "levels": {
+   "Basic": [
+    "- Principles and practice of First Aid: definition and aim, responsibilities of the First Aider, principles of treating wounds.",
+    "- Dressings and how to apply them.",
+    "- Burns and scalds.",
+    "- Shock: definition, causes and dangers, signs and symptoms, treatment.",
+    "- Resuscitation: Cardio-Pulmonary Resuscitation (CPR).",
+    "- Fractures: definition, types (simple, compound, comminuted, complicated), signs and symptoms, dangers, treatment, and splints (wooden, splintless, improvised)."
+   ],
+   "Advanced": [
+    "- Wounds.",
+    "- Unconsciousness: definition, dangers and causes, levels of consciousness, managing an unconscious casualty, the recovery position.",
+    "- Roller bandages: rules for applying, and bandaging the skull, eye, palm, elbow, knee, chest, abdomen and foot.",
+    "- Types of burns and treatment: thermal, electrical, chemical, and hot/cold burns.",
+    "- Miscellaneous conditions: gastritis, rashes, bruises, cough, dislocation, epilepsy, sprain, cramps, stings and bites.",
+    "- Transporting a casualty."
+   ]
+  },
+  "notes": [
+   "Members who hold a Basic or Advanced certificate from a Malaysian Red Crescent Society (PBSM) or St John Ambulance course may be awarded the equivalent level."
+  ]
+ },
+ "Founder's Badge": {
+  "pages": [
+   121
+  ],
+  "requirements": [
+   "Must be a President's Award holder.",
+   "Must continue membership in the Senior Section for at least two (2) further years, during which the Member must:",
+   "- Show loyalty to the Company and accept an appropriate degree of leadership and responsibility in the Company.",
+   "- Complete the criteria in the latest Founder's Award Guideline:",
+   "  - 40 hours of community service.",
+   "  - Undertake a project approved by the national committee.",
+   "  - Attend an interview by the State Commissioner, with the applicant's Captain and Chaplain present (if possible).",
+   "  - Character assessment by Parent/Guardian, Form Teacher (Government/Private School), Captain, and Chaplain/Church Leader."
+  ],
+  "notes": [
+   "Please refer to the latest Founder's Award Guideline for updated requirements."
+  ]
+ },
+ "Gold Scholastics": {
+  "pages": [
+   119
+  ],
+  "intro": [
+   "Awarded in recognition of the effort a Member puts into their studies during their service in the BB."
+  ],
+  "requirements": [
+   "- At least 3 A's, with all other papers/subjects at least Credit (C), in the final year of Secondary, Upper Secondary or High School education.",
+   "- Qualifying results achieved on the first attempt.",
+   "- Did not fail any papers in the official examination recognised by the school and the Malaysian Ministry of Education."
+  ],
+  "notes": [
+   "Please refer to the Scholastics Guideline for the grade conversion for equivalent assessments."
+  ]
+ },
+ "Gymnastics": {
+  "pages": [
+   160,
+   161
+  ],
+  "intro": [
+   "A Brigade tradition since the Founder's day. Members gain physical strength and self-control from the different exercises."
+  ],
+  "levels": {
+   "Basic": [
+    "- Attend a course and training in gymnastics with a qualified, competent instructor, covering a period of three months.",
+    "- Complete any two of the categories below.",
+    "## Agility",
+    "- Hand stand, head stand, cartwheel, backward roll, dive roll over three feet",
+    "## Vaulting",
+    "- Knee vault, through vault, face vault, long horse (or box), cat spring, horizontal stride vault, forward roll followed by arm over swing",
+    "## Trampoline",
+    "- Swivel hips, high tuck front drop, high pike back drop, back drop half twist to stand, half turntable, knee drop front somersault",
+    "## Parallel bars",
+    "- Forward roll from straddle seat, shoulder balance, bent arm over swing from straddle seat at end of bars, kick to handstand and over swing from straddle seat at end of bars, short upstart",
+    "## Horizontal bars",
+    "- Single leg upraise (under swing forward, squat one leg and half mill circle forward to 'mill rest'), mill circles forward or backward, short backward circle, hock swing dismount, short upstart, forward roll",
+    "## Strength and stamina",
+    "- Fifteen press-ups (horizontal beam or bar)",
+    "- Six heaves (undergrasp on beam or bar at stretch height)",
+    "- Upward circle (chin height, undergrasp)",
+    "- Rope climb 5m",
+    "- Skipping: three periods of one and a half minutes, with a one-minute rest between periods",
+    "- Running 400m in 70 seconds"
+   ],
+   "Advanced": [
+    "- Attained the Basic Level in the previous session, or attended further gymnastics training.",
+    "- Complete a further four of the categories below that were not completed at Basic Level.",
+    "## Agility",
+    "- Hand stand, head stand, cartwheel, backward roll, dive roll over three feet",
+    "## Vaulting",
+    "- Knee vault, through vault, face vault, long horse (or box), cat spring, horizontal stride vault, forward roll followed by arm over swing",
+    "## Trampoline",
+    "- Swivel hips, high tuck front drop, high pike back drop, back drop half twist to stand, half turntable, knee drop front somersault",
+    "## Parallel bars",
+    "- Forward roll from straddle seat, shoulder balance, bent arm over swing from straddle seat at end of bars, kick to handstand and over swing from straddle seat at end of bars, short upstart",
+    "## Horizontal bars",
+    "- Single leg upraise (under swing forward, squat one leg and half mill circle forward to 'mill rest'), mill circles forward or backward, short backward circle, hock swing dismount, short upstart, forward roll",
+    "## Strength and stamina",
+    "- Fifteen press-ups (horizontal beam or bar)",
+    "- Six heaves (undergrasp on beam or bar at stretch height)",
+    "- Upward circle (chin height, undergrasp)",
+    "- Rope climb 5m",
+    "- Skipping: three periods of one and a half minutes, with a one-minute rest between periods",
+    "- Running 400m in 70 seconds"
+   ]
+  },
+  "notes": [
+   "For safety, a qualified instructor should be engaged, and the course should only run with suitable gear and equipment. Failure to comply could result in severe injuries."
+  ]
+ },
+ "Hobbies": {
+  "pages": [
+   135
+  ],
+  "intro": [],
+  "requirements": [
+   "Can be done as an individual or in a group, with the work assessed regularly during the assignment. Work may be carried out either:",
+   "## Option 1 – As an individual",
+   "- Choose a subject and get the Award Officer's approval before starting.",
+   "- Submit work at regular intervals over a period of time.",
+   "- Keep a logbook of time spent and work done.",
+   "- Present the end results for assessment.",
+   "- Do the work without any help from others.",
+   "## Option 2 – In a group at a badge class",
+   "- The group chooses a subject and gets the Award Officer's approval before starting.",
+   "- An instructor oversees the class, and the end results are presented for assessment.",
+   "## Suggested activities",
+   "Not limited to these; the instructor may permit other suitable activities.",
+   "- Archaeology & Astronomy",
+   "- Meteorology",
+   "- Coin & Stamp Collection",
+   "- Motor Mechanics",
+   "- Cycle Maintenance",
+   "- Video Production",
+   "- Fishing",
+   "- Gemstones",
+   "- Radio Construction & Electronics",
+   "- Railway Knowledge",
+   "- Reading",
+   "- Photography/Videography"
+  ],
+  "notes": [
+   "The activity must be different for the Basic and Advanced levels."
+  ]
+ },
+ "International Relations": {
+  "pages": [
+   162,
+   163
+  ],
+  "intro": [
+   "The Boys' Brigade is a worldwide organisation. This award builds Members' understanding of, and fellowship with, BB Companies and Members around the world."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory (course of at least 12 classes/hours)",
+    "- BB Asia: its history, current set-up and activities.",
+    "- The work of The Boys' Brigade in three overseas countries in Asia.",
+    "- Prepare a short write-up with pictures, maps and information on one of the countries studied.",
+    "## Practical (one of)",
+    "- Take an active part in an activity with BB Asia members (international camp, workshop, exchange visit or correspondence project) that provides information for the write-up above.",
+    "- Visit a BB Company in the Asian region outside Malaysia and give a presentation on your own Company, state or country.",
+    "- Encourage BB members from the Asian region to visit Malaysia or take part in BB activities, e.g. Pesta."
+   ],
+   "Advanced": [
+    "## Theory (detailed study)",
+    "- The Global Fellowship (formerly The World Conference): history, current set-up and activities.",
+    "- The work of The Boys' Brigade in two overseas countries outside Asia.",
+    "## Practical",
+    "- Write to at least 3 members in different countries outside Asia, introducing Malaysia, its culture and traditions, and keep in touch for 3 months or more (post or e-mail).",
+    "- Then either give a presentation at a Company parade on one country outside Asia that has the BB movement, or prepare a scrapbook (individually or in a group) on one country that has the BB movement."
+   ]
+  },
+  "notes": [
+   "The presentation or scrapbook should cover life in the country, its culture, traditions, beliefs and other relevant information."
+  ]
+ },
+ "Junior Service Badge": {
+  "pages": [
+   116
+  ],
+  "requirements": [
+   "Awarded to Members who completed at least three years of service in the Junior Section.",
+   "Only awarded once the Member is in the Senior Section."
+  ]
+ },
+ "Life Saving": {
+  "pages": [
+   164,
+   165,
+   166,
+   167,
+   168
+  ],
+  "intro": [
+   "Equips Members with life saving skills for emergencies. Training must follow the syllabus strictly, so Members can react calmly to real emergencies. The syllabus follows the Royal Life Saving Society (RLSS) Malaysia requirements."
+  ],
+  "levels": {
+   "Basic": [
+    "Pass the following examinations, which conform to the RLSS (Persatuan Penyelamat Kelemasan Di Raja) Intermediate Certificate:",
+    "## Water Safety & Rescue",
+    "- Answer 6 questions on water safety and the principles and methods of rescue.",
+    "## Resuscitation",
+    "- Pass the RLSS 'Resuscitation Award' test (Members with the First Aid Award (Basic) may be exempted).",
+    "## Water tests",
+    "- a) Reaching rescue: a non-swimmer friend has fallen into deep water 1m from the side. Reach them with an aid (stick, branch, clothing, towel, etc.) and instruct them how to climb out.",
+    "- b) Throwing rescue: the casualty has drifted 10m away in deep water. Rescue them using an unweighted rope (up to three attempts) and instruct them how to climb out.",
+    "- c) Accompanied rescue: a weak swimmer is in difficulty in deep water 20m away and a floating aid is available. Enter with a straddle jump, use the buoyant aid, accompany the swimmer 20m back and help them land.",
+    "- d) Wading rescue: in water of unknown depth and conditions, test the depth with a pole, wade close enough to reach the casualty (4m from the bank, shallow end) with the pole, and return them to your point of entry.",
+    "- e) Throwing rescue with an unweighted rope over 10m: three attempts to place the rope within reach of a stationary subject, then pull them carefully to the side.",
+    "- f) Search: swim 10m, make a feet-first surface dive to the bottom (1.5m deep), swim two strokes fully submerged, surface, and return using the life saving backstroke.",
+    "- g) Defence: demonstrate two defensive actions set by the Examiner, e.g. reverse, single leg block, counter to leg clutch & duck away.",
+    "- h) Swim continuously for 150m within 4 minutes: 50m head-up front crawl, 50m side stroke and 50m life saving backstroke (without arms). Members with the Swimming Award (Basic) may be exempted."
+   ],
+   "Advanced": [
+    "Pass the following examinations, which conform to the RLSS Bronze Medallion. Members must already hold the First Aid Award (Basic) and Swimming Award (Advanced).",
+    "## Water Safety & Rescue",
+    "- Answer 6 questions on water safety and the principles and methods of rescue (RLSS).",
+    "## Emergency Aid",
+    "- Members with the First Aid Award (Basic) are exempted from the resuscitation, CPR and First Aid requirements.",
+    "## Water tests",
+    "- a) Reaching rescue: a non-swimmer is in deep water 2m from the side. Use an article of clothing to reach them and instruct them how to climb out.",
+    "- b) Throwing rescue: a non-swimmer is in difficulty 10m away in deep water. Throw an unweighted rope and secure the casualty in a position of safety within 1 minute (starting with the rope uncoiled at your feet).",
+    "- c) Cross chest tow: fully clothed, enter shallow water and swim 20m to the subject. Demonstrate the reverse, calm and reassure them, approach from behind and tow 20m by cross chest tow. Help them land.",
+    "- d) Towing with an aid: a conscious non-swimmer is in difficulty in deep water 50m away. Taking a non-rigid, non-buoyant aid, swim 50m and tow the casualty 50m to end in deep water, then help them land. Time limit: 3 minutes (male), 3 minutes 15 seconds (female).",
+    "- e) Combined rescue: enter shallow water and swim 20m. Search underwater for 5m to recover a 4kg object from at least 1.8m deep, using feet-first and head-first surface dives. Swap the object for an 'unconscious, not breathing' subject, tow to the nearest point of support in deep water and give mouth-to-mouth resuscitation for 3 cycles. Tow to shallow water, continuing E.A.R. for 5m, land the casualty and place them in the recovery position.",
+    "- f) Chin tow: a non-swimmer is in difficulty in deep water 50m away with no aids. Enter with a straddle jump, swim 50m, apply a defensive action and rescue over 50m by chin tow, showing how to restrain a struggling casualty (double restraint). Support the casualty and, on the Examiner's signal, help them land at the deep end.",
+    "- g) Underwater swim: 25m without breaking the surface.",
+    "- h) Releases: demonstrate releases from three types of clutch as directed by the Examiner, then tow the subject 25m using 3 towing techniques."
+   ]
+  },
+  "notes": [
+   "For professional help: Persatuan Penyelamat Kelemasan Malaysia, lifesavingmalaysia.org.my."
+  ]
+ },
+ "Link Badge": {
+  "pages": [
+   116
+  ],
+  "requirements": [
+   "Awarded to a Member upon promotion from the Junior Section to the Senior Section.",
+   "- Completed at least one year in the Junior Section.",
+   "- Attained at least two Junior Section Achievement Awards.",
+   "- Attendance of at least 80% in the Junior Section.",
+   "Presented at an appropriate ceremony (e.g. promotion or awards day), only once the Member has been in the Senior Section for at least three months. Its purpose is to encourage Members to continue in the Senior Section."
+  ]
+ },
+ "Long Year Service": {
+  "pages": [
+   118
+  ],
+  "requirements": [
+   "Awarded to Members who have served for not less than 5 years / sessions.",
+   "The five years do not need to be consecutive.",
+   "May be awarded and worn after the fifth session."
+  ]
+ },
+ "Martial Arts": {
+  "pages": [
+   169
+  ],
+  "intro": [
+   "Awarded to Members with good attendance who pass the grading exam of an accredited martial arts organisation. Companies should get the Executive Committee's approval for exams from other martial arts organisations."
+  ],
+  "levels": {
+   "Basic": [
+    "Reach the following belt:",
+    "| Martial art | Belt |",
+    "| Judo | Green |",
+    "| Taekwondo / Karate | Blue |"
+   ],
+   "Advanced": [
+    "Reach the following belt:",
+    "| Martial art | Belt |",
+    "| Judo | Brown |",
+    "| Taekwondo / Karate | Brown 2 |"
+   ]
+  }
+ },
+ "NCO Proficiency Star": {
+  "pages": [
+   120
+  ],
+  "intro": [
+   "NCO Proficiency (Leadership Development Programme)."
+  ],
+  "requirements": [
+   "## Basic Level – NCO Certificate",
+   "- Awarded a certificate upon completing and passing the syllabus of Basic NCO Training conducted at Brigade or State level.",
+   "## Advanced Level – NCO Proficiency Star",
+   "- Minimum rank of Lance Corporal.",
+   "- Attended a course conducted at Brigade level.",
+   "- Awarded the NCO Proficiency Star upon completing and passing the assessment."
+  ]
+ },
+ "Nature Awareness": {
+  "pages": [
+   170,
+   171
+  ],
+  "intro": [
+   "Teaches Members about the world's flora and fauna. Where Environmental Conservation is about conserving the environment, Nature Awareness is about knowing what lives in nature and where."
+  ],
+  "levels": {
+   "Basic": [
+    "Attend a course of 3 months or 12 lessons/classes covering:",
+    "- Reading an ordnance survey map at a suitable scale, and using a compass for simple direction finding.",
+    "- The Country Code.",
+    "- Several visits to a local habitat, noting the flora and fauna found there.",
+    "- A sketch map of the chosen habitat, with notes and drawings of observations from the visits.",
+    "- A small collection, correctly labelled and arranged, of one of: wild flowers, tree leaves, insects, rock fossils or shells. Or show interest and progress in bird watching or fishing."
+   ],
+   "Advanced": [
+    "- Keep visiting a local habitat and add further specimens to the collection.",
+    "- Walk at least 12 km, showing the ability to observe natural history along the route.",
+    "- Know how to use textbooks to identify specimens.",
+    "- Identify from specimens or photographs a number of: wild flowers, trees, fungi, insects, butterflies, mammals, birds, fish, rocks, fossils or shells.",
+    "- Understand the different soils and bedrock in various habitats, and how a habitat builds up from bare soil.",
+    "- Understand how and why habitats differ in flora and fauna, and what factors affect the environment.",
+    "- Do a simple project, e.g. bark rubbings, animal footprints, a nature scrapbook, animal or plant sketching."
+   ]
+  }
+ },
+ "One Year Service": {
+  "pages": [
+   117
+  ],
+  "intro": [
+   "Service period does not include service in the Junior Section."
+  ],
+  "requirements": [
+   "Awarded to Members who have served for a session. During that session the Member should:",
+   "- Be an example to other Members, showing good conduct and being a good role model.",
+   "- Show improvement in every aspect: Spiritually, Physically, Socially and Educationally.",
+   "- Put into practice what the Brigade has taught.",
+   "- Excel in attendance (80% and above) at Parades and Christian Education classes. This may include Church Services, Sunday School, Youth Fellowship, Bible Classes, Christian Fellowship or any other Christian Education the Chaplain deems suitable.",
+   "Members may collect as many Service Badges as they earn during their service."
+  ]
+ },
+ "Physical Training": {
+  "pages": [
+   172,
+   173
+  ],
+  "intro": [
+   "Builds a Member's physical and mental strength, with benefits that carry into other areas of life. Members should be properly guided by instructors before taking the tests."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory",
+    "- The basic principles of physical training.",
+    "- Why warm-ups are needed.",
+    "## Practical",
+    "- Attend training sessions of 1/2 hour each, including warm-up, circuit training, fartlek, short-distance jogging, variable training, movement training, physical efficiency exercises and warm-down.",
+    "- Show satisfactory improvement during training.",
+    "- Reach a standard of performance appropriate to age and natural ability."
+   ],
+   "Advanced": [
+    "## Theory",
+    "- How the muscles, blood circulation and brain function during and after training.",
+    "- Principles of anaerobic training, aerobic training and lactate threshold.",
+    "## Practical",
+    "- Show further improvement in performance over another session.",
+    "- Lead other Members in physical training, including leading systematic training to prepare for sports.",
+    "- Reach a standard of performance appropriate to age and natural ability."
+   ]
+  }
+ },
+ "Pipers": {
+  "pages": [
+   137,
+   138,
+   139,
+   140
+  ],
+  "intro": [
+   "The Band Proficiency awards (Bandsman, Buglers, Drummers and Pipers) encourage the formation of bands following the tradition of the Brigade. Members qualify by being active in the band and showing a fair amount of skill on their instrument."
+  ],
+  "levels": {
+   "Basic": [
+    "- Active member of a BB band for at least a year, playing the instrument to be tested on.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 1 (those who have passed ABRSM Grade 1 theory may be exempted).",
+    "## Practical",
+    "- Performed at least three (3) times to a public / non-BB audience.",
+    "- Show knowledge of the care and maintenance of the instrument.",
+    "- Read at sight any simple piece given by the examiner.",
+    "## Pieces",
+    "- Play correctly on the bagpipe all doublings from low G to high A, and grace notes."
+   ],
+   "Advanced": [
+    "- Active member of a BB band for a further year, playing the same instrument tested at Basic Level.",
+    "## Theory",
+    "- Understand basic music theory and pass a written examination of at least ABRSM Grade 2 (those who have passed ABRSM Grade 2 theory may be exempted).",
+    "## Practical",
+    "- Play two pieces of your own choice: one at a quick tempo and one at a slower tempo.",
+    "- Performed at least another three (3) times in public during the year.",
+    "- Read at sight a more difficult piece given by the examiner.",
+    "- Play correctly on the bagpipe more advanced movements such as grips and taorluaths.",
+    "## Drum Major (alternative Advanced route)",
+    "Drum Majors must hold the Basic Level on an instrument; they are then awarded the Advanced Level of that award. They must:",
+    "- Be an active member of a BB band for a further year, performing in public at least three times as drum major.",
+    "- Execute with good form the mace movements for basic band movements (band ready, left and right wheels, counter march, marching with the mace, halt, check time, music and drum beating cease), or conduct a band at fast and slow tempo with good control of tempo and volume.",
+    "- Execute no less than five show movements involving the mace.",
+    "- Pass ABRSM Grade 2 music theory (or be exempted as above)."
+   ]
+  },
+  "notes": [
+   "Members may attain more than one band award in a year, but may not sit two stages of the same award in one year."
+  ]
+ },
+ "President's Badge": {
+  "pages": [
+   120
+  ],
+  "requirements": [
+   "The applicant must be 15 years and above, and an NCO in the Company.",
+   "Must satisfy the minimum awards required as follows:",
+   "- NCO's Proficiency Star (Advanced Level).",
+   "- Christian Education (Advanced Level).",
+   "- Drill (Advanced Level).",
+   "- Recruitment (Basic Level).",
+   "- At least three years of service in the Senior Section.",
+   "- At least six (6) awards from Groups A, B, C and D, with at least one (1) award from each group, the minimum being two (2) at Basic Level and four (4) at Advanced Level."
+  ],
+  "notes": [
+   "The President's and Founder's Awards should be presented formally at a suitable ceremony such as an Enrolment Service, Awards Day, Founder's Day, Pesta, Brigade Council Meeting or equivalent."
+  ]
+ },
+ "Recruitment": {
+  "pages": [
+   130,
+   131
+  ],
+  "intro": [
+   "Helps the Company grow, while Members learn valuable skills in planning, organising and running programmes that help the Brigade grow."
+  ],
+  "levels": {
+   "Basic": [
+    "Do one of the following:",
+    "## Option 1",
+    "- Recruit a new Member who has never been in the Company or enrolled in any BB Company before.",
+    "- The recruit must be regular in attendance for one (1) academic year.",
+    "## Option 2",
+    "- Play an active role in a Recruitment Committee (recruiting in church, school or the community), holding at least one important position.",
+    "- Give a talk during one of the recruiting sessions.",
+    "- Assist in setting up an exhibition for prospective recruits."
+   ],
+   "Advanced": [
+    "Do one of the following:",
+    "## Option 1",
+    "- Recruit another new recruit who has never been in the Company or enrolled in any BB Company before.",
+    "- The recruit must be regular in attendance for one (1) academic year.",
+    "## Option 2",
+    "- Serve on the Recruitment Committee for a further one (1) year, holding a very important position.",
+    "- Conduct talks during recruiting sessions and prepare for them, e.g. slides, posters and exhibitions.",
+    "- Organise recruiting programmes for at least 3 months for recruits who have just joined the Company, including instructing in a Target Award class."
+   ]
+  }
+ },
+ "Safety": {
+  "pages": [
+   174
+  ],
+  "intro": [
+   "Teaches Members the precautions they can take at home, at school, in the water, on the road and during sports, so they practise safety and recognise hazards before accidents happen."
+  ],
+  "levels": {
+   "Basic": [
+    "- Present on the causes and prevention of accidents at home, school, in the water, on the road and in sports, and on personal physical safety.",
+    "- Organise a safety campaign at school or a local church on accident prevention and personal physical safety.",
+    "- Conduct a risk assessment of your Company's parade venue."
+   ],
+   "Advanced": [
+    "Research cyber safety for young people and present on:",
+    "- Digital citizenship",
+    "- Privacy and security",
+    "- Principles of cyber security",
+    "- Cyberbullying",
+    "- Personal data and identity theft",
+    "- Any other topic the Officer/Instructor considers appropriate"
+   ]
+  }
+ },
+ "Silver Scholastics": {
+  "pages": [
+   119
+  ],
+  "intro": [
+   "Awarded in recognition of the effort a Member puts into their studies during their service in the BB."
+  ],
+  "requirements": [
+   "- At least 4 A's and 2 B's in the third year of Secondary education, or the final year of Lower Secondary or Middle School education.",
+   "- Qualifying results achieved on the first attempt.",
+   "- Did not fail any papers or subjects in the official examination recognised by the school and the Malaysian Ministry of Education."
+  ],
+  "notes": [
+   "Please refer to the Scholastics Guideline for the grade conversion for equivalent assessments."
+  ]
+ },
+ "Social Entrepreneurship": {
+  "pages": [
+   177,
+   178
+  ],
+  "intro": [
+   "Empowers Members to make a meaningful impact on local communities through innovative business solutions, exploring how ventures can address issues such as poverty, environmental sustainability and education inequality."
+  ],
+  "levels": {
+   "Basic": [
+    "Take part individually in an entrepreneurship project with a social enterprise, then present a summary covering:",
+    "- Goals and objectives",
+    "- Venue and time",
+    "- Problem statement and solutions",
+    "- Stakeholders",
+    "- Impact on the local community",
+    "- Financials",
+    "- Reflection on the project",
+    "Alternatively, research a project by a social enterprise outside Malaysia and present a summary covering the same points."
+   ],
+   "Advanced": [
+    "Individually, or in a group of up to five, propose, plan and run a 3-month entrepreneurship project that benefits a local community. The idea must be approved by the Company Officer before starting. Afterwards, present the outcome covering:",
+    "- Goals and objectives",
+    "- Venue and time",
+    "- Problem statement and solutions",
+    "- Stakeholders",
+    "- Impact on the local community",
+    "- Financials",
+    "- Reflection on the project"
+   ]
+  }
+ },
+ "Sports": {
+  "pages": [
+   179,
+   180
+  ],
+  "intro": [
+   "Encourages Members to take part actively in sport (not including swimming or athletics). There are no classes or tests: Members are assessed on their performance in competitions and matches, and Officers may award it to Members who have performed well."
+  ],
+  "levels": {
+   "Basic": [
+    "- Take part in the sport for at least one (1) academic year.",
+    "- Attend training and show progress in personal performance.",
+    "- Compete actively at Company, School, State, National or International level (squad, class, sports house and club levels are not recognised).",
+    "- Show wider knowledge of the sport, e.g. its history, rules and competitions."
+   ],
+   "Advanced": [
+    "Attained the Basic Level in the previous year, and either:",
+    "## Option 1 – Same sport",
+    "- Continue in the same sport for another session, showing further progress and skills.",
+    "- Compete at a higher level than at Basic Level, against stronger teams such as district, state or national teams.",
+    "- For a team sport, play in a regular position (e.g. striker in football).",
+    "## Option 2 – Another sport",
+    "- Take part in another sport for another session and qualify in it as required at Basic Level."
+   ]
+  }
+ },
+ "Sustainability": {
+  "pages": [
+   175,
+   176
+  ],
+  "intro": [
+   "Based on the United Nations Sustainable Development Goals (SDGs). Encourages Members to develop a sustainable mindset, raising awareness and engaging the local community in the Company's district."
+  ],
+  "levels": {
+   "Basic": [
+    "Individually, or in a group of up to ten from one Company, carry out a project that:",
+    "- Contributes to at least one (1) SDG.",
+    "- Directly benefits a local community within the Company's region/district.",
+    "To be awarded the badge:",
+    "- Complete the project over at least 3 sessions, totalling at least 15 hours.",
+    "- Submit a post-project report: written report, presentation slides or video presentation."
+   ],
+   "Advanced": [
+    "In a group of two to twenty Members from at least two different Companies, carry out a project that:",
+    "- Contributes to at least one (1) SDG not already covered by that Member at Basic Level.",
+    "- Directly benefits a local community within the Company's region/district.",
+    "To be awarded the badge:",
+    "- Complete the project over at least 6 sessions, totalling at least 30 hours.",
+    "- Submit a post-project report: written report, presentation slides or video presentation."
+   ]
+  }
+ },
+ "Swimming": {
+  "pages": [
+   181,
+   182
+  ],
+  "intro": [
+   "Gained by reaching the standards set for each event (freestyle, breaststroke, backstroke and butterfly). Members should show a fair amount of swimming skill after completing the award."
+  ],
+  "levels": {
+   "Basic": [
+    "- Pass one of these tests within the time limit:",
+    "| Event | Boys | Girls |",
+    "| 100m freestyle | 1 min 45 sec | 1 min 55 sec |",
+    "| 100m butterfly | 2 min 15 sec | 2 min 25 sec |",
+    "| 100m breaststroke | 2 min 10 sec | 2 min 20 sec |",
+    "| 100m backstroke | 2 min 00 sec | 2 min 10 sec |",
+    "| 400m (any style) | No time limit | No time limit |",
+    "- Tread water for 30 seconds.",
+    "- Swim 15 metres underwater within 17 seconds."
+   ],
+   "Advanced": [
+    "- Pass one of these tests within the time limit:",
+    "| Event | Boys | Girls |",
+    "| 100m freestyle | 1 min 30 sec | 1 min 40 sec |",
+    "| 100m butterfly | 1 min 55 sec | 2 min 05 sec |",
+    "| 100m breaststroke | 1 min 50 sec | 2 min 20 sec |",
+    "| 100m backstroke | 1 min 50 sec | 2 min 00 sec |",
+    "| Individual medley (25m butterfly, 25m front crawl) | 1 min 45 sec | 1 min 55 sec |",
+    "- Dive satisfactorily from a height of at least 2 metres above the water.",
+    "- Swim on the surface for at least 5.5 metres, dive to at least 1.6m, raise a 500-gram dumb-bell (or similar object) and return to the start with it; or swim 18 metres underwater starting with a dive or plunge.",
+    "- Swim 400 metres freestyle within 11 minutes 56 seconds."
+   ]
+  },
+  "notes": [
+   "Exemption for the Basic Level may be given to those who qualify for this award (see Awards Regulation No. 4 a)."
+  ]
+ },
+ "Target Badge": {
+  "pages": [
+   125,
+   126
+  ],
+  "intro": [
+   "The first proficiency award a Member attains before undertaking any other award. It equips the Member in the fundamentals of the Brigade."
+  ],
+  "levels": {
+   "Basic": [
+    "- Be regular in the Company for at least three months, or 25% of the total attendance in a year/session.",
+    "- Satisfactorily complete a course of instruction and pass a written test covering:",
+    "## a) BB Knowledge",
+    "- BB Object, Motto & Logo.",
+    "- BB History – International and National.",
+    "- Company Organisation and Ranks.",
+    "- History and Tradition of a Member Company.",
+    "- Uniform – wearing and cleaning.",
+    "- Introduction to the Awards Scheme.",
+    "- Overview of BB International – BB Asia.",
+    "- BB Songs – The Anchor Song, Will Your Anchor Hold and Mighty Band of Brothers.",
+    "- Recognition of common bugle calls – Warning for Parade, Fall-In, Reveille, Retreat, Last Post and General Salute.",
+    "## b) Citizenship",
+    "- National Flag and the National Coat of Arms.",
+    "- National Anthem.",
+    "- Knowledge of the neighbourhood.",
+    "## c) Christian Education",
+    "- The Books of the Bible.",
+    "- The Lord's Prayer.",
+    "- BB Prayer and Table Grace.",
+    "- BB Hymns – BB Vesper and Underneath the Banner / Anchor Song.",
+    "Or, Character Education (where Christianity is strictly not allowed on the premises):",
+    "  - 10 character lessons (see the BBMS Resource Center for the syllabus).",
+    "  - BB Hymns – Anchor Song.",
+    "## d) Drill (Ref. BB Drill Manual)",
+    "- Recruits Drill.",
+    "- Paying Compliments."
+   ]
+  },
+  "notes": [
+   "Members working on the Target Award may undertake a Recruits/Boot Camp (2D/1N) as part of the Target Award journey.",
+   "Members may not wear any other award before fully completing the Target Award."
+  ]
+ },
+ "Three Year Service": {
+  "pages": [
+   118
+  ],
+  "requirements": [
+   "Awarded to Members who have served for three years / sessions with good conduct and fulfilled all requirements of the One Year Service Badge.",
+   "May be awarded and worn only after the third session."
+  ]
+ },
+ "Water Adventure": {
+  "pages": [
+   183,
+   184
+  ],
+  "intro": [
+   "Trains Members to handle different types of watercraft, with the emphasis on skill, ability and safety. Members must have passed the Swimming award first.",
+   "Choose any one activity: board sailing, canoeing, blackwater rafting, scuba diving, jet skiing, jet boating, motor cruising, white water rafting, tubing, water skiing, sailing, surfing, snorkelling, surf skiing, kayaking or catamaran. The canoeing syllabus below is the guideline for the other activities."
+  ],
+  "levels": {
+   "Basic": [
+    "## Theory (canoeing)",
+    "- Types of canoe and the history of canoeing.",
+    "- The Water Safety Code.",
+    "- How to maintain and store a canoe properly.",
+    "## Practical",
+    "- Carry a canoe single-handed or with a partner.",
+    "- Demonstrate canoe rescue methods: the T rescue and H rescue.",
+    "- Demonstrate forward and backward paddling and an emergency stop, travelling in both directions.",
+    "- Canoe at least 1 km and back.",
+    "Members awarded at least 2 Star by the Malaysia Canoeing Association or another certified canoeing association (in or outside Malaysia) qualify for this level."
+   ],
+   "Advanced": [
+    "- Demonstrate all strokes taught in class: forward and backward paddling, emergency stops, sweep strokes, recovery by slap support, sculling draw, draw strokes and ferry glide.",
+    "- Carry out running repairs on the type of canoe used for the test.",
+    "- Answer oral questions correctly on canoe camping, safety, the rules, and access problems in your own area.",
+    "Members awarded at least 3 Star by the Malaysian Canoe Association or another certified canoeing association qualify for this level.",
+    "Members who complete the 10-day 'Tunas Samudera' training under the Ministry of Youth & Sports Malaysia (Kementerian Belia & Sukan) are automatically awarded the Advanced Level."
+   ]
+  }
+ }
+}
