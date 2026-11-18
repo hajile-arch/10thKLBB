@@ -83,6 +83,13 @@ const ACCENT: Record<string, { ring: string; glow: string; chip: string }> = {
 
 // Display order within a section where alphabetical doesn't make sense
 const SECTION_ORDER: Record<string, string[]> = {
+  service: [
+    "Link Badge",
+    "Junior Service Badge",
+    "One Year Service",
+    "Three Year Service",
+    "Long Year Service",
+  ],
   special: [
     "Bronze Scholastics",
     "Silver Scholastics",
