@@ -9,6 +9,7 @@ const Header = () => {
     { to: "/officer", label: "Officers" },
     { to: "/404", label: "2025" },
     { to: "/member", label: "Members" },
+    { to: "/badges", label: "Badges" },
     { to: "/junior", label: "Junior" }
   ];
   

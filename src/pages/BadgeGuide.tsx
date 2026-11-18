@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, Crown, Star, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Crown, Search, Star, X } from "lucide-react";
 import { getDataFromFirebase } from "../firebase/firebaseUtils";
 import { ThemeToggle } from "../components/ThemeToggle";
 import syllabus from "../data/badgeSyllabus.json";
@@ -80,6 +80,40 @@ const ACCENT: Record<string, { ring: string; glow: string; chip: string }> = {
   service: { ring: "from-slate-300 to-slate-600", glow: "bg-slate-400/25", chip: "bg-slate-100 text-slate-700 dark:bg-slate-500/15 dark:text-slate-300" },
   special: { ring: "from-yellow-200 to-amber-500", glow: "bg-yellow-300/30", chip: "bg-yellow-100 text-yellow-800 dark:bg-yellow-500/15 dark:text-yellow-300" },
 };
+
+// Display order within a section where alphabetical doesn't make sense
+const SECTION_ORDER: Record<string, string[]> = {
+  special: [
+    "Bronze Scholastics",
+    "Silver Scholastics",
+    "Gold Scholastics",
+    "NCO Proficiency Star",
+    "President's Badge",
+    "Founder's Badge",
+  ],
+};
+
+const compareInSection = (sectionId: string) => (a: GuideBadge, b: GuideBadge) => {
+  const order = SECTION_ORDER[sectionId];
+  if (order) {
+    const ia = order.indexOf(a.name);
+    const ib = order.indexOf(b.name);
+    if (ia !== -1 || ib !== -1) return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+  }
+  return a.name.localeCompare(b.name);
+};
+
+// Text used by the search box: name, summary and full requirements
+const searchTextOf = (b: GuideBadge) =>
+  [
+    b.name,
+    b.summary,
+    ...(b.syllabus?.intro || []),
+    ...(b.syllabus?.requirements || []),
+    ...Object.values(b.syllabus?.levels || {}).flat(),
+  ]
+    .join(" ")
+    .toLowerCase();
 
 const sectionOf = (b: GuideBadge) => SECTIONS.find((s) => s.match(b))?.id ?? "special";
 
@@ -170,20 +204,43 @@ const SyllabusText = ({ lines }: { lines: string[] }) => {
 
 // ---------- badge art ----------
 
-const BadgeArt = ({ badge, size = "md" }: { badge: GuideBadge; size?: "md" | "lg" }) => {
+// Advanced badges are worn on a red felt backing, so the Advanced view shows one
+const BadgeArt = ({
+  badge,
+  size = "md",
+  advanced = false,
+}: {
+  badge: GuideBadge;
+  size?: "md" | "lg";
+  advanced?: boolean;
+}) => {
   const accent = ACCENT[sectionOf(badge)];
   const dims = size === "lg" ? "h-36 w-36" : "h-24 w-24";
   const img = size === "lg" ? "h-24 w-24" : "h-16 w-16";
+  const felt = size === "lg" ? "h-[6.75rem] w-[6.75rem]" : "h-[4.5rem] w-[4.5rem]";
   return (
     <div className={`relative ${dims} mx-auto`}>
       <div className={`absolute inset-2 rounded-full blur-xl ${accent.glow}`} />
       <div className={`relative h-full w-full rounded-[28%] bg-gradient-to-br ${accent.ring} p-[3px] shadow-lg rotate-45`}>
         <div className="h-full w-full rounded-[26%] bg-white dark:bg-gray-900" />
       </div>
+      <div
+        aria-hidden
+        className={`absolute inset-0 m-auto ${felt} rounded-full shadow-inner transition-all duration-300 ease-out ${
+          advanced ? "opacity-100 scale-100" : "opacity-0 scale-75"
+        }`}
+        style={{
+          background:
+            "radial-gradient(circle at 35% 30%, #ef4444 0%, #c81e1e 45%, #8f1414 100%)",
+          boxShadow: "inset 0 2px 6px rgba(0,0,0,0.35), 0 2px 6px rgba(143,20,20,0.35)",
+        }}
+      />
       <img
         src={badge.icon}
         alt=""
-        className={`absolute inset-0 m-auto ${img} object-contain drop-shadow`}
+        className={`absolute inset-0 m-auto ${img} object-contain drop-shadow transition-transform duration-300 ${
+          advanced ? "scale-90" : "scale-100"
+        }`}
         onError={(e) => (e.currentTarget.style.visibility = "hidden")}
       />
     </div>
@@ -198,6 +255,9 @@ const BadgeGuide = () => {
   const [error, setError] = useState<string | null>(null);
   const [selected, setSelected] = useState<GuideBadge | null>(null);
   const [level, setLevel] = useState<LevelName>("Basic");
+  const [search, setSearch] = useState("");
+  const [sectionFilter, setSectionFilter] = useState<string>("all");
+  const [presidentOnly, setPresidentOnly] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -242,16 +302,22 @@ const BadgeGuide = () => {
     load();
   }, []);
 
-  const grouped = useMemo(
-    () =>
-      SECTIONS.map((section) => ({
+  const grouped = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return SECTIONS.filter((section) => sectionFilter === "all" || section.id === sectionFilter)
+      .map((section) => ({
         ...section,
         badges: badges
           .filter((b) => sectionOf(b) === section.id)
-          .sort((a, b) => a.name.localeCompare(b.name)),
-      })).filter((s) => s.badges.length > 0),
-    [badges]
-  );
+          .filter((b) => !presidentOnly || !!b.presidentRole)
+          .filter((b) => !query || searchTextOf(b).includes(query))
+          .sort(compareInSection(section.id)),
+      }))
+      .filter((s) => s.badges.length > 0);
+  }, [badges, search, sectionFilter, presidentOnly]);
+
+  const shownCount = grouped.reduce((sum, s) => sum + s.badges.length, 0);
+  const filtersActive = search.trim() !== "" || sectionFilter !== "all" || presidentOnly;
 
   const openBadge = (badge: GuideBadge) => {
     setSelected(badge);
@@ -268,7 +334,9 @@ const BadgeGuide = () => {
 
   const selectedLines =
     selected?.syllabus?.levels?.[level] ?? (selected?.syllabus?.requirements || []);
-  const hasLevelTabs = !!selected?.syllabus?.levels && selected.levels.length > 0;
+  const hasLevelTabs = !!selected?.syllabus?.levels && selected.levels.length > 1;
+  const singleLevel =
+    selected && selected.syllabus?.levels && selected.levels.length === 1 ? selected.levels[0] : null;
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-indigo-50/40 to-slate-100 dark:from-gray-950 dark:via-gray-950 dark:to-gray-900">
@@ -295,6 +363,69 @@ const BadgeGuide = () => {
           <ThemeToggle className="shrink-0" />
         </div>
 
+        {/* Search and filters */}
+        <div className="sticky top-0 z-20 -mx-4 px-4 py-3 mb-6 bg-slate-50/85 dark:bg-gray-950/85 backdrop-blur-md">
+          <div className="relative">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search badges or requirements, e.g. swim, first aid, 12km…"
+              className="w-full rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 py-3 pl-12 pr-4 text-gray-900 dark:text-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              aria-label="Search badges"
+            />
+          </div>
+          <div className="mt-3 flex gap-2 overflow-x-auto pb-1 -mb-1">
+            {[{ id: "all", label: "All" }, ...SECTIONS.map((s) => ({ id: s.id, label: s.title.split(" · ")[0].replace(" Awards", "") }))].map(
+              (chip) => (
+                <button
+                  key={chip.id}
+                  type="button"
+                  onClick={() => setSectionFilter(chip.id)}
+                  className={`shrink-0 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+                    sectionFilter === chip.id
+                      ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                      : "bg-white text-gray-600 shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  {chip.label}
+                </button>
+              )
+            )}
+            <button
+              type="button"
+              onClick={() => setPresidentOnly((v) => !v)}
+              aria-pressed={presidentOnly}
+              className={`shrink-0 inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
+                presidentOnly
+                  ? "bg-amber-500 text-white"
+                  : "bg-white text-gray-600 shadow-sm hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+              }`}
+            >
+              <Crown className="h-4 w-4" /> President's Award
+            </button>
+          </div>
+          {filtersActive && !loading && (
+            <div className="mt-2 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+              <span>
+                {shownCount} badge{shownCount === 1 ? "" : "s"} found
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch("");
+                  setSectionFilter("all");
+                  setPresidentOnly(false);
+                }}
+                className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+              >
+                Clear
+              </button>
+            </div>
+          )}
+        </div>
+
         {/* President's Award legend */}
         <div className="mb-8 flex flex-wrap gap-3 text-sm">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-white/80 dark:bg-gray-800 px-3 py-1.5 shadow-sm text-gray-700 dark:text-gray-300">
@@ -315,6 +446,12 @@ const BadgeGuide = () => {
 
         {error && (
           <div className="rounded-2xl bg-red-50 text-red-700 dark:bg-red-900/30 dark:text-red-300 p-4">{error}</div>
+        )}
+
+        {!loading && !error && grouped.length === 0 && (
+          <div className="rounded-3xl bg-white/80 dark:bg-gray-900 p-10 text-center text-gray-500 dark:text-gray-400">
+            No badges match your search.
+          </div>
         )}
 
         {/* Sections */}
@@ -413,7 +550,11 @@ const BadgeGuide = () => {
                 ))}
               </div>
               <div className="mt-6">
-                <BadgeArt badge={selected} size="lg" />
+                <BadgeArt
+                  badge={selected}
+                  size="lg"
+                  advanced={hasLevelTabs && level === "Advanced"}
+                />
               </div>
               {selected.presidentNote && (
                 <p className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-amber-50 dark:bg-amber-500/10 px-3 py-1 text-sm font-medium text-amber-800 dark:text-amber-300">
@@ -445,6 +586,17 @@ const BadgeGuide = () => {
                       {l} Level
                     </button>
                   ))}
+                </div>
+              )}
+
+              {singleLevel && (
+                <div className="mb-3 flex items-center gap-2">
+                  <span className="rounded-full bg-indigo-50 dark:bg-indigo-500/15 px-3 py-1 text-sm font-semibold text-indigo-700 dark:text-indigo-300">
+                    {singleLevel} Level
+                  </span>
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    This award has one level only
+                  </span>
                 </div>
               )}
 
