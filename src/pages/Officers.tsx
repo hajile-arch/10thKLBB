@@ -53,9 +53,10 @@ const CaptainCard = ({ officer }: { officer: Officer }) => {
   return (
     <div className={`relative overflow-hidden rounded-3xl border ${style.border} bg-gradient-to-br from-white/[0.07] to-white/[0.02] shadow-2xl ${style.glow}`}>
       <div className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r ${style.accent}`} />
-      <div className="grid md:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-        <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[26rem]">
-          <Photo officer={officer} className="absolute inset-0 h-full w-full object-cover" />
+      <div className="grid md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] md:items-center">
+        <div className="relative aspect-[3/4] w-full max-w-md mx-auto md:max-w-none">
+          {/* Faces are near the top of most photos, so crop from the top */}
+          <Photo officer={officer} className="absolute inset-0 h-full w-full object-cover object-[center_15%]" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-[#141414]/90" />
         </div>
         <div className="relative flex flex-col justify-center gap-4 p-6 sm:p-10">
@@ -96,7 +97,7 @@ const OfficerCard = ({ officer }: { officer: Officer }) => {
       <div className="relative aspect-[3/4]">
         <Photo
           officer={officer}
-          className="absolute inset-0 h-full w-full object-cover grayscale-[35%] transition duration-500 group-hover:grayscale-0 group-hover:scale-105"
+          className="absolute inset-0 h-full w-full object-cover object-[center_15%] grayscale-[35%] transition duration-500 group-hover:grayscale-0 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
 
