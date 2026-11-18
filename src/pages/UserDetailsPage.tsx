@@ -11,7 +11,7 @@ import {
   Button,
 } from "@mui/material";
 import { HomeIcon } from "lucide-react";
-import { Member, SelectedBadge, Rank } from "../enum";
+import { Member, SelectedBadge, Rank, isCurrentMember } from "../enum";
 
 interface MemberWithBadges extends Member {
   id: string;
@@ -161,7 +161,8 @@ export const NCODashboards: React.FC = () => {
 
   const groupedUsers = rankOrder.map((rank) => ({
     rank,
-    users: users.filter((u) => u.rank === rank),
+    // Only current members: Resigned and MIA are left off this page
+    users: users.filter((u) => u.rank === rank && isCurrentMember(u)),
   }));
 
   return (
