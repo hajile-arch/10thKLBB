@@ -125,10 +125,10 @@ const UsersPage: React.FC = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-900 p-8">
+    <div className="min-h-screen bg-gray-900 p-4 sm:p-8">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-between mb-12">
-          <h1 className="text-5xl font-bold text-white tracking-tight">
+        <div className="flex items-center justify-between gap-4 mb-8 sm:mb-12">
+          <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight">
             Member Management
           </h1>
           <div className="flex items-center space-x-2 text-gray-400">

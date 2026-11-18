@@ -48,49 +48,63 @@ const EditBadgeList: React.FC<EditBadgeListProps> = ({ badges, onDeleteBadge, on
   }, {} as Record<string, Record<string, Array<{ badge: SelectedBadge; index: number }>>>);
 
   return (
-    <div className="mr-6">
+    <div className="space-y-8">
       {/* Badge display section */}
-      <div className="mb-6">
-        <h3 className="text-xl font-bold mb-2 text-white">Your Badges</h3>
+      <div>
+        <h3 className="text-lg font-semibold text-white">
+          Current Badges{" "}
+          <span className="text-sm font-normal text-gray-400">({badges.length})</span>
+        </h3>
         {Object.keys(groupedBadges).length > 0 ? (
-          Object.keys(groupedBadges).map((category) => (
-            <div key={category}>
-              <h4 className="text-lg font-bold mb-2 mt-5 text-white italic">
-                {categoryDisplayNames[category] || category}
-              </h4>
-              {Object.keys(groupedBadges[category]).map((subcategory) => (
-                <div key={subcategory}>
-                  <h5 className="text-md font-semibold mb-2 mt-5 text-white">
-                    {subcategoryDisplayNames[subcategory] || subcategory}
-                  </h5>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {groupedBadges[category][subcategory].map(({ badge, index }) => (
-                      <div
-                        key={index}
-                        className="p-4 border border-gray-300 rounded-md flex flex-col items-center justify-between text-center bg-white shadow-lg transition-all transform hover:scale-105"
-                        style={{ height: "130px", width: "130px" }}
-                      >
-                        <div className="flex flex-col justify-center items-center h-full">
-                          <h4 className="font-semibold text-lg">{badge.name}</h4>
-                          <span className="text-sm font-medium text-gray-600">{badge.level}</span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => onDeleteBadge(index)}
-                          className="text-red-600 hover:text-red-800 transition-colors duration-300"
-                          aria-label="Delete Badge"
+          <div className="mt-3 space-y-5">
+            {Object.keys(groupedBadges).map((category) => (
+              <div key={category}>
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+                  {categoryDisplayNames[category] || category}
+                </h4>
+                {Object.keys(groupedBadges[category]).map((subcategory) => (
+                  <div key={subcategory} className="mt-2">
+                    {category === "proficiencyAwards" && (
+                      <h5 className="text-sm text-gray-300 mb-1.5">
+                        {subcategoryDisplayNames[subcategory] || subcategory}
+                      </h5>
+                    )}
+                    <div className="flex flex-wrap gap-2">
+                      {groupedBadges[category][subcategory].map(({ badge, index }) => (
+                        <span
+                          key={index}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-gray-700 border border-gray-600 pl-3 pr-1 py-1 text-sm text-white"
                         >
-                          <Trash2 size={20} />
-                        </button>
-                      </div>
-                    ))}
+                          {badge.name}
+                          {badge.level && (
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+                                badge.level === "Advanced"
+                                  ? "bg-amber-500/20 text-amber-300"
+                                  : "bg-blue-500/20 text-blue-300"
+                              }`}
+                            >
+                              {badge.level}
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => onDeleteBadge(index)}
+                            className="rounded-full p-1 text-gray-400 hover:bg-red-500/20 hover:text-red-300 transition-colors"
+                            aria-label={`Remove ${badge.name}${badge.level ? ` (${badge.level})` : ""}`}
+                          >
+                            <Trash2 size={14} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ))
+                ))}
+              </div>
+            ))}
+          </div>
         ) : (
-          <p>No badges assigned yet.</p>
+          <p className="mt-2 text-sm text-gray-400">No badges yet. Add one below.</p>
         )}
       </div>
 

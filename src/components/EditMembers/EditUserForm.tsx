@@ -83,7 +83,7 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
       {/* Edit Form */}
       <div className="bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
         <div className="p-6 border-b border-gray-700">
-          <h2 className="text-3xl font-bold text-white">Edit Member</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">Edit Member</h2>
         </div>
         <form className="p-6 space-y-6" onSubmit={(e) => e.preventDefault()}>
           {error && (
@@ -200,11 +200,11 @@ const EditUserForm: React.FC<EditUserFormProps> = ({
       {/* Badges Section */}
       <div className="bg-gray-800 rounded-xl shadow-2xl overflow-hidden">
         <div className="p-6 border-b border-gray-700">
-          <h2 className="text-3xl font-bold text-white flex items-center">
+          <h2 className="text-2xl sm:text-3xl font-bold text-white flex items-center">
             <Award className="mr-3" /> Badges
           </h2>
         </div>
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           <EditBadgeList
             badges={badges}
             onDeleteBadge={handleDeleteBadge}
