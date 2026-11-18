@@ -2,105 +2,37 @@ import Sidebar from "../components/Members/Sidebar";
 import MemberHeader from "../components/Members/MemberHeader";
 import ThemeCard from "../components/Members/Theme";
 import { useEffect, useState } from "react";
-import { getDataFromFirebase, isYearKey } from "../firebase/firebaseUtils";
 import UpcomingEvent from "../components/Members/UpcomingEvent";
 import UserAnalytics from "../components/Members/MembersCount";
 import SquadListing from "../components/Members/SquadListing";
 import UpcomingBirthdays from "../components/Members/UpcomingBirthdays";
-
-interface Squad {
-  id: string;
-  squadName: string;
-  squadNumber: string;
-  squadLeader: string;
-  squadLeaderRank: string;
-  squadLeaderBirthday?: string;
-  assistantSquadLeader: string;
-  assistantSquadLeaderRank: string;
-  assistantSquadLeaderBirthday?: string;
-  members: {
-    name: string;
-    rank: string;
-    birthday?: string;
-  }[];
-}
+import { getAllMembers } from "../firebase/memberService";
+import { getSquadsForYear } from "../firebase/squadService";
+import { Member, Squad, isCurrentMember } from "../enum";
 
 const MembersDashboard = () => {
-  const [upcomingEvent, setUpcomingEvent] = useState<any | null>(null);
+  const [members, setMembers] = useState<Member[]>([]);
   const [squads, setSquads] = useState<Squad[]>([]);
-  const [allMembers, setAllMembers] = useState<Array<{name: string; rank: string; birthday: string; squadName: string;}>>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const response = await getDataFromFirebase("events");
-      if (response.success && response.data) {
-        const eventsArray = Object.entries(response.data).map(([id, value]: [string, any]) => ({
-          id,
-          ...value,
-        }));
-        const sortedEvents = eventsArray.sort(
-          (a, b) => new Date(a.startDateTime).getTime() - new Date(b.startDateTime).getTime()
-        );
-        const nextEvent = sortedEvents.find(
-          (event) => new Date(event.startDateTime) > new Date()
-        );
-        setUpcomingEvent(nextEvent);
+    const load = async () => {
+      try {
+        const [allMembers, yearSquads] = await Promise.all([
+          getAllMembers(),
+          getSquadsForYear(),
+        ]);
+        // The dashboard shows people currently in the company
+        setMembers(allMembers.filter(isCurrentMember));
+        setSquads(yearSquads);
+      } catch (error) {
+        console.error("Error loading dashboard data:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    const fetchSquads = async () => {
-      const response = await getDataFromFirebase("squads");
-      if (response.success && response.data) {
-        const squadsArray = Object.entries(response.data)
-          .filter(([id]) => !isYearKey(id))
-          .map(([id, value]: [string, any]) => ({
-            id,
-            ...value,
-          }));
-        setSquads(squadsArray);
-    
-        // Gather all members including squad leaders and assistant squad leaders
-        const allMembers = squadsArray.flatMap(squad => {
-          const members = [];
-    
-          if (squad.squadLeader && squad.squadLeaderBirthday) {
-            members.push({
-              name: squad.squadLeader,
-              rank: squad.squadLeaderRank,
-              birthday: squad.squadLeaderBirthday,
-              squadName: squad.squadName // Include squadName
-            });
-          }
-    
-          if (squad.assistantSquadLeader && squad.assistantSquadLeaderBirthday) {
-            members.push({
-              name: squad.assistantSquadLeader,
-              rank: squad.assistantSquadLeaderRank,
-              birthday: squad.assistantSquadLeaderBirthday,
-              squadName: squad.squadName // Include squadName
-            });
-          }
-    
-          if (squad.members) {
-            members.push(...squad.members
-              .filter((member: { birthday: any; }) => member.birthday)
-              .map((member: { name: string; rank: string; birthday: string; }) => ({
-                ...member,
-                squadName: squad.squadName // Include squadName for each member
-              }))
-            );
-          }
-    
-          return members;
-        });
-    
-        setAllMembers(allMembers);
-      }
-    };
-    
-
-    fetchEvents();
-    fetchSquads();
+    load();
   }, []);
 
   return (
@@ -119,14 +51,14 @@ const MembersDashboard = () => {
 
           {/* Profit Card */}
           <ThemeCard />
-          
+
           {/* Analytics */}
-          <UserAnalytics />
+          <UserAnalytics members={members} />
 
           {/* Upcoming Birthdays */}
-          <UpcomingBirthdays members={allMembers} />
+          <UpcomingBirthdays members={members} />
 
-          <SquadListing />
+          <SquadListing squads={squads} members={members} isLoading={loading} />
         </div>
       </div>
     </div>

@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { getDatabase, ref, get, update } from 'firebase/database';
 import app from '../../firebase/firebase';
+import { getAllMembers } from '../../firebase/memberService';
+import { getSquadsForYear, getSquadPeople } from '../../firebase/squadService';
+import { Member, Squad } from '../../enum';
 
 const SquadOverview = () => {
   const navigate = useNavigate();
@@ -12,6 +15,30 @@ const SquadOverview = () => {
   const [error, setError] = useState('');
 
   const squads = Array.from({ length: 8 }, (_, i) => i + 1);
+
+  const [squadData, setSquadData] = useState<Squad[]>([]);
+  const [members, setMembers] = useState<Member[]>([]);
+  const [loadingSquads, setLoadingSquads] = useState(true);
+
+  const loadSquads = async () => {
+    try {
+      const [yearSquads, allMembers] = await Promise.all([
+        getSquadsForYear(CURRENT_YEAR),
+        getAllMembers(),
+      ]);
+      setSquadData(yearSquads);
+      setMembers(allMembers);
+    } catch (error) {
+      console.error('Error loading squads:', error);
+    } finally {
+      setLoadingSquads(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSquads();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleResetClick = () => {
     setShowPasswordModal(true);
@@ -70,6 +97,7 @@ const SquadOverview = () => {
       await update(ref(db), updates);
 
       alert('Successfully reset all squad assignments!');
+      await loadSquads();
       setShowPasswordModal(false);
       setPassword('');
     } catch (error) {
@@ -81,8 +109,8 @@ const SquadOverview = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-100 p-4 sm:p-6">
+      <div className="max-w-6xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-3xl font-bold mb-2">Squads</h1>
@@ -96,16 +124,52 @@ const SquadOverview = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {squads.map((num) => (
-            <button
-              key={num}
-              onClick={() => navigate(`/squad/${num}`)}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition p-6 text-center border"
-            >
-              <h2 className="text-xl font-semibold">Squad {num}</h2>
-            </button>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
+          {squads.map((num) => {
+            const squad = squadData.find((s) => s.squadNumber === num);
+            const people = squad ? getSquadPeople(squad, members) : null;
+
+            return (
+              <button
+                key={num}
+                onClick={() => navigate(`/squad/${num}`)}
+                className="bg-white rounded-xl shadow hover:shadow-lg transition p-4 sm:p-5 text-left border flex flex-col"
+              >
+                <h2 className="text-xl font-semibold mb-3">Squad {num}</h2>
+
+                {loadingSquads ? (
+                  <p className="text-sm text-gray-400">Loading...</p>
+                ) : (
+                  <div className="space-y-2 text-sm">
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                        Squad Leader
+                      </p>
+                      <p className={people?.leader ? 'text-gray-900' : 'text-gray-400'}>
+                        {people?.leader
+                          ? `${people.leader.rank} ${people.leader.name}`
+                          : 'Not set'}
+                      </p>
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                        Assistant {people && people.assistants.length > 1 ? 'Leaders' : 'Leader'}
+                      </p>
+                      {people && people.assistants.length > 0 ? (
+                        people.assistants.map((asl) => (
+                          <p key={asl.id} className="text-gray-900">
+                            {asl.rank} {asl.name}
+                          </p>
+                        ))
+                      ) : (
+                        <p className="text-gray-400">Not set</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
 

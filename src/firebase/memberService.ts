@@ -1,9 +1,18 @@
+import { getDatabase, ref, update } from 'firebase/database';
+import app from './firebase';
 import { 
   getDataFromFirebase, 
   updateFirebaseData, 
-  deleteDataFromFirebase
+  deleteDataFromFirebase,
+  setDataInFirebase
 } from '../firebase/firebaseUtils';
 import { Member } from '../enum';
+
+// Firebase rejects `undefined` anywhere in the data, so strip it out
+const withoutUndefined = <T,>(value: T): T => JSON.parse(JSON.stringify(value));
+
+export const generateMemberId = () =>
+  'member_' + Math.random().toString(36).substring(2, 11);
 
 // Save a member (create or update)
 export const saveMember = async (member: Member) => {
@@ -100,6 +109,71 @@ export const deleteMember = async (memberId: string): Promise<{ success: boolean
     }
   } catch (error: any) {
     console.error('Error deleting member:', error);
+    return { success: false, error: error.message };
+  }
+};
+
+// =====================
+// MEMBER BADGES (memberBadges/<memberId>)
+// =====================
+
+// Badge records for every member, keyed by member ID
+export const getAllMemberBadges = async (): Promise<Record<string, any[]>> => {
+  const result = await getDataFromFirebase('memberBadges');
+  const badgesByMember: Record<string, any[]> = {};
+  if (result.success && result.data) {
+    Object.entries(result.data as Record<string, any>).forEach(([memberId, record]) => {
+      badgesByMember[memberId] = (record?.badges || []).filter(Boolean);
+    });
+  }
+  return badgesByMember;
+};
+
+// Replace a member's badge list
+export const saveMemberBadges = async (
+  memberId: string,
+  badges: unknown[]
+): Promise<{ success: boolean; error?: string }> => {
+  const result = await setDataInFirebase(
+    `memberBadges/${memberId}`,
+    withoutUndefined({ memberId, badges })
+  );
+  return result.success
+    ? { success: true }
+    : { success: false, error: result.message };
+};
+
+// Create a member with their badges and (optionally) a squad, in one write so
+// the member record, badge record and squad roster cannot get out of step
+export const createMember = async (
+  member: Member,
+  badges: unknown[]
+): Promise<{ success: boolean; error?: string }> => {
+  try {
+    const db = getDatabase(app);
+    const updates: Record<string, unknown> = {
+      [`members/${member.id}`]: withoutUndefined(member),
+    };
+
+    if (badges.length > 0) {
+      updates[`memberBadges/${member.id}`] = withoutUndefined({
+        memberId: member.id,
+        badges,
+      });
+    }
+
+    if (member.currentSquad) {
+      const year = new Date().getFullYear();
+      const squadPath = `squads/${year}/${member.currentSquad}`;
+      updates[`${squadPath}/members/${member.id}`] = true;
+      updates[`${squadPath}/squadNumber`] = member.currentSquad;
+      updates[`${squadPath}/year`] = year;
+    }
+
+    await update(ref(db), updates);
+    return { success: true };
+  } catch (error: any) {
+    console.error('Error creating member:', error);
     return { success: false, error: error.message };
   }
 };

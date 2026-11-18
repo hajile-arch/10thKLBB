@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { uploadToFirebase } from "../firebase/firebaseUtils";
+import { createMember, generateMemberId } from "../firebase/memberService";
 import { UserFormInput } from "../components/addBadges/UserFormInput";
 import { UserFormMessage } from "../components/addBadges/UserFormMessage";
 import { BadgeSelection } from "../pages/Badgelist";
-import { RANK_OPTIONS, SQUAD_OPTIONS } from "../enum";
+import { Member, MemberStatus, RANK_OPTIONS, Rank, SQUAD_OPTIONS } from "../enum";
 import { ThemeToggle } from "../components/ThemeToggle";
 
 // Helper function to calculate age
@@ -25,21 +24,14 @@ const calculateAge = (dob: string): number => {
   return age;
 };
 
-// Helper function to determine platoon
-const getPlatoon = (squad: string): string => {
-  const squadNumber = parseInt(squad.split(" ")[1]); // Extract the number from "Squad X"
-  if (squadNumber === 1 || squadNumber === 2) return "Platoon A";
-  if (squadNumber === 3 || squadNumber === 4) return "Platoon B";
-  if (squadNumber === 5 || squadNumber === 6) return "Platoon C";
-  if (squadNumber === 7 || squadNumber === 8) return "Platoon D";
-  return "Unknown"; // Fallback in case of unexpected input
-};
+const UNASSIGNED = "Unassigned";
+const SQUAD_CHOICES = [UNASSIGNED, ...SQUAD_OPTIONS];
 
 export const UserFormWithBadgeSelection: React.FC = () => {
   const [name, setName] = useState("");
   const [dob, setDob] = useState("");
   const [rank, setRank] = useState("Recruit");
-  const [squad, setSquad] = useState("Squad 1");
+  const [squad, setSquad] = useState(UNASSIGNED);
   const [yearJoined, setYearJoined] = useState(
     new Date().getFullYear().toString()
   );
@@ -57,7 +49,7 @@ export const UserFormWithBadgeSelection: React.FC = () => {
 
     const age = calculateAge(dob);
     if (age < 13) {
-      setMessage("User must be at least 13 years old.");
+      setMessage("Member must be at least 13 years old.");
       return;
     }
 
@@ -69,27 +61,27 @@ export const UserFormWithBadgeSelection: React.FC = () => {
       return;
     }
 
-    const platoon = getPlatoon(squad); // Determine the platoon
-
     setLoading(true);
-    const userData = {
-      name,
+    const squadNumber =
+      squad === UNASSIGNED ? undefined : parseInt(squad.split(" ")[1], 10);
+    const member: Member = {
+      id: generateMemberId(),
+      name: name.trim(),
       dob,
-      rank,
-      squad,
-      platoon,
-      yearJoined, // Include yearJoined in user data
-      badges: selectedBadges,
-      id: uuidv4(),
+      rank: rank as Rank,
+      status: MemberStatus.ACTIVE,
+      yearJoined: parseInt(yearJoined, 10),
+      ...(squadNumber ? { currentSquad: squadNumber } : {}),
     };
 
-    const response = await uploadToFirebase("users", userData);
+    // Saves the member, their badges and their squad place together
+    const response = await createMember(member, selectedBadges);
 
     if (response.success) {
-      setMessage("User added successfully!");
+      setMessage("Member added successfully!");
       resetForm();
     } else {
-      setMessage(`Error: ${response.message}`);
+      setMessage(`Error: ${response.error}`);
     }
     setLoading(false);
   };
@@ -98,19 +90,19 @@ export const UserFormWithBadgeSelection: React.FC = () => {
     setName("");
     setDob("");
     setRank("Recruit");
-    setSquad("Squad 1");
-    setYearJoined(""); // Reset the new field
+    setSquad(UNASSIGNED);
+    setYearJoined(new Date().getFullYear().toString());
     setSelectedBadges([]);
   };
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-950">
+    <div className="flex flex-col lg:flex-row lg:h-screen bg-gray-50 dark:bg-gray-950">
       {/* User Form Section */}
-      <div className="w-1/2 flex justify-center items-center p-6">
+      <div className="w-full lg:w-1/2 flex justify-center items-center p-4 sm:p-6 lg:overflow-y-auto">
         <div className="max-w-lg w-full p-8 bg-white dark:bg-gray-900 shadow-lg dark:shadow-black/40 rounded-lg space-y-6">
           <div className="relative mb-4 mt-10">
             <h1 className="text-3xl font-semibold text-center text-gray-800 dark:text-gray-100">
-              Add New User
+              Add New Member
             </h1>
             <ThemeToggle className="absolute right-0 top-1/2 -translate-y-1/2" />
           </div>
@@ -147,7 +139,7 @@ export const UserFormWithBadgeSelection: React.FC = () => {
               type="select"
               value={squad}
               onChange={setSquad}
-              options={SQUAD_OPTIONS}
+              options={SQUAD_CHOICES}
             />
 
             <UserFormInput
@@ -170,7 +162,7 @@ export const UserFormWithBadgeSelection: React.FC = () => {
                     : "bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 }`}
               >
-                {loading ? "Adding..." : "Add User"}
+                {loading ? "Adding..." : "Add Member"}
               </button>
             </div>
           </form>
@@ -178,7 +170,7 @@ export const UserFormWithBadgeSelection: React.FC = () => {
       </div>
 
       {/* Badge Selection Section */}
-      <div className="w-1/2 bg-gray-100 dark:bg-gray-950 p-6 overflow-y-auto">
+      <div className="w-full lg:w-1/2 bg-gray-100 dark:bg-gray-950 p-4 sm:p-6 lg:overflow-y-auto">
         <BadgeSelection
           selectedBadges={selectedBadges}
           setSelectedBadges={setSelectedBadges}

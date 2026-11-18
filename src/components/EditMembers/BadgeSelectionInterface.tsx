@@ -25,6 +25,19 @@ const BadgeSelectionInterface: React.FC<BadgeSelectionInterfaceProps> = ({ onAdd
     specialAwards: "Special Awards"
   };
 
+  const subcategoryDisplayNames: Record<string, string> = {
+    compulsory: "Compulsory",
+    groupA: "Group A",
+    groupB: "Group B",
+    groupC: "Group C",
+    groupD: "Group D",
+  };
+
+  const ownedLevels = (name: string) =>
+    existingBadges
+      .filter((b) => b.name?.trim() === name?.trim())
+      .map((b) => b.level || "Added");
+
   useEffect(() => {
     const db = getDatabase();
     const badgesRef = ref(db, "badges");
@@ -116,107 +129,112 @@ const BadgeSelectionInterface: React.FC<BadgeSelectionInterfaceProps> = ({ onAdd
     }
   };
 
+  const optionClasses =
+    "w-full flex items-center justify-between gap-3 rounded-lg bg-gray-700 px-4 py-3 text-left text-white hover:bg-gray-600 transition-colors";
+
+  const backButton = (onClick: () => void) => (
+    <button
+      type="button"
+      onClick={onClick}
+      className="flex items-center text-sm text-gray-300 hover:text-white shrink-0"
+    >
+      <ChevronLeft className="w-4 h-4 mr-1" />
+      Back
+    </button>
+  );
+
   return (
-    <div className="bg-gray-100 rounded-lg p-6">
+    <div className="rounded-lg border border-gray-700 bg-gray-900/40 p-4 sm:p-5">
+      <div className="flex items-center justify-between gap-3 mb-4">
+        <div className="min-w-0">
+          <h3 className="text-lg font-semibold text-white">Add a Badge</h3>
+          {selectedCategory && (
+            <p className="text-sm text-gray-400 truncate">
+              {categoryDisplayNames[selectedCategory] || selectedCategory}
+              {selectedSubcategory &&
+                ` › ${subcategoryDisplayNames[selectedSubcategory] || selectedSubcategory}`}
+            </p>
+          )}
+        </div>
+        {selectedSubcategory
+          ? backButton(() => {
+              setSelectedSubcategory(null);
+              setSubcategoryBadges([]);
+            })
+          : selectedCategory
+          ? backButton(() => {
+              setSelectedCategory(null);
+              setSubcategories([]);
+            })
+          : null}
+      </div>
+
       {!selectedCategory ? (
-        <div>
-          <h3 className="text-xl font-bold mb-4">Available Badge Categories</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {categories.map((category) => (
-              <div
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-                className="p-4 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow"
-              >
-                <h4 className="text-lg font-semibold flex items-center justify-between">
-                  {categoryDisplayNames[category] || category}
-                  <Plus className="w-5 h-5 text-gray-500" />
-                </h4>
-              </div>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {categories.map((category) => (
+            <button
+              type="button"
+              key={category}
+              onClick={() => handleCategorySelect(category)}
+              className={optionClasses}
+            >
+              <span className="font-medium">{categoryDisplayNames[category] || category}</span>
+              <Plus className="w-4 h-4 text-gray-400 shrink-0" />
+            </button>
+          ))}
         </div>
       ) : !selectedSubcategory ? (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold">
-              Subcategories in {categoryDisplayNames[selectedCategory] || selectedCategory}
-            </h3>
-            <button
-              onClick={() => {
-                setSelectedCategory(null);
-                setSubcategories([]);
-              }}
-              className="flex items-center text-gray-600 hover:text-gray-800"
-            >
-              <ChevronLeft className="w-5 h-5 mr-1" />
-              Back
-            </button>
+        loading ? (
+          <div className="flex justify-center py-6">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-300"></div>
+            </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {subcategories.map((subcategory) => (
+              <button
+                type="button"
+                key={subcategory}
+                onClick={() => handleSubcategorySelect(subcategory)}
+                className={optionClasses}
+              >
+                <span className="font-medium">
+                  {subcategoryDisplayNames[subcategory] || subcategory}
+                </span>
+                <Plus className="w-4 h-4 text-gray-400 shrink-0" />
+              </button>
+            ))}
           </div>
-          
-          {loading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-800"></div>
+        )
+      ) : loading ? (
+        <div className="flex justify-center py-6">
+              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-300"></div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {subcategories.map((subcategory) => (
-                <div
-                  key={subcategory}
-                  onClick={() => handleSubcategorySelect(subcategory)}
-                  className="p-4 bg-white rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow"
-                >
-                  <h4 className="text-lg font-semibold flex items-center justify-between">
-                    {subcategory}
-                    <Plus className="w-5 h-5 text-gray-500" />
-                  </h4>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       ) : (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold">Badges in {selectedSubcategory}</h3>
-            <button
-              onClick={() => {
-                setSelectedSubcategory(null);
-                setSubcategoryBadges([]);
-              }}
-              className="flex items-center text-gray-600 hover:text-gray-800"
-            >
-              <ChevronLeft className="w-5 h-5 mr-1" />
-              Back
-            </button>
-          </div>
-
-          {loading ? (
-            <div className="flex justify-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-800"></div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {subcategoryBadges.map((badge, index) => (
-                <div
-                  key={index}
-                  className="p-4 border border-gray-300 rounded-md flex flex-col items-center justify-between text-center bg-white shadow-lg"
-                  style={{ height: "150px", width: "150px" }}
-                >
-                  <div className="flex flex-col justify-center items-center h-full">
-                    <h4 className="font-semibold text-lg mb-4">{badge.name}</h4>
-                    <button
-                      onClick={() => handleAddBadge(badge)}
-                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                    >
-                      Add Badge
-                    </button>
-                  </div>
+        <ul className="divide-y divide-gray-700 rounded-lg border border-gray-700 overflow-hidden">
+          {subcategoryBadges.map((badge) => {
+            const owned = ownedLevels(badge.name);
+            return (
+              <li
+                key={badge.badgeKey || badge.name}
+                className="flex items-center justify-between gap-3 bg-gray-800 px-4 py-3"
+              >
+                <div className="min-w-0">
+                  <p className="font-medium text-white">{badge.name}</p>
+                  {owned.length > 0 && (
+                    <p className="text-xs text-gray-400">Has: {owned.join(", ")}</p>
+                  )}
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+                <button
+                  type="button"
+                  onClick={() => handleAddBadge(badge)}
+                  className="shrink-0 rounded-md bg-blue-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+                >
+                  Add
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       )}
 
       <BadgeLevelModal

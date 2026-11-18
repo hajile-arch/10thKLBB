@@ -8,6 +8,11 @@ import {
   MemberStats,
 } from "../../enum";
 import { useNavigate } from "react-router-dom";
+import {
+  getSquadsForYear,
+  getSquadRole,
+  SquadRoleLabel,
+} from "../../firebase/squadService";
 
 type AttendanceRange = "all" | "excellent" | "good" | "fair" | "poor";
 
@@ -17,6 +22,7 @@ const AttendanceStatsPage = () => {
   const [loading, setLoading] = useState(true);
   const [members, setMembers] = useState<Member[]>([]);
   const [stats, setStats] = useState<MemberStats[]>([]);
+  const [roles, setRoles] = useState<Record<string, SquadRoleLabel>>({});
   const [searchQuery, setSearchQuery] = useState("");
   const [filterRange, setFilterRange] = useState<AttendanceRange>("all");
   const [filterSquad, setFilterSquad] = useState<"all" | number>("all");
@@ -53,6 +59,14 @@ const AttendanceStatsPage = () => {
         );
 
       setMembers(membersList);
+
+      // Each member's role in their squad (Squad Leader / Assistant / Member)
+      const squads = await getSquadsForYear(CURRENT_YEAR);
+      const roleMap: Record<string, SquadRoleLabel> = {};
+      membersList.forEach((member) => {
+        roleMap[member.id] = getSquadRole(member.id, squads);
+      });
+      setRoles(roleMap);
 
       // Load all attendance records for the year
       const attendanceSnap = await get(ref(db, `attendance/${CURRENT_YEAR}`));
@@ -402,6 +416,9 @@ const AttendanceStatsPage = () => {
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Squad
                   </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Role
+                  </th>
                   <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Total Parades
                   </th>
@@ -426,7 +443,7 @@ const AttendanceStatsPage = () => {
                 {filteredStats.length === 0 ? (
                   <tr>
                     <td
-                      colSpan={9}
+                      colSpan={10}
                       className="px-6 py-12 text-center text-gray-500"
                     >
                       No members found matching your filters
@@ -450,6 +467,11 @@ const AttendanceStatsPage = () => {
                           {stat.member.currentSquad
                             ? `Squad ${stat.member.currentSquad}`
                             : "Unassigned"}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="text-sm text-gray-600">
+                          {roles[stat.member.id] || "Member"}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -516,6 +538,9 @@ const AttendanceStatsPage = () => {
                       {stat.member.currentSquad
                         ? `Squad ${stat.member.currentSquad}`
                         : "Unassigned"}
+                      {roles[stat.member.id] &&
+                        roles[stat.member.id] !== "Member" &&
+                        ` • ${roles[stat.member.id]}`}
                     </div>
                   </div>
                   <span

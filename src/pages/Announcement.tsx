@@ -4,10 +4,15 @@ import { getDataFromFirebase, updateFirebaseData } from "../firebase/firebaseUti
 import { ArrowLeft, Calendar, ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+// Each parade's announcements are grouped into these sections, in this order
+const SECTIONS = ["Company", "Senior", "Junior"] as const;
+type AnnouncementSection = (typeof SECTIONS)[number];
+
 interface Announcement {
     title: string;
     description: string;
     time: string;
+    section: AnnouncementSection;
     createdAt: string;
   }
   
@@ -15,17 +20,17 @@ interface Announcement {
 interface Parade {
   date: string;
   announcements?: {
-    [key: string]: {
-      title: string;
-      description: string;
-      time: string;
-    };
+    [key: string]: { title: string; description: string; time: string; section?: AnnouncementSection };
   };
 }
 
 type AnnouncementMap = {
-  [id: string]: { title: string; description: string; time: string };
+  [id: string]: { title: string; description: string; time: string; section?: AnnouncementSection };
 };
+
+// Announcements saved before sections existed are shown under Company
+const sectionOf = (item: { section?: AnnouncementSection }): AnnouncementSection =>
+  item.section && SECTIONS.includes(item.section) ? item.section : "Company";
 
 interface ParadesByMonth {
   [month: string]: {
@@ -34,6 +39,7 @@ interface ParadesByMonth {
 }
 
 interface AnnouncementForm {
+  section: AnnouncementSection;
   title: string;
   description: string;
   time: string;
@@ -52,6 +58,7 @@ export const ParadeAnnouncementsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [formData, setFormData] = useState<AnnouncementForm>({
+    section: 'Company',
     title: '',
     description: '',
     time: ''
@@ -127,7 +134,7 @@ export const ParadeAnnouncementsPage = () => {
   const closeAnnouncementModal = () => {
     setIsModalOpen(false);
     setSelectedDate(null);
-    setFormData({ title: '', description: '', time: '' });
+    setFormData({ section: 'Company', title: '', description: '', time: '' });
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -155,7 +162,7 @@ export const ParadeAnnouncementsPage = () => {
   };
   
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -225,7 +232,7 @@ export const ParadeAnnouncementsPage = () => {
                       {formatDate(parade.date)}
                     </span>
                     <span className="text-sm text-gray-500">
-                      {Object.keys(getParadeAnnouncements(parade)).length} announcements
+                      {Object.keys(getParadeAnnouncements(parade)).length} {Object.keys(getParadeAnnouncements(parade)).length === 1 ? 'announcement' : 'announcements'}
                     </span>
                   </div>
                   {expandedDates.includes(parade.date) ? (
@@ -246,20 +253,33 @@ export const ParadeAnnouncementsPage = () => {
                         Add Announcement
                       </button>
                     </div>
-                    {Object.entries(getParadeAnnouncements(parade)).map(([id, announcement]) => (
-                      <div 
-                        key={id}
-                        className="bg-white rounded-lg p-4 space-y-2 border border-gray-200"
-                      >
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-medium text-gray-900">{announcement.title}</h3>
-                          <span className="text-sm text-gray-500">{announcement.time}</span>
+                    {SECTIONS.map((section) => {
+                      const items = Object.entries(getParadeAnnouncements(parade))
+                        .filter(([, item]) => sectionOf(item) === section)
+                        .sort(([, a], [, b]) => (a.time || '').localeCompare(b.time || ''));
+                      if (items.length === 0) return null;
+                      return (
+                        <div key={section} className="space-y-2">
+                          <h4 className="text-sm font-semibold uppercase tracking-wide text-gray-500">
+                            {section}
+                          </h4>
+                          {items.map(([id, announcement]) => (
+                            <div 
+                              key={id}
+                              className="bg-white rounded-lg p-4 space-y-2 border border-gray-200"
+                            >
+                              <div className="flex items-center justify-between gap-3">
+                                <h3 className="font-medium text-gray-900">{announcement.title}</h3>
+                                <span className="text-sm text-gray-500 shrink-0">{announcement.time}</span>
+                              </div>
+                              <p className="text-sm text-gray-600 whitespace-pre-line">
+                                {announcement.description}
+                              </p>
+                            </div>
+                          ))}
                         </div>
-                        <p className="text-sm text-gray-600">
-                          {announcement.description}
-                        </p>
-                      </div>
-                    ))}
+                      );
+                    })}
                     {Object.keys(getParadeAnnouncements(parade)).length === 0 && (
                       <div className="text-center py-6 text-gray-500">
                         No announcements yet. Add one to get started.
@@ -293,6 +313,24 @@ export const ParadeAnnouncementsPage = () => {
               </button>
             </div>
             <form onSubmit={handleFormSubmit} className="p-6 space-y-4">
+              <div>
+                <label htmlFor="section" className="block text-sm font-medium text-gray-700 mb-1">
+                  Section
+                </label>
+                <select
+                  id="section"
+                  name="section"
+                  value={formData.section}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {SECTIONS.map((section) => (
+                    <option key={section} value={section}>
+                      {section}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                   Title

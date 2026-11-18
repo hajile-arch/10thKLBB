@@ -1,18 +1,21 @@
 import { useEffect, useState } from 'react';
-import { getDataFromFirebase, isYearKey } from '../firebase/firebaseUtils';
 import { ArrowLeft, Calendar, Gift, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { getAllMembers } from '../firebase/memberService';
+import { getSquadsForYear, getSquadRole } from '../firebase/squadService';
+import { isCurrentMember, parseDob } from '../enum';
 
-interface Member {
+interface BirthdayEntry {
+  id: string;
   name: string;
-  birthday?: string;
+  day: number;
   rank?: string;
   squadName: string;
   role: string;
 }
 
 interface MonthlyBirthdays {
-  [key: string]: Member[];
+  [key: string]: BirthdayEntry[];
 }
 
 const MONTHS = [
@@ -38,69 +41,36 @@ const BirthdayList = () => {
   const fetchMembers = async () => {
     try {
       setLoading(true);
-      const response = await getDataFromFirebase('squads');
+      const [allMembers, squads] = await Promise.all([
+        getAllMembers(),
+        getSquadsForYear(),
+      ]);
 
-      if (response.success && response.data) {
-        const birthdays: MonthlyBirthdays = {};
-        // Initialize all months
-        MONTHS.forEach(month => {
-          birthdays[month] = [];
+      const birthdays: MonthlyBirthdays = {};
+      // Initialize all months
+      MONTHS.forEach(month => {
+        birthdays[month] = [];
+      });
+
+      allMembers.filter(isCurrentMember).forEach(member => {
+        const dob = parseDob(member.dob);
+        if (!dob) return;
+        birthdays[MONTHS[dob.month]].push({
+          id: member.id,
+          name: member.name,
+          day: dob.day,
+          rank: member.rank,
+          squadName: member.currentSquad ? `Squad ${member.currentSquad}` : 'Unassigned',
+          role: getSquadRole(member.id, squads),
         });
+      });
 
-        // Process each squad
-        Object.entries(response.data).forEach(([squadKey, squad]: [string, any]) => {
-          if (isYearKey(squadKey)) return;
-          const processMembers = (memberData: any, role: string) => {
-            if (memberData.birthday) {
-              const date = new Date(memberData.birthday);
-              const month = MONTHS[date.getMonth()];
-              birthdays[month].push({
-                name: memberData.name,
-                birthday: memberData.birthday,
-                rank: memberData.rank,
-                squadName: squad.squadName,
-                role: role
-              });
-            }
-          };
+      // Sort members within each month by day
+      Object.keys(birthdays).forEach(month => {
+        birthdays[month].sort((a, b) => a.day - b.day || a.name.localeCompare(b.name));
+      });
 
-          // Process squad leader
-          processMembers(
-            { 
-              name: squad.squadLeader, 
-              birthday: squad.squadLeaderBirthday,
-              rank: squad.squadLeaderRank 
-            }, 
-            'Squad Leader'
-          );
-
-          // Process assistant squad leader
-          processMembers(
-            { 
-              name: squad.assistantSquadLeader, 
-              birthday: squad.assistantSquadLeaderBirthday,
-              rank: squad.assistantSquadLeaderRank 
-            }, 
-            'Assistant Squad Leader'
-          );
-
-          // Process regular members
-          (squad.members || []).forEach((member: any) => {
-            processMembers(member, 'Member');
-          });
-        });
-
-        // Sort members within each month by day
-        Object.keys(birthdays).forEach(month => {
-          birthdays[month].sort((a, b) => {
-            const dateA = new Date(a.birthday || '');
-            const dateB = new Date(b.birthday || '');
-            return dateA.getDate() - dateB.getDate();
-          });
-        });
-
-        setMonthlyBirthdays(birthdays);
-      }
+      setMonthlyBirthdays(birthdays);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch member data');
     } finally {
@@ -153,11 +123,11 @@ const BirthdayList = () => {
                 Birthdays This Month
               </h2>
               <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {monthlyBirthdays[currentMonth].map((member, index) => (
-                  <div key={index} className="bg-white p-4 rounded-md shadow">
+                {monthlyBirthdays[currentMonth].map((member) => (
+                  <div key={member.id} className="bg-white p-4 rounded-md shadow">
                     <div className="font-medium text-blue-900">{member.name}</div>
                     <div className="text-sm text-gray-600">
-                      {new Date(member.birthday!).getDate()} {currentMonth}
+                      {member.day} {currentMonth}
                     </div>
                     {member.rank && (
                       <div className="text-sm text-gray-500">{member.rank}</div>
@@ -179,11 +149,11 @@ const BirthdayList = () => {
                 <div className="p-4">
                   {monthlyBirthdays[month]?.length > 0 ? (
                     <ul className="space-y-2">
-                      {monthlyBirthdays[month].map((member, index) => (
-                        <li key={index} className="text-sm">
+                      {monthlyBirthdays[month].map((member) => (
+                        <li key={member.id} className="text-sm">
                           <div className="font-medium">{member.name}</div>
                           <div className="text-gray-500">
-                            {new Date(member.birthday!).getDate()} {month}
+                            {member.day} {month}
                             {member.rank && ` • ${member.rank}`}
                           </div>
                           <div className="text-gray-500">{member.squadName}</div>

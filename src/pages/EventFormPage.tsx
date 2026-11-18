@@ -25,6 +25,9 @@ const EventFormPage: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<{ startDateTime?: string; endDateTime?: string }>({});
+  // Only show a date error once that field has been changed, or after pressing save
+  const [touched, setTouched] = useState<{ startDateTime?: boolean; endDateTime?: boolean }>({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
   const [startMin, setStartMin] = useState<string>("");
   // Start time of the event as saved, used to allow edits shortly after it starts
   const [originalStart, setOriginalStart] = useState<Date | null>(null);
@@ -133,11 +136,15 @@ const EventFormPage: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    if (name === "startDateTime" || name === "endDateTime") {
+      setTouched((prev) => ({ ...prev, [name]: true }));
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitAttempted(true);
     setLoading(true);
 
     const isValid = validateSimple(formData);
@@ -186,7 +193,13 @@ const EventFormPage: React.FC = () => {
     );
   }
 
-  const hasErrors = Object.keys(errors).length > 0;
+  // An existing event is shown with its problems straight away; a new one waits
+  // until the field is used or save is pressed
+  const showError = (field: "startDateTime" | "endDateTime") =>
+    errors[field] && (submitAttempted || touched[field] || !!id) ? errors[field] : undefined;
+  const startError = showError("startDateTime");
+  const endError = showError("endDateTime");
+  const hasErrors = !!(startError || endError);
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
@@ -232,11 +245,11 @@ const EventFormPage: React.FC = () => {
                 name="startDateTime"
                 value={formData.startDateTime}
                 onChange={handleInputChange}
-                className={`mt-1 block w-full p-2 border rounded ${errors.startDateTime ? "border-red-400" : "border-gray-300"}`}
+                className={`mt-1 block w-full p-2 border rounded ${startError ? "border-red-400" : "border-gray-300"}`}
                 required
                 min={isStartedEventEdit ? undefined : startMin}
               />
-              {errors.startDateTime && <p className="text-sm text-red-600 mt-1">{errors.startDateTime}</p>}
+              {startError && <p className="text-sm text-red-600 mt-1">{startError}</p>}
             </div>
 
             <div>
@@ -247,12 +260,12 @@ const EventFormPage: React.FC = () => {
                 name="endDateTime"
                 value={formData.endDateTime}
                 onChange={handleInputChange}
-                className={`mt-1 block w-full p-2 border rounded ${errors.endDateTime ? "border-red-400" : "border-gray-300"}`}
+                className={`mt-1 block w-full p-2 border rounded ${endError ? "border-red-400" : "border-gray-300"}`}
                 required
                 // UX: ensure end cannot be earlier than start; min is start or now
                 min={formData.startDateTime || (isStartedEventEdit ? undefined : startMin)}
               />
-              {errors.endDateTime && <p className="text-sm text-red-600 mt-1">{errors.endDateTime}</p>}
+              {endError && <p className="text-sm text-red-600 mt-1">{endError}</p>}
             </div>
 
             <div>
